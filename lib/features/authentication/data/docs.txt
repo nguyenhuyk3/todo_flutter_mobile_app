@@ -1,0 +1,1 @@
+Lớp Data (Triển khai logic dữ liệu)

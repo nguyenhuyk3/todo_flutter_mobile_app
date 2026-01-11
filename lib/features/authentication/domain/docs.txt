@@ -1,0 +1,1 @@
+Lớp Domain (Business Logic thuần túy)

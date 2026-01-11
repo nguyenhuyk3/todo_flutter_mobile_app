@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận OTP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #00bc69;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .otp-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .otp-label {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .otp-code {
+            background: #00bc69;
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-note {
+            margin-top: 15px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-text {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .otp-code {
+                font-size: 30px;
+                letter-spacing: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-wrapper">
+        <div class="header">
+            <h1>🔐 Mã OTP Của Bạn</h1>
+        </div>
+
+        <div class="content">
+            <p class="greeting">Xin chào!</p>
+
+            <p class="message">
+                Bạn đã yêu cầu đăng ký tài khoản tại <strong>Planner Productivity</strong>.
+            </p>
+
+            <p class="message">
+                Vui lòng sử dụng mã OTP bên dưới để hoàn tất đăng ký:
+            </p>
+
+            <div class="otp-container">
+                <div class="otp-label">MÃ XÁC THỰC</div>
+                <div class="otp-code">{{ .Token }}</div>
+                <div class="timer-note">
+                    ⏱️ Mã có hiệu lực trong <strong>1 phút</strong>
+                </div>
+            </div>
+
+            <div class="warning">
+                ⚠️ Không chia sẻ mã này với bất kỳ ai. Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="footer-text">
+                <strong>Công ty TNHH 3B</strong><br>
+                Email: {{ .Email }}<br>
+                © 2024 Công ty TNHH 3B. Mọi quyền được bảo lưu.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

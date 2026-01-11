@@ -1,0 +1,1 @@
+Abstract Class (Interface) kết nối Data

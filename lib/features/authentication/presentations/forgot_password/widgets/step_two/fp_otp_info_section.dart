@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../../core/constants/others.dart';
+import '../../../../../../core/constants/sizes.dart';
+
+class FPOtpInfoSection extends StatelessWidget {
+  final String email;
+
+  const FPOtpInfoSection({super.key, required this.email});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Chúng tôi đã gửi mã OTP đến địa chỉ $email của bạn',
+      style: TextStyle(
+        fontSize: TextSizes.TITLE_X_SMALL,
+        color: COLORS.PRIMARY_TEXT_COLOR,
+        height: 1.5,
+      ),
+    );
+  }
+}

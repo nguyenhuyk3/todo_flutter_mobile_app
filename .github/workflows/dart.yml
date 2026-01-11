@@ -1,0 +1,78 @@
+name: CI Flutter
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+# Job = một quy trình
+jobs:
+  # Id của Job
+  # JOB 1: Kiểm tra chất lượng code (Lint & Format)
+  quality-check:
+    # JOB-LEVEL CONFIGURATION
+    
+    # Tên của Job
+    name: Check Quality & Lint
+    # Môi trường chạy job (BẮT BUỘC)
+    runs-on: ubuntu-latest
+    # Giới hạn thời gian job
+    timeout-minutes: 30
+    
+    # END
+    
+    # Steps = các hành động cụ thể trong quy trình đó
+    steps:
+      # Checkout (clone) source code của repository vào runner
+      - name: Checkout source code 
+        uses: actions/checkout@v4
+      # Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true # Cache lại Flutter SDK để lần sau chạy nhanh hơn
+      # Tạo file .env giả (Quan trọng)
+      # Vì ta dùng flutter_dotenv và khai báo assets: .env trong pubspec
+      # nhưng file .env thường bị gitignore, nên CI sẽ lỗi "Asset not found" nếu không tạo nó.
+      - name: Create Dummy .env file
+        run: |
+          touch .env
+          echo "SUPABASE_URL=https://dummy.supabase.co" >> .env
+          echo "SUPABASE_KEY=dummy-key" >> .env
+      # Tải các dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+      - name: Check Code Formatting
+        run: dart format --set-exit-if-changed .
+      # Phân tích tĩnh code (Tìm lỗi tiềm ẩn & tuân thủ lint)
+      - name: Analyze Code
+        run: flutter analyze
+  
+  # JOB 2: Chạy Test Logic (Unit & Widget & Bloc)
+  unit-test:
+    name: Run Unit Tests
+    needs: quality-check  # <--- QUAN TRỌNG: Chỉ chạy Test nếu job trên đã PASS
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      # Lặp lại setup vì đây là máy ảo mới
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true 
+      # Lặp lại tạo .env vì máy này chưa có
+      - name: Create Dummy .env
+        run: |
+          touch .env
+          echo "SUPABASE_URL=https://dummy.supabase.co" >> .env
+          echo "SUPABASE_KEY=dummy-key" >> .env
+      - name: Install Dependencies
+        run: flutter pub get
+      # Chạy toàn bộ test coverage
+      - name: Run Tests
+        run: flutter test --coverage
