@@ -143,9 +143,7 @@ class _FPPasswordInputState extends State<FPPasswordInput> {
                     fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w600,
                     color:
-                        isLoading
-                            ? COLORS.SECONDARY_TEXT
-                            : COLORS.PRIMARY_TEXT,
+                        isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                   ),
                   decoration: InputDecoration(
                     filled: true,

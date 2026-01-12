@@ -58,10 +58,8 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
         context.watch<LoginBloc>().state.status ==
         FormzSubmissionStatus.inProgress;
     // Màu sắc và trạng thái UI
-    final borderColor =
-        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
-    final shadowColor =
-        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
+    final borderColor = hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+    final shadowColor = hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return BlocProvider(
@@ -100,9 +98,7 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                     fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w600,
                     color:
-                        isLoading
-                            ? COLORS.SECONDARY_TEXT
-                            : COLORS.PRIMARY_TEXT,
+                        isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                   ),
                   decoration: InputDecoration(
                     filled: true,

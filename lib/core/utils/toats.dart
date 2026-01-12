@@ -61,11 +61,7 @@ class ToastUtils {
       builder:
           (context) => ToastCard(
             color: COLORS.PRIMARY_BG,
-            leading: Icon(
-              icon,
-              size: IconSizes.ICON_28,
-              color: iconColor,
-            ),
+            leading: Icon(icon, size: IconSizes.ICON_28, color: iconColor),
             title: Text(
               title,
               style: TextStyle(

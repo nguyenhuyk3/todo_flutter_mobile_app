@@ -92,9 +92,7 @@ class _FPEmailInputState extends State<FPEmailInput> {
                   fontSize: TextSizes.TITLE_16,
                   fontWeight: FontWeight.w600,
                   color:
-                      isLoading
-                          ? COLORS.SECONDARY_TEXT
-                          : COLORS.PRIMARY_TEXT,
+                      isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                 ),
                 decoration: InputDecoration(
                   filled: true,
@@ -112,7 +110,7 @@ class _FPEmailInputState extends State<FPEmailInput> {
                             : (isFocused
                                 ? COLORS.ICON_DEFAULT_COLOR
                                 : COLORS.ICON_PRIMARY),
-                    size: IconSizes.ICON_20
+                    size: IconSizes.ICON_20,
                   ),
                   suffixIcon:
                       isLoading

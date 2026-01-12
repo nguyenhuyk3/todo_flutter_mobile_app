@@ -75,10 +75,7 @@ class RegistrationBirthDatePicker extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               // Viền đen cứng
-              border: Border.all(
-                color: COLORS.FOCUSED_BORDER_IP,
-                width: 1,
-              ),
+              border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
               boxShadow: [
                 BoxShadow(
                   color: COLORS.PRIMARY_SHADOW,
@@ -103,9 +100,7 @@ class RegistrationBirthDatePicker extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     // Màu chữ: Nếu loading -> mờ, chưa chọn -> hint, đã chọn -> đen đậm
                     color:
-                        isLoading
-                            ? COLORS.SECONDARY_TEXT
-                            : COLORS.PRIMARY_TEXT,
+                        isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                   ),
                 ),
 

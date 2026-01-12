@@ -82,10 +82,8 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
       return state is RegistrationStepOne && state.isLoading;
     });
     // 3. Logic Style
-    final borderColor =
-        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
-    final shadowColor =
-        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
+    final borderColor = hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+    final shadowColor = hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return BlocProvider(
@@ -140,9 +138,7 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                     fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w600,
                     color:
-                        isLoading
-                            ? COLORS.SECONDARY_TEXT
-                            : COLORS.PRIMARY_TEXT,
+                        isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                   ),
                   decoration: InputDecoration(
                     filled: true,

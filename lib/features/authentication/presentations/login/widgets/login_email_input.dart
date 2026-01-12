@@ -90,11 +90,9 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
         // Xử lý hiệu ứng focus
         final isFocused = _focusNode.hasFocus;
         // Màu sắc dựa trên trạng thái
-        final borderColor =
-            hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+        final borderColor = hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
         // Shadow cứng luôn là màu đen, trừ khi lỗi
-        final shadowColor =
-            hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
+        final shadowColor = hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,9 +128,7 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
                   fontSize: TextSizes.TITLE_16,
                   fontWeight: FontWeight.w600,
                   color:
-                      isLoading
-                          ? COLORS.SECONDARY_TEXT
-                          : COLORS.PRIMARY_TEXT,
+                      isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
                 ),
                 decoration: InputDecoration(
                   filled: true,
@@ -163,9 +159,7 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
                               Icons.cancel,
                               size: IconSizes.ICON_20,
                               color:
-                                  hasError
-                                      ? COLORS.ERROR
-                                      : COLORS.ICON_PRIMARY,
+                                  hasError ? COLORS.ERROR : COLORS.ICON_PRIMARY,
                             ),
                             onPressed: () {
                               _controller.clear();

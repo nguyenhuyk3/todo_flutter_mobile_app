@@ -109,11 +109,7 @@ class _HomeStatusCard extends StatelessWidget {
               color: Colors.white.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: IconSizes.ICON_20,
-            ),
+            child: Icon(icon, color: iconColor, size: IconSizes.ICON_20),
           ),
 
           const SizedBox(height: HEIGTH_SIZED_BOX_12),

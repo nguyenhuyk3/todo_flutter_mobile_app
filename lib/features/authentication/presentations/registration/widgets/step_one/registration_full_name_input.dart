@@ -58,10 +58,8 @@ class RegistrationFullNameInputState extends State<RegistrationFullNameInput> {
       return state is RegistrationStepOne && state.isLoading;
     });
     // 3. COLOR & STYLE
-    final borderColor =
-        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
-    final shadowColor =
-        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
+    final borderColor = hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+    final shadowColor = hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return Column(
@@ -101,10 +99,7 @@ class RegistrationFullNameInputState extends State<RegistrationFullNameInput> {
             style: TextStyle(
               fontSize: TextSizes.TITLE_16,
               fontWeight: FontWeight.w600,
-              color:
-                  isLoading
-                      ? COLORS.SECONDARY_TEXT
-                      : COLORS.PRIMARY_TEXT,
+              color: isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
             ),
             decoration: InputDecoration(
               filled: true,
@@ -112,7 +107,7 @@ class RegistrationFullNameInputState extends State<RegistrationFullNameInput> {
               hintText: 'Nhập họ và tên',
               hintStyle: TextStyle(
                 color: COLORS.HINT_TEXT,
-                fontSize: TextSizes.TITLE_14
+                fontSize: TextSizes.TITLE_14,
               ),
               prefixIcon: Icon(
                 Icons.person_outline_rounded,

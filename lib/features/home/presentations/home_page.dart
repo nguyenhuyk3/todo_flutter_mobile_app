@@ -49,11 +49,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: COLORS.PRIMARY_APP,
         elevation: 4,
         shape: const CircleBorder(),
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-          size: IconSizes.ICON_28,
-        ),
+        child: Icon(Icons.add, color: Colors.white, size: IconSizes.ICON_28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

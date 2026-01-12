@@ -76,10 +76,8 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
 
       return state is RegistrationStepOne && state.isLoading;
     });
-    final borderColor =
-        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
-    final shadowColor =
-        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
+    final borderColor = hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+    final shadowColor = hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return Column(
@@ -115,10 +113,7 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
             style: TextStyle(
               fontSize: TextSizes.TITLE_16,
               fontWeight: FontWeight.w600,
-              color:
-                  isLoading
-                      ? COLORS.SECONDARY_TEXT
-                      : COLORS.PRIMARY_TEXT,
+              color: isLoading ? COLORS.SECONDARY_TEXT : COLORS.PRIMARY_TEXT,
             ),
             decoration: InputDecoration(
               filled: true,
@@ -153,9 +148,7 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
                               Icons.cancel,
                               size: IconSizes.ICON_20,
                               color:
-                                  hasError
-                                      ? COLORS.ERROR
-                                      : COLORS.ICON_PRIMARY,
+                                  hasError ? COLORS.ERROR : COLORS.ICON_PRIMARY,
                             ),
                             onPressed: () {
                               _controller.clear();
