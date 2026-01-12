@@ -17,18 +17,18 @@ class FPOtpPinInput extends StatelessWidget {
       width: 56, // Độ rộng mỗi ô
       height: 64, // Chiều cao mỗi ô
       textStyle: TextStyle(
-        fontSize: TextSizes.TITLE_LARGE,
+        fontSize: TextSizes.TITLE_22,
         fontWeight: FontWeight.w700,
-        color: COLORS.PRIMARY_TEXT_COLOR,
+        color: COLORS.PRIMARY_TEXT,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
         boxShadow: [
           // Hiệu ứng Hard Shadow (Bóng cứng)
           BoxShadow(
-            color: COLORS.PRIMARY_SHADOW_COLOR,
+            color: COLORS.PRIMARY_SHADOW,
             offset: Offset(0, 3),
             blurRadius: 0,
           ),
@@ -41,20 +41,20 @@ class FPOtpPinInput extends StatelessWidget {
     final focusedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
         border: Border.all(
-          color: COLORS.FOCUSED_BORDER_IP_COLOR,
+          color: COLORS.FOCUSED_BORDER_IP,
           width: 1.5,
         ), // Viền đậm hơn chút khi đang nhập
       ),
     );
     // 3. Cấu hình khi có Lỗi
     final errorPinTheme = defaultPinTheme.copyWith(
-      textStyle: defaultPinTheme.textStyle!.copyWith(color: COLORS.ERROR_COLOR),
+      textStyle: defaultPinTheme.textStyle!.copyWith(color: COLORS.ERROR),
       decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: COLORS.ERROR_COLOR, width: 1),
+        border: Border.all(color: COLORS.ERROR, width: 1),
         boxShadow: [
           // Bóng đổi sang màu đỏ
           BoxShadow(
-            color: COLORS.ERROR_COLOR,
+            color: COLORS.ERROR,
             offset: const Offset(0, 3),
             blurRadius: 0,
           ),

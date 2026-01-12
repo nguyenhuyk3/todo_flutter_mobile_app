@@ -83,9 +83,9 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
     });
     // 3. Logic Style
     final borderColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.FOCUSED_BORDER_IP_COLOR;
+        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
     final shadowColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.PRIMARY_SHADOW_COLOR;
+        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return BlocProvider(
@@ -137,20 +137,20 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                           ? TextInputAction.done
                           : TextInputAction.next,
                   style: TextStyle(
-                    fontSize: TextSizes.TITLE_SMALL,
+                    fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w600,
                     color:
                         isLoading
-                            ? COLORS.SECONDARY_TEXT_COLOR
-                            : COLORS.PRIMARY_TEXT_COLOR,
+                            ? COLORS.SECONDARY_TEXT
+                            : COLORS.PRIMARY_TEXT,
                   ),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
                     hintText: widget.hintText,
                     hintStyle: TextStyle(
-                      color: COLORS.HINT_TEXT_COLOR,
-                      fontSize: TextSizes.TITLE_X_SMALL,
+                      color: COLORS.HINT_TEXT,
+                      fontSize: TextSizes.TITLE_14,
                     ),
                     prefixIcon: Icon(
                       widget.isConfirmedPassword
@@ -158,11 +158,11 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                           : Icons.lock_outline_rounded,
                       color:
                           hasError
-                              ? COLORS.ERROR_COLOR
+                              ? COLORS.ERROR
                               : (isFocused
                                   ? COLORS.ICON_DEFAULT_COLOR
-                                  : COLORS.ICON_PRIMARY_COLOR),
-                      size: IconSizes.ICON_INPUT_SIZE,
+                                  : COLORS.ICON_PRIMARY),
+                      size: IconSizes.ICON_20,
                     ),
                     suffixIcon:
                         isLoading
@@ -172,13 +172,13 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                                 passwordState.obscureText
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                size: IconSizes.ICON_INPUT_SIZE,
+                                size: IconSizes.ICON_20,
                                 color:
                                     hasError
-                                        ? COLORS.ERROR_COLOR
+                                        ? COLORS.ERROR
                                         : (isFocused
                                             ? COLORS.ICON_DEFAULT_COLOR
-                                            : COLORS.ICON_PRIMARY_COLOR),
+                                            : COLORS.ICON_PRIMARY),
                               ),
                               onPressed: () {
                                 context.read<PasswordBloc>().add(

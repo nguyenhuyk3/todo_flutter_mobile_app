@@ -39,11 +39,11 @@ class ForgotPasswordStepTwoPage extends StatelessWidget {
           children: [
             FPOtpInfoSection(email: email),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const FPOtpPinInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const FPOtpTimerResend(),
 

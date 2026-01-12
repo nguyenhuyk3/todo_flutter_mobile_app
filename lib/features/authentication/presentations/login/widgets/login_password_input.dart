@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-// Đảm bảo import đúng các file trong dự án của bạn
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
 import '../../../../../core/errors/failure.dart';
@@ -11,14 +11,7 @@ import '../../password/bloc/bloc.dart';
 import '../bloc/bloc.dart';
 
 class LoginPasswordInput extends StatefulWidget {
-  final String label;
-  final String hintText;
-
-  const LoginPasswordInput({
-    super.key,
-    required this.label,
-    required this.hintText,
-  });
+  const LoginPasswordInput({super.key});
 
   @override
   State<LoginPasswordInput> createState() => _LoginPasswordInputState();
@@ -66,9 +59,9 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
         FormzSubmissionStatus.inProgress;
     // Màu sắc và trạng thái UI
     final borderColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.FOCUSED_BORDER_IP_COLOR;
+        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
     final shadowColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.PRIMARY_SHADOW_COLOR;
+        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return BlocProvider(
@@ -104,30 +97,30 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                   },
                   textInputAction: TextInputAction.next,
                   style: TextStyle(
-                    fontSize: TextSizes.TITLE_SMALL,
+                    fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w600,
                     color:
                         isLoading
-                            ? COLORS.SECONDARY_TEXT_COLOR
-                            : COLORS.PRIMARY_TEXT_COLOR,
+                            ? COLORS.SECONDARY_TEXT
+                            : COLORS.PRIMARY_TEXT,
                   ),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
-                    hintText: widget.hintText,
+                    hintText: 'Nhập mật khẩu',
                     hintStyle: TextStyle(
-                      color: COLORS.HINT_TEXT_COLOR,
-                      fontSize: TextSizes.TITLE_X_SMALL,
+                      color: COLORS.HINT_TEXT,
+                      fontSize: TextSizes.TITLE_14,
                     ),
                     prefixIcon: Icon(
                       Icons.lock_outline_rounded,
                       color:
                           hasError
-                              ? COLORS.ERROR_COLOR
+                              ? COLORS.ERROR
                               : (isFocused
                                   ? COLORS.ICON_DEFAULT_COLOR
-                                  : COLORS.ICON_PRIMARY_COLOR),
-                      size: IconSizes.ICON_INPUT_SIZE,
+                                  : COLORS.ICON_PRIMARY),
+                      size: IconSizes.ICON_20,
                     ),
                     suffixIcon:
                         isLoading
@@ -137,13 +130,13 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                                 passwordState.obscureText
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                size: IconSizes.ICON_INPUT_SIZE,
+                                size: IconSizes.ICON_20,
                                 color:
                                     hasError
-                                        ? COLORS.ERROR_COLOR
+                                        ? COLORS.ERROR
                                         : (isFocused
                                             ? COLORS.ICON_DEFAULT_COLOR
-                                            : COLORS.ICON_PRIMARY_COLOR),
+                                            : COLORS.ICON_PRIMARY),
                               ),
                               onPressed: () {
                                 context.read<PasswordBloc>().add(

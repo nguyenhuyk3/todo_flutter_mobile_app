@@ -16,8 +16,8 @@ class LoginRedirectToRegistrationPage extends StatelessWidget {
           Text(
             'Bạn chưa là thành viên?',
             style: TextStyle(
-              color: COLORS.SECONDARY_TEXT_COLOR,
-              fontSize: TextSizes.TITLE_X_SMALL,
+              color: COLORS.SECONDARY_TEXT,
+              fontSize: TextSizes.TITLE_14,
             ),
           ),
 
@@ -33,8 +33,8 @@ class LoginRedirectToRegistrationPage extends StatelessWidget {
             child: Text(
               'Đăng ký ngay',
               style: TextStyle(
-                color: COLORS.PRIMARY_TEXT_COLOR,
-                fontSize: TextSizes.TITLE_X_SMALL,
+                color: COLORS.PRIMARY_TEXT,
+                fontSize: TextSizes.TITLE_14,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),

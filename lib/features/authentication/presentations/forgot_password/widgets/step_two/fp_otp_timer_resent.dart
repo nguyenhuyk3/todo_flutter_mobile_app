@@ -50,10 +50,10 @@ class FPOtpTimerResend extends StatelessWidget {
                     style: TextStyle(
                       color:
                           isCompleted
-                              ? COLORS.PRIMARY_BUTTON_COLOR
-                              : COLORS.PRIMARY_TEXT_COLOR,
+                              ? COLORS.PRIMARY_BUTTON
+                              : COLORS.PRIMARY_TEXT,
                       fontWeight: FontWeight.bold,
-                      fontSize: TextSizes.TITLE_X_SMALL,
+                      fontSize: TextSizes.TITLE_14,
                     ),
                   ),
 
@@ -61,7 +61,7 @@ class FPOtpTimerResend extends StatelessWidget {
                     Text(
                       '$minutesStr:$secondsStr',
                       style: TextStyle(
-                        color: COLORS.PRIMARY_TEXT_COLOR,
+                        color: COLORS.PRIMARY_TEXT,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

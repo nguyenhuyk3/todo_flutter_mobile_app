@@ -1,4 +1,3 @@
-
 import '../../../features/authentication/inputs/email.dart';
 import '../../../features/authentication/inputs/otp.dart';
 import '../../../features/authentication/inputs/password.dart';

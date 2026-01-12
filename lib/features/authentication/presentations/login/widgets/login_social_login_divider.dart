@@ -13,10 +13,7 @@ class LoginSocialLoginDivider extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Divider(
-              color: COLORS.UNFOCUSED_BORDER_IP_COLOR,
-              thickness: 0.8,
-            ),
+            child: Divider(color: COLORS.UNFOCUSED_BORDER_IP, thickness: 0.8),
           ),
 
           Padding(
@@ -24,8 +21,8 @@ class LoginSocialLoginDivider extends StatelessWidget {
             child: Text(
               "HOẶC",
               style: TextStyle(
-                color: COLORS.LABEL_COLOR,
-                fontSize: TextSizes.TITLE_XX_SMALL,
+                color: COLORS.FOCUSED_LABEL,
+                fontSize: TextSizes.TITLE_12,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.5,
               ),
@@ -33,10 +30,7 @@ class LoginSocialLoginDivider extends StatelessWidget {
           ),
 
           Expanded(
-            child: Divider(
-              color: COLORS.UNFOCUSED_BORDER_IP_COLOR,
-              thickness: 0.8,
-            ),
+            child: Divider(color: COLORS.UNFOCUSED_BORDER_IP, thickness: 0.8),
           ),
         ],
       ),

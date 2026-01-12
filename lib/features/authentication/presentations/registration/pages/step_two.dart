@@ -43,15 +43,15 @@ class RegistrationStepTwoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             RegistrationOtpInfoSection(email: email),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const RegistrationOtpPinInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const RegistrationOtpTimerResend(),
 

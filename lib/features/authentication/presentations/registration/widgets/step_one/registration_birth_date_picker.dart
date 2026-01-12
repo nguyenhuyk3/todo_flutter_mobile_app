@@ -52,7 +52,7 @@ class RegistrationBirthDatePicker extends StatelessWidget {
                       if (!context.mounted) {
                         return;
                       }
-                      
+
                       final currentState =
                           context.read<RegistrationBloc>().state;
 
@@ -76,12 +76,12 @@ class RegistrationBirthDatePicker extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               // Viền đen cứng
               border: Border.all(
-                color: COLORS.FOCUSED_BORDER_IP_COLOR,
+                color: COLORS.FOCUSED_BORDER_IP,
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: COLORS.PRIMARY_SHADOW_COLOR,
+                  color: COLORS.PRIMARY_SHADOW,
                   offset: Offset(0, 3),
                   blurRadius: 0,
                 ),
@@ -94,18 +94,18 @@ class RegistrationBirthDatePicker extends StatelessWidget {
                   color: isLoading ? Colors.grey.shade400 : Colors.black,
                 ),
 
-                const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 3),
+                const SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
 
                 Text(
                   formattedDate,
                   style: TextStyle(
-                    fontSize: TextSizes.TITLE_SMALL,
+                    fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w700,
                     // Màu chữ: Nếu loading -> mờ, chưa chọn -> hint, đã chọn -> đen đậm
                     color:
                         isLoading
-                            ? COLORS.SECONDARY_TEXT_COLOR
-                            : COLORS.PRIMARY_TEXT_COLOR,
+                            ? COLORS.SECONDARY_TEXT
+                            : COLORS.PRIMARY_TEXT,
                   ),
                 ),
 

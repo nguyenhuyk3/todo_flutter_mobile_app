@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color logoColor = COLORS.PRIMARY_APP_COLOR;
+    final Color logoColor = COLORS.PRIMARY_APP;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -40,7 +40,7 @@ class Logo extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: X_MIN_HEIGHT_SIZED_BOX),
+        const SizedBox(height: HEIGHT_SIZED_BOX_4),
 
         Text(
           'PRODUCTIVITY',

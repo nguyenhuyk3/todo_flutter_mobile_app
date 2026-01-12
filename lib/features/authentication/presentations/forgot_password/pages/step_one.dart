@@ -44,7 +44,7 @@ class ForgotPasswordStepOnePage extends StatelessWidget {
         },
         child: Column(
           children: [
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const FPEmailInput(),
 

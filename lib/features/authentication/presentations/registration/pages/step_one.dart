@@ -66,18 +66,18 @@ class RegistrationStepOnePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const RegistrationEmailInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationPasswordInput(
               label: 'Mật khẩu',
               hintText: 'Hãy nhập mật khẩu',
             ),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationPasswordInput(
               label: 'Mật khẩu xác nhận',
@@ -85,23 +85,23 @@ class RegistrationStepOnePage extends StatelessWidget {
               isConfirmedPassword: true,
             ),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationFullNameInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationBirthDatePicker(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationSexSelection(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             RegistrationErrorMessageDisplayer(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             const RegistrationSendOTPButton(),
           ],

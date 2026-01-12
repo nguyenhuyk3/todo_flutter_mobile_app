@@ -39,11 +39,11 @@ class ForgotPasswordStepThreePage extends StatelessWidget {
         },
         child: Column(
           children: [
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             FPPasswordInput(label: 'Mật khẩu', hintText: 'Hãy nhập mật khẩu'),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             FPPasswordInput(
               label: 'Mật khẩu xác nhận',
@@ -51,7 +51,7 @@ class ForgotPasswordStepThreePage extends StatelessWidget {
               isConfirmedPassword: true,
             ),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 4),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 4),
 
             FPErrorMessageDisplayer(),
 

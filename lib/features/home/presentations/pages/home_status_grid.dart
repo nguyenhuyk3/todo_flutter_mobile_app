@@ -17,26 +17,26 @@ class HomeStatusGrid extends StatelessWidget {
                 title: "Chưa bắt đầu",
                 count: "24 Tasks",
                 icon: Icons.autorenew_rounded,
-                bgColor: COLORS.PENDING_COLOR,
+                bgColor: COLORS.PENDING,
                 iconColor: Colors.white,
               ),
             ),
 
-            const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 4),
+            const SizedBox(width: WIDTH_SIZED_BOX_4 * 4),
 
             Expanded(
               child: _HomeStatusCard(
                 title: "Đang làm",
                 count: "12 Tasks",
                 icon: Icons.access_time_filled,
-                bgColor: COLORS.IN_PROGRESS_COLOR,
+                bgColor: COLORS.IN_PROGRESS,
                 iconColor: Colors.white,
               ),
             ),
           ],
         ),
 
-        const SizedBox(height: MIN_HEIGHT_SIZED_BOX * 2),
+        const SizedBox(height: HEIGHT_SIZED_BOX_8 * 2),
 
         Row(
           children: [
@@ -45,19 +45,19 @@ class HomeStatusGrid extends StatelessWidget {
                 title: "Completed",
                 count: "42 Tasks",
                 icon: Icons.assignment_turned_in,
-                bgColor: COLORS.COMPLETED_COLOR,
+                bgColor: COLORS.COMPLETED,
                 iconColor: Colors.white,
               ),
             ),
 
-            const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 4),
+            const SizedBox(width: WIDTH_SIZED_BOX_4 * 4),
 
             Expanded(
               child: _HomeStatusCard(
                 title: "Canceled",
                 count: "8 Tasks",
                 icon: Icons.cancel_presentation,
-                bgColor: COLORS.CANCELED_COLOR,
+                bgColor: COLORS.CANCELED,
                 iconColor: Colors.white,
               ),
             ),
@@ -90,10 +90,10 @@ class _HomeStatusCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
         boxShadow: [
           BoxShadow(
-            color: COLORS.PRIMARY_SHADOW_COLOR,
+            color: COLORS.PRIMARY_SHADOW,
             offset: Offset(0, 3),
             blurRadius: 0.5,
           ),
@@ -112,28 +112,28 @@ class _HomeStatusCard extends StatelessWidget {
             child: Icon(
               icon,
               color: iconColor,
-              size: IconSizes.ICON_INPUT_SIZE,
+              size: IconSizes.ICON_20,
             ),
           ),
 
-          const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+          const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
           Text(
             title,
             style: TextStyle(
-              fontSize: TextSizes.TITLE_SMALL,
+              fontSize: TextSizes.TITLE_16,
               fontWeight: FontWeight.bold,
-              color: COLORS.PRIMARY_TEXT_COLOR,
+              color: COLORS.PRIMARY_TEXT,
             ),
           ),
 
-          const SizedBox(height: X_MIN_HEIGHT_SIZED_BOX),
+          const SizedBox(height: HEIGHT_SIZED_BOX_4),
 
           Text(
             count,
             style: TextStyle(
-              fontSize: TextSizes.TITLE_XX_SMALL,
-              color: COLORS.PRIMARY_TEXT_COLOR,
+              fontSize: TextSizes.TITLE_12,
+              color: COLORS.PRIMARY_TEXT,
             ),
           ),
         ],

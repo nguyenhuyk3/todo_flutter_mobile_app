@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 
@@ -17,17 +18,17 @@ class RegistrationOtpPinInput extends StatelessWidget {
       width: 56, // Độ rộng đồng bộ
       height: 64, // Chiều cao đồng bộ
       textStyle: TextStyle(
-        fontSize: TextSizes.TITLE_LARGE,
+        fontSize: TextSizes.TITLE_22,
         fontWeight: FontWeight.w700,
-        color: COLORS.PRIMARY_TEXT_COLOR,
+        color: COLORS.PRIMARY_TEXT,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
         boxShadow: [
           BoxShadow(
-            color: COLORS.PRIMARY_SHADOW_COLOR,
+            color: COLORS.PRIMARY_SHADOW,
             offset: Offset(0, 3),
             blurRadius: 0,
           ),
@@ -37,17 +38,17 @@ class RegistrationOtpPinInput extends StatelessWidget {
     // 2. Cấu hình khi ô được Focus (viền đậm hơn)
     final focusedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1.5),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1.5),
       ),
     );
     // 3. Cấu hình khi có Lỗi (Viền đỏ, bóng đỏ)
     final errorPinTheme = defaultPinTheme.copyWith(
-      textStyle: defaultPinTheme.textStyle!.copyWith(color: COLORS.ERROR_COLOR),
+      textStyle: defaultPinTheme.textStyle!.copyWith(color: COLORS.ERROR),
       decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: COLORS.ERROR_COLOR, width: 1),
+        border: Border.all(color: COLORS.ERROR, width: 1),
         boxShadow: [
           BoxShadow(
-            color: COLORS.ERROR_COLOR,
+            color: COLORS.ERROR,
             offset: const Offset(0, 3),
             blurRadius: 0,
           ),

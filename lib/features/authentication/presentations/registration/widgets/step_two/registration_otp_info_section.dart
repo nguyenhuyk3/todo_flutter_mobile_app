@@ -13,8 +13,8 @@ class RegistrationOtpInfoSection extends StatelessWidget {
     return Text(
       'Chúng tôi đã gửi mã OTP đến địa chỉ $email của bạn',
       style: TextStyle(
-        fontSize: TextSizes.TITLE_X_SMALL,
-        color: COLORS.PRIMARY_TEXT_COLOR,
+        fontSize: TextSizes.TITLE_14,
+        color: COLORS.PRIMARY_TEXT,
         height: 1.5,
       ),
     );

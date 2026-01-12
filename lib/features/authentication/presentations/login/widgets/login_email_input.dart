@@ -91,10 +91,10 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
         final isFocused = _focusNode.hasFocus;
         // Màu sắc dựa trên trạng thái
         final borderColor =
-            hasError ? COLORS.ERROR_COLOR : COLORS.FOCUSED_BORDER_IP_COLOR;
+            hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
         // Shadow cứng luôn là màu đen, trừ khi lỗi
         final shadowColor =
-            hasError ? COLORS.ERROR_COLOR : COLORS.PRIMARY_SHADOW_COLOR;
+            hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,12 +127,12 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 style: TextStyle(
-                  fontSize: TextSizes.TITLE_SMALL,
+                  fontSize: TextSizes.TITLE_16,
                   fontWeight: FontWeight.w600,
                   color:
                       isLoading
-                          ? COLORS.SECONDARY_TEXT_COLOR
-                          : COLORS.PRIMARY_TEXT_COLOR,
+                          ? COLORS.SECONDARY_TEXT
+                          : COLORS.PRIMARY_TEXT,
                 ),
                 decoration: InputDecoration(
                   filled: true,
@@ -140,32 +140,32 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
                       Colors.transparent, // Trong suốt để thấy nền Container
                   hintText: 'Nhập địa chỉ email',
                   hintStyle: TextStyle(
-                    color: COLORS.HINT_TEXT_COLOR,
-                    fontSize: TextSizes.TITLE_X_SMALL,
+                    color: COLORS.HINT_TEXT,
+                    fontSize: TextSizes.TITLE_14,
                   ),
                   // PREFIX ICON
                   prefixIcon: Icon(
                     Icons.mail_outline_rounded,
                     color:
                         hasError
-                            ? COLORS.ERROR_COLOR
+                            ? COLORS.ERROR
                             : (isFocused
                                 // Giả định COLORS.ICON_DEFAULT_COLOR tồn tại như trong code cũ của bạn
                                 // nếu không có thể thay bằng Colors.black
                                 ? COLORS.ICON_DEFAULT_COLOR
-                                : COLORS.ICON_PRIMARY_COLOR),
-                    size: IconSizes.ICON_INPUT_SIZE,
+                                : COLORS.ICON_PRIMARY),
+                    size: IconSizes.ICON_20,
                   ),
                   suffixIcon:
                       (!isLoading && _controller.text.isNotEmpty)
                           ? IconButton(
                             icon: Icon(
                               Icons.cancel,
-                              size: IconSizes.ICON_MEDIUM_SIZE,
+                              size: IconSizes.ICON_20,
                               color:
                                   hasError
-                                      ? COLORS.ERROR_COLOR
-                                      : COLORS.ICON_PRIMARY_COLOR,
+                                      ? COLORS.ERROR
+                                      : COLORS.ICON_PRIMARY,
                             ),
                             onPressed: () {
                               _controller.clear();

@@ -22,7 +22,7 @@ class HomeRecentTaskList extends StatelessWidget {
       {
         "title": "Mobile Apps for Track.id",
         "progress": 0.5,
-        "color": COLORS.PRIMARY_APP_COLOR, // Yellow
+        "color": COLORS.PRIMARY_APP, // Yellow
       },
       {
         "title": "Website for CourierGo.com",
@@ -38,15 +38,15 @@ class HomeRecentTaskList extends StatelessWidget {
             Text(
               "Các tác vụ gần đây",
               style: TextStyle(
-                fontSize: HeaderSizes.HEADER_SMALL,
+                fontSize: HeaderSizes.HEADER_18,
                 fontWeight: FontWeight.bold,
-                color: COLORS.HEADER_PAGE_COLOR,
+                color: COLORS.HEADER_PAGE,
               ),
             ),
           ],
         ),
 
-        const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+        const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
         ...tasks.map(
           (task) => Padding(
@@ -79,12 +79,12 @@ class _HomeTaskItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: COLORS.PRIMARY_BG_COLOR,
+        color: COLORS.PRIMARY_BG,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
         boxShadow: [
           BoxShadow(
-            color: COLORS.PRIMARY_SHADOW_COLOR,
+            color: COLORS.PRIMARY_SHADOW,
             offset: Offset(1, 5),
             blurRadius: 0.5, // Không mờ -> Hiệu ứng khối 3D
           ),
@@ -100,40 +100,40 @@ class _HomeTaskItem extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: TextSizes.TITLE_SMALL,
+                    fontSize: TextSizes.TITLE_16,
                     fontWeight: FontWeight.w700,
-                    color: COLORS.PRIMARY_TEXT_COLOR,
+                    color: COLORS.PRIMARY_TEXT,
                   ),
                 ),
 
-                const SizedBox(height: MIN_HEIGHT_SIZED_BOX),
+                const SizedBox(height: HEIGHT_SIZED_BOX_8),
 
                 Text(
                   "Digital Product Design",
                   style: TextStyle(
-                    fontSize: TextSizes.TITLE_XX_SMALL,
-                    color: COLORS.SECONDARY_TEXT_COLOR,
+                    fontSize: TextSizes.TITLE_12,
+                    color: COLORS.SECONDARY_TEXT,
                   ),
                 ),
 
-                const SizedBox(height: MIN_HEIGHT_SIZED_BOX),
+                const SizedBox(height: HEIGHT_SIZED_BOX_8),
 
                 Row(
                   children: [
                     Icon(
                       Icons.check_circle_outline,
-                      size: IconSizes.ICON_SMALL_SIZE,
-                      color: COLORS.PRIMARY_TEXT_COLOR,
+                      size: IconSizes.ICON_16,
+                      color: COLORS.PRIMARY_TEXT,
                     ),
 
-                    const SizedBox(width: X_MIN_HEIGHT_SIZED_BOX),
+                    const SizedBox(width: HEIGHT_SIZED_BOX_4),
 
                     Text(
                       "12 Tasks",
                       style: TextStyle(
-                        fontSize: TextSizes.TITLE_XX_SMALL,
+                        fontSize: TextSizes.TITLE_12,
                         fontWeight: FontWeight.bold,
-                        color: COLORS.PRIMARY_TEXT_COLOR,
+                        color: COLORS.PRIMARY_TEXT,
                       ),
                     ),
                   ],
@@ -161,9 +161,9 @@ class _HomeTaskItem extends StatelessWidget {
                   child: Text(
                     "${(progress * 100).toInt()}%",
                     style: TextStyle(
-                      fontSize: TextSizes.TITLE_XX_SMALL,
+                      fontSize: TextSizes.TITLE_12,
                       fontWeight: FontWeight.bold,
-                      color: COLORS.PRIMARY_TEXT_COLOR,
+                      color: COLORS.PRIMARY_TEXT,
                     ),
                   ),
                 ),

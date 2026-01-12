@@ -36,7 +36,7 @@ class RegistrationSexSelection extends StatelessWidget {
               isLoading: isLoading,
             ),
 
-            const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 4),
+            const SizedBox(width: WIDTH_SIZED_BOX_4 * 4),
 
             _buildSexOption(
               context: context,
@@ -80,15 +80,15 @@ class RegistrationSexSelection extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: isSelected ? COLORS.PRIMARY_APP_COLOR : Colors.white,
+            color: isSelected ? COLORS.PRIMARY_APP : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: COLORS.FOCUSED_BORDER_IP_COLOR,
+              color: COLORS.FOCUSED_BORDER_IP,
               width: isSelected ? 1.5 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: COLORS.PRIMARY_SHADOW_COLOR,
+                color: COLORS.PRIMARY_SHADOW,
                 offset: const Offset(0, 3),
                 blurRadius: 0,
               ),
@@ -98,9 +98,9 @@ class RegistrationSexSelection extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                color: isLoading ? Colors.white : COLORS.PRIMARY_TEXT_COLOR,
+                color: isLoading ? Colors.white : COLORS.PRIMARY_TEXT,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                fontSize: TextSizes.TITLE_SMALL,
+                fontSize: TextSizes.TITLE_16,
               ),
             ),
           ),

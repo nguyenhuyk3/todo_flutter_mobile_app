@@ -16,17 +16,17 @@ class ErrorDisplayer extends StatelessWidget {
         children: [
           Icon(
             Icons.error_outline,
-            size: IconSizes.ICON_MINI_SIZE,
-            color: COLORS.ERROR_COLOR,
+            size: IconSizes.ICON_12,
+            color: COLORS.ERROR
           ),
 
-          const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 2),
+          const SizedBox(width: WIDTH_SIZED_BOX_4 * 2),
 
           Text(
             message,
             style: TextStyle(
-              color: COLORS.ERROR_COLOR,
-              fontSize: TextSizes.TITLE_XX_SMALL,
+              color: COLORS.ERROR,
+              fontSize: TextSizes.TITLE_12,
             ),
           ),
         ],

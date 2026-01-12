@@ -46,18 +46,15 @@ class LoginPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
             const LoginEmailInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
-            const LoginPasswordInput(
-              label: 'Mật khẩu',
-              hintText: 'Nhập mật khẩu',
-            ),
+            const LoginPasswordInput(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 2),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),
 
             LoginRedirectToForgotPasswordPage(),
 
@@ -65,7 +62,7 @@ class LoginPage extends StatelessWidget {
 
             LoginSocialLoginButton(),
 
-            const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 2),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),
 
             LoginRedirectToRegistrationPage(),
 

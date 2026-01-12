@@ -19,7 +19,7 @@ class HomeHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(width: MAX_HEIGTH_SIZED_BOX),
+        const SizedBox(width: HEIGTH_SIZED_BOX_12),
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,28 +29,28 @@ class HomeHeader extends StatelessWidget {
                 Text(
                   "Hi, Bruce",
                   style: TextStyle(
-                    fontSize: HeaderSizes.HEADER_SUBSECTION,
+                    fontSize: HeaderSizes.HEADER_24,
                     fontWeight: FontWeight.bold,
-                    color: COLORS.PRIMARY_TEXT_COLOR,
+                    color: COLORS.PRIMARY_TEXT,
                   ),
                 ),
 
-                const SizedBox(width: X_MIN_WIDTH_SIZED_BOX),
+                const SizedBox(width: WIDTH_SIZED_BOX_4),
 
                 const Text(
                   "👋",
-                  style: TextStyle(fontSize: HeaderSizes.HEADER_SUBSECTION),
+                  style: TextStyle(fontSize: HeaderSizes.HEADER_24),
                 ),
               ],
             ),
 
-            const SizedBox(height: X_MIN_HEIGHT_SIZED_BOX),
+            const SizedBox(height: HEIGHT_SIZED_BOX_4),
 
             Text(
               "Your daily adventure starts now",
               style: TextStyle(
-                fontSize: TextSizes.TITLE_XX_SMALL,
-                color: COLORS.SECONDARY_TEXT_COLOR,
+                fontSize: TextSizes.TITLE_12,
+                color: COLORS.SECONDARY_TEXT,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -73,7 +73,7 @@ class HomeHeader extends StatelessWidget {
               ),
             ],
           ),
-          child: Icon(Icons.grid_view, color: COLORS.ICON_PRIMARY_COLOR),
+          child: Icon(Icons.grid_view, color: COLORS.ICON_PRIMARY),
         ),
       ],
     );

@@ -3,7 +3,7 @@
 CREATE TYPE public.todo_priority AS ENUM ('low', 'medium', 'high', 'urgent');
 
 CREATE TYPE public.todo_status AS ENUM (
-    'pending',
+    'PENDING',
     'in_progress',
     'completed',
     'cancelled'
@@ -51,7 +51,7 @@ CREATE TABLE
         "title" VARCHAR(256) NOT NULL DEFAULT '',
         "description" TEXT NOT NULL DEFAULT '',
         "priority" todo_priority NOT NULL DEFAULT 'low',
-        "status" todo_status NOT NULL DEFAULT 'pending',
+        "status" todo_status NOT NULL DEFAULT 'PENDING_COLOR',
         "started_date" timestamptz,
         "due_date" timestamptz,
         "reminder_at" timestamptz DEFAULT NULL,

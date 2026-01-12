@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: COLORS.PRIMARY_BG_COLOR,
+      backgroundColor: COLORS.PRIMARY_BG,
       body: SafeArea(
         bottom: false, // Để Custom Navigation Bar xử lý phần đáy
         child: Column(
@@ -26,16 +26,16 @@ class HomePage extends StatelessWidget {
                   children: [
                     const HomeHeader(),
 
-                    const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 2),
+                    const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),
 
                     const HomeStatusGrid(),
 
-                    const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 2),
+                    const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),
 
                     const HomeRecentTaskList(),
 
                     // Khoảng trống dưới cùng để không bị che bởi BottomNav
-                    const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+                    const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
                   ],
                 ),
               ),
@@ -46,13 +46,13 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: const HomeBottomNavBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: COLORS.PRIMARY_APP_COLOR,
+        backgroundColor: COLORS.PRIMARY_APP,
         elevation: 4,
         shape: const CircleBorder(),
         child: Icon(
           Icons.add,
           color: Colors.white,
-          size: IconSizes.ICON_HEADER_SIZE,
+          size: IconSizes.ICON_28,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

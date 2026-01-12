@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
-import 'package:flutter/material.dart';
 
 import '../constants/others.dart';
 import '../constants/sizes.dart';
@@ -59,25 +60,25 @@ class ToastUtils {
       snackbarDuration: const Duration(seconds: 3), // Thời gian hiển thị
       builder:
           (context) => ToastCard(
-            color: COLORS.PRIMARY_BG_COLOR,
+            color: COLORS.PRIMARY_BG,
             leading: Icon(
               icon,
-              size: IconSizes.ICON_HEADER_SIZE,
+              size: IconSizes.ICON_28,
               color: iconColor,
             ),
             title: Text(
               title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: TextSizes.TITLE_SMALL,
-                color: COLORS.PRIMARY_TEXT_COLOR,
+                fontSize: TextSizes.TITLE_16,
+                color: COLORS.PRIMARY_TEXT,
               ),
             ),
             subtitle: Text(
               subtitle,
               style: TextStyle(
-                fontSize: TextSizes.TITLE_X_SMALL,
-                color: COLORS.SECONDARY_TEXT_COLOR,
+                fontSize: TextSizes.TITLE_14,
+                color: COLORS.SECONDARY_TEXT,
               ),
             ),
           ),

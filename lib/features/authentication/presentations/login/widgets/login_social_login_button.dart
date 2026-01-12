@@ -17,7 +17,7 @@ class LoginSocialLoginButton extends StatelessWidget {
           label: 'Facebook',
         ),
 
-        const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 4),
+        const SizedBox(width: WIDTH_SIZED_BOX_4 * 4),
 
         _SocialButton(
           onPressed: () {},
@@ -49,23 +49,23 @@ class _SocialButton extends StatelessWidget {
         child: Container(
           height: 52,
           decoration: BoxDecoration(
-            color: COLORS.INPUT_BG_COLOR,
+            color: COLORS.INPUT_BG,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: COLORS.FOCUSED_BORDER_IP_COLOR, width: 1),
+            border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon,
 
-              const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 3),
+              const SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
 
               Text(
                 label,
                 style: TextStyle(
-                  color: COLORS.PRIMARY_TEXT_COLOR,
+                  color: COLORS.PRIMARY_TEXT,
                   fontWeight: FontWeight.w600,
-                  fontSize: TextSizes.TITLE_X_SMALL,
+                  fontSize: TextSizes.TITLE_14,
                 ),
               ),
             ],

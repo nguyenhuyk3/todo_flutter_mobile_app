@@ -4,35 +4,33 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Input border
-  final FOCUSED_BORDER_IP_COLOR = Colors.black;
-  final UNFOCUSED_BORDER_IP_COLOR = const Color.fromARGB(255, 152, 150, 150);
+  final FOCUSED_BORDER_IP = Colors.black;
+  final UNFOCUSED_BORDER_IP = const Color.fromARGB(255, 152, 150, 150);
   // Background
-  final PRIMARY_BG_COLOR = Color(0xFFF6F8FA);
-  final INPUT_BG_COLOR = Color.fromARGB(255, 247, 247, 247);
+  final PRIMARY_BG = Color(0xFFF6F8FA);
+  final INPUT_BG = Color.fromARGB(255, 247, 247, 247);
   // Label
-  final FOCUSED_LABEL_COLOR = Colors.black;
-  final LABEL_COLOR = Colors.black;
-
-  final ERROR_COLOR = Colors.redAccent;
-  final SUCCESS_COLOR = const Color.fromARGB(255, 10, 202, 32);
+  final FOCUSED_LABEL = Colors.black;
+  final ERROR = Colors.redAccent;
+  final SUCCESS = const Color.fromARGB(255, 10, 202, 32);
   // Button
-  final PRIMARY_BUTTON_COLOR = Color(0xFFFF6B5B);
+  final PRIMARY_BUTTON = Color(0xFFFF6B5B);
   // Title
-  final HEADER_PAGE_COLOR = Colors.black;
+  final HEADER_PAGE = Colors.black;
   // Text
-  final PRIMARY_TEXT_COLOR = Color(0xFF2C2C2C);
-  final SECONDARY_TEXT_COLOR = const Color.fromARGB(255, 152, 151, 150);
-  final HINT_TEXT_COLOR = Colors.grey.shade400;
+  final PRIMARY_TEXT = Color(0xFF2C2C2C);
+  final SECONDARY_TEXT = const Color.fromARGB(255, 152, 151, 150);
+  final HINT_TEXT = Colors.grey.shade400;
   // App
-  final PRIMARY_APP_COLOR = Color(0xFFFF6B5B);
+  final PRIMARY_APP = Color(0xFFFF6B5B);
   // Icon
-  final ICON_PRIMARY_COLOR = const Color.fromARGB(255, 152, 150, 150);
+  final ICON_PRIMARY = const Color.fromARGB(255, 152, 150, 150);
   final ICON_DEFAULT_COLOR = Colors.black;
   // Process
-  final PENDING_COLOR = Color(0xFF5F9FFF);
-  final IN_PROGRESS_COLOR = Color.fromRGBO(249, 202, 33, 1);
-  final COMPLETED_COLOR = const Color(0xFF4CBDB2);
-  final CANCELED_COLOR = Colors.redAccent;
+  final PENDING = Color(0xFF5F9FFF);
+  final IN_PROGRESS = Color.fromRGBO(249, 202, 33, 1);
+  final COMPLETED = const Color(0xFF4CBDB2);
+  final CANCELED = Colors.redAccent;
   // Shadow
-  final PRIMARY_SHADOW_COLOR = Colors.black;
+  final PRIMARY_SHADOW = Colors.black;
 }

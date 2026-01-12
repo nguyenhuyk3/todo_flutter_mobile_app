@@ -15,15 +15,15 @@ void showCustomSnackBar({
       message,
       style: TextStyle(
         color: Colors.white,
-        fontSize: TextSizes.TITLE_SMALL,
+        fontSize: TextSizes.TITLE_16,
         fontWeight: FontWeight.w500,
       ),
     ),
     backgroundColor:
         isSuccess
             ? COLORS
-                .SUCCESS_COLOR // success background
-            : COLORS.ERROR_COLOR, // error background,
+                .SUCCESS // success background
+            : COLORS.ERROR, // error background,
     behavior: SnackBarBehavior.floating,
     elevation: 4,
     duration: const Duration(seconds: 1),

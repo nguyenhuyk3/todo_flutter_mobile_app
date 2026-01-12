@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+
 import '../constants/others.dart';
 import '../constants/sizes.dart';
 
@@ -36,8 +37,8 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isDisabled ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: COLORS.PRIMARY_BUTTON_COLOR,
-          disabledBackgroundColor: COLORS.PRIMARY_BUTTON_COLOR.withOpacity(0.5),
+          backgroundColor: COLORS.PRIMARY_BUTTON,
+          disabledBackgroundColor: COLORS.PRIMARY_BUTTON.withOpacity(0.5),
           foregroundColor: Colors.white,
           minimumSize: Size(
             double.infinity,
@@ -68,18 +69,18 @@ class PrimaryButton extends StatelessWidget {
                     if (icon != null) ...[
                       Icon(
                         icon,
-                        size: IconSizes.ICON_MEDIUM_SIZE,
-                        color: COLORS.PRIMARY_TEXT_COLOR,
+                        size: IconSizes.ICON_20,
+                        color: COLORS.PRIMARY_TEXT,
                       ),
 
-                      const SizedBox(width: X_MIN_WIDTH_SIZED_BOX * 2),
+                      const SizedBox(width: WIDTH_SIZED_BOX_4 * 2),
                     ],
 
                     Text(
                       title,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: TextSizes.TITLE_MEDIUM,
+                        fontSize: TextSizes.TITLE_18,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.7, // Dùng để giãn chữ theo chiều ngang
                       ),

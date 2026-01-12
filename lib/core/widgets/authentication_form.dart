@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/others.dart';
 import '../constants/sizes.dart';
+
 import 'logo.dart';
 
 /*
@@ -60,21 +61,21 @@ class AuthenticationForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: COLORS.PRIMARY_BG_COLOR,
+      backgroundColor: COLORS.PRIMARY_BG,
       body: SafeArea(
         child: Stack(
           children: [
             if (allowBack)
               Positioned(
                 left: 15,
-                top: MAX_HEIGTH_SIZED_BOX,
+                top: HEIGTH_SIZED_BOX_12,
                 child: InkWell(
                   onTap: onBack ?? () => Navigator.maybePop(context),
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: COLORS.PRIMARY_BG_COLOR,
+                      color: COLORS.PRIMARY_BG,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
@@ -88,8 +89,8 @@ class AuthenticationForm extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.arrow_back_ios_new,
-                      size: IconSizes.ICON_HEADER_SIZE,
-                      color: COLORS.ICON_PRIMARY_COLOR,
+                      size: IconSizes.ICON_28,
+                      color: COLORS.ICON_PRIMARY,
                     ),
                   ),
                 ),
@@ -100,26 +101,26 @@ class AuthenticationForm extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: MAX_HEIGTH_SIZED_BOX * (allowBack ? 6 : 4)),
+                  SizedBox(height: HEIGTH_SIZED_BOX_12 * (allowBack ? 6 : 4)),
 
                   Align(alignment: Alignment.center, child: Logo()),
 
-                  const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 3),
+                  const SizedBox(height: HEIGTH_SIZED_BOX_12 * 3),
 
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: HeaderSizes.HEADER_SECTION_TITLE,
+                      fontSize: HeaderSizes.HEADER_28,
                       fontWeight: FontWeight.w600,
-                      color: COLORS.HEADER_PAGE_COLOR,
+                      color: COLORS.HEADER_PAGE,
                     ),
                   ),
 
-                  const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+                  const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
                   Expanded(child: child),
 
-                  const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 1.5),
+                  const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
                 ],
               ),
             ),

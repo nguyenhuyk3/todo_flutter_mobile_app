@@ -59,9 +59,9 @@ class RegistrationFullNameInputState extends State<RegistrationFullNameInput> {
     });
     // 3. COLOR & STYLE
     final borderColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.FOCUSED_BORDER_IP_COLOR;
+        hasError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
     final shadowColor =
-        hasError ? COLORS.ERROR_COLOR : COLORS.PRIMARY_SHADOW_COLOR;
+        hasError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
     final isFocused = _focusNode.hasFocus;
 
     return Column(
@@ -99,30 +99,30 @@ class RegistrationFullNameInputState extends State<RegistrationFullNameInput> {
               }
             },
             style: TextStyle(
-              fontSize: TextSizes.TITLE_SMALL,
+              fontSize: TextSizes.TITLE_16,
               fontWeight: FontWeight.w600,
               color:
                   isLoading
-                      ? COLORS.SECONDARY_TEXT_COLOR
-                      : COLORS.PRIMARY_TEXT_COLOR,
+                      ? COLORS.SECONDARY_TEXT
+                      : COLORS.PRIMARY_TEXT,
             ),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.transparent,
               hintText: 'Nhập họ và tên',
               hintStyle: TextStyle(
-                color: COLORS.HINT_TEXT_COLOR,
-                fontSize: TextSizes.TITLE_X_SMALL,
+                color: COLORS.HINT_TEXT,
+                fontSize: TextSizes.TITLE_14
               ),
               prefixIcon: Icon(
                 Icons.person_outline_rounded,
                 color:
                     hasError
-                        ? COLORS.ERROR_COLOR
+                        ? COLORS.ERROR
                         : (isFocused
                             ? COLORS.ICON_DEFAULT_COLOR
-                            : COLORS.ICON_PRIMARY_COLOR),
-                size: IconSizes.ICON_INPUT_SIZE,
+                            : COLORS.ICON_PRIMARY),
+                size: IconSizes.ICON_20,
               ),
 
               contentPadding: const EdgeInsets.symmetric(

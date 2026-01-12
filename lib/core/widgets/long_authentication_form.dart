@@ -50,7 +50,7 @@ class LongAuthenticationForm extends StatelessWidget {
     return Scaffold(
       // resizeToAvoidBottomInset: true để giao diện tự co lên khi phím hiện
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: COLORS.PRIMARY_BG_COLOR,
+      backgroundColor: COLORS.PRIMARY_BG,
       body: SafeArea(
         child: Stack(
           children: [
@@ -71,29 +71,29 @@ class LongAuthenticationForm extends StatelessWidget {
                     children: [
                       // Khoảng trống để tránh đè lên nút Back
                       SizedBox(
-                        height: MAX_HEIGTH_SIZED_BOX * (allowBack ? 3 : 2),
+                        height: HEIGTH_SIZED_BOX_12 * (allowBack ? 3 : 2),
                       ),
 
                       if (showLogo)
                         Align(alignment: Alignment.center, child: Logo()),
 
-                      const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 3),
+                      const SizedBox(height: HEIGTH_SIZED_BOX_12 * 3),
 
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: HeaderSizes.HEADER_SECTION_TITLE,
+                          fontSize: HeaderSizes.HEADER_28,
                           fontWeight: FontWeight.w600,
-                          color: COLORS.HEADER_PAGE_COLOR,
+                          color: COLORS.HEADER_PAGE,
                         ),
                       ),
 
-                      const SizedBox(height: MAX_HEIGTH_SIZED_BOX),
+                      const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
                       // Bỏ Expanded đi, chỉ cần render child
                       child,
 
-                      const SizedBox(height: MAX_HEIGTH_SIZED_BOX * 2),
+                      const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),
                     ],
                   ),
                 ),
@@ -110,7 +110,7 @@ class LongAuthenticationForm extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: COLORS.PRIMARY_BG_COLOR,
+                      color: COLORS.PRIMARY_BG,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
@@ -124,8 +124,8 @@ class LongAuthenticationForm extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.arrow_back_ios_new,
-                      size: IconSizes.ICON_HEADER_SIZE,
-                      color: COLORS.ICON_PRIMARY_COLOR,
+                      size: IconSizes.ICON_28,
+                      color: COLORS.ICON_PRIMARY,
                     ),
                   ),
                 ),
