@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/sizes.dart';
@@ -8,6 +9,7 @@ import '../../../../../core/widgets/authentication_form.dart';
 import '../bloc/bloc.dart';
 import '../widgets/step_one/fp_email_input.dart';
 import '../widgets/step_one/fp_send_otp_button.dart';
+
 import 'step_two.dart';
 
 class ForgotPasswordStepOnePage extends StatelessWidget {

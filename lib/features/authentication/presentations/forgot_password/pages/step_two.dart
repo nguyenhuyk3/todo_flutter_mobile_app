@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/sizes.dart';
@@ -8,6 +9,7 @@ import '../widgets/step_two/fp_otp_info_section.dart';
 import '../widgets/step_two/fp_otp_pin_put.dart';
 import '../widgets/step_two/fp_otp_submit_button.dart';
 import '../widgets/step_two/fp_otp_timer_resent.dart';
+
 import 'step_three.dart';
 
 class ForgotPasswordStepTwoPage extends StatelessWidget {

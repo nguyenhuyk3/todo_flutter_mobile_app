@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
 import '../../../../../../core/utils/ticker.dart';
-import '../../bloc/bloc.dart';
 import '../../../timer/bloc/bloc.dart';
+import '../../bloc/bloc.dart';
 
 class FPOtpTimerResend extends StatelessWidget {
   const FPOtpTimerResend({super.key});

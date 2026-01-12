@@ -1,18 +1,20 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/widgets/long_authentication_form.dart';
 import '../bloc/bloc.dart';
 import '../widgets/step_one/registration_birth_date_picker.dart';
+import '../widgets/step_one/registration_email_input.dart';
 import '../widgets/step_one/registration_error_message_displayer.dart';
 import '../widgets/step_one/registration_full_name_input.dart';
-import '../widgets/step_one/registration_sex_selection.dart';
-import '../widgets/step_one/registration_email_input.dart';
-import '../widgets/step_one/registration_send_otp_button.dart';
 import '../widgets/step_one/registration_password_input.dart';
+import '../widgets/step_one/registration_send_otp_button.dart';
+import '../widgets/step_one/registration_sex_selection.dart';
+
 import 'step_two.dart';
 
 class RegistrationStepOnePage extends StatelessWidget {
