@@ -30,12 +30,12 @@ void main() {
   });
   group('LoginBloc Tests', () {
     // Test 1: Kiểm tra trạng thái khởi tạo
-    test('State khởi tạo phải đúng mặc định', () {
+    test('Initialized state must be the default', () {
       expect(loginBloc.state, const LoginState());
     });
     // Test 2: Kiểm tra sự kiện nhập Email
     blocTest<LoginBloc, LoginState>(
-      'Emit state mới khi Email thay đổi',
+      'Emit the new state when the email changes',
       build: () => loginBloc, // Trả về instance Bloc cần test
       // 👉 Mô phỏng user nhập email vào form
       act: (bloc) => bloc.add(const LoginEmailChanged(email: 'test@email.com')),
@@ -72,7 +72,7 @@ void main() {
     );
     // Test 3: Kiểm tra sự kiện nhập Password
     blocTest<LoginBloc, LoginState>(
-      'Emit state mới khi Password thay đổi',
+      'Emit the new state when your password changes',
       build: () => loginBloc,
       act:
           (bloc) =>
@@ -94,7 +94,7 @@ void main() {
     );
     // Test 4: Kiểm tra validate Email khi nhấn Submit
     blocTest<LoginBloc, LoginState>(
-      'Không gọi API và hiển thị lỗi nếu Submit khi Email không hợp lệ',
+      'Do not call the API and display an error if the submitted email is invalid',
       build: () => loginBloc,
       // Seed: Đặt trạng thái ban đầu với email sai format (ví dụ: không có @)
       // Lưu ý: Bạn cần thay chuỗi 'invalid-email' bằng chuỗi nào mà class Email của bạn coi là sai
@@ -132,7 +132,7 @@ void main() {
     );
     // Test 5: Kiểm tra validate Password khi nhấn Submit
     blocTest<LoginBloc, LoginState>(
-      'Không gọi API và hiển thị lỗi nếu Submit khi Password không hợp lệ',
+      'Do not call the API and display an error if the Submit password is invalid',
       build: () => loginBloc,
       // Seed: Email đúng, nhưng Password sai (ví dụ: rỗng hoặc quá ngắn)
       seed:
@@ -176,7 +176,7 @@ void main() {
         - Cho phép set state ban đầu của Bloc trước khi act chạy
     */
     blocTest<LoginBloc, LoginState>(
-      'Emit [inProgress, success] khi login thành công',
+      'Emit [inProgress, success] upon successful login.',
       build: () {
         // Setup hành vi giả lập cho UseCase
         // Khi gọi execute thì trả về Right(true)
@@ -235,7 +235,7 @@ void main() {
     );
     // Test 7: Submit thất bại
     blocTest<LoginBloc, LoginState>(
-      'Emit [inProgress, failure] khi login thất bại',
+      'Emit [inProgress, failure] when login fails',
       build: () {
         // Mock trả về lỗi (Left)
         when(
