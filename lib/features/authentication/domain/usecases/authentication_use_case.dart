@@ -10,13 +10,13 @@ part 'forgot_password_use_case.dart';
 part 'login_use_case.dart';
 
 abstract class AuthenticationUsecase {
-  final AuthenticationRepository _authenticationRepository;
+  final IAuthenticationRepository _authenticationRepository;
 
   // AuthenticationRepository get authenticationRepository =>
   //     _authenticationRepository;
 
   AuthenticationUsecase({
-    required AuthenticationRepository authenticationRepository,
+    required IAuthenticationRepository authenticationRepository,
   }) : _authenticationRepository = authenticationRepository;
 }
 
