@@ -39,7 +39,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  late final AuthenticationRepository _authenticationRepository;
+  late final IAuthenticationRepository _authenticationRepository;
 
   @override
   void initState() {

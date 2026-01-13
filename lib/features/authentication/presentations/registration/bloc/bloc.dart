@@ -232,7 +232,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
       verifyOTPResult.fold(
         (failure) {
-          emit(currentState.copyWith(error: error));
+          emit(currentState.copyWith(error: failure.message));
         },
         (_) {
           emit(RegistrationSuccess());
