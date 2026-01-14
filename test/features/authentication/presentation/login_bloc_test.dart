@@ -97,7 +97,7 @@ void main() {
       'Do not call the API and display an error if the submitted email is invalid',
       build: () => loginBloc,
       // Seed: Đặt trạng thái ban đầu với email sai format (ví dụ: không có @)
-      // Lưu ý: Bạn cần thay chuỗi 'invalid-email' bằng chuỗi nào mà class Email của bạn coi là sai
+      // Lưu ý: Cần thay chuỗi 'invalid-email' bằng chuỗi nào mà class Email của mình coi là sai
       seed:
           () => const LoginState(
             email: Email.dirty('invalid-text-without-at-symbol'),

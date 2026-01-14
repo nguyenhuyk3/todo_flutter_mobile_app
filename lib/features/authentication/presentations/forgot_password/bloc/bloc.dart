@@ -86,7 +86,7 @@ class ForgotPasswordBloc
       final checkResult = checkEmailResult.fold((l) => l, (r) => r);
       // 4. HANDLE RESULT
       // Tức là email đã tồn tại
-      if (checkResult is bool) {
+      if (checkResult is bool && checkResult == true) {
         final sendOTResult = await _sendForgotPasswordOTPUseCase.execute(
           email: currentState.email.value,
         );
