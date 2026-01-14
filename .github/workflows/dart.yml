@@ -27,12 +27,14 @@ jobs:
       # Checkout (clone) source code của repository vào runner
       - name: Checkout source code 
         uses: actions/checkout@v4
+
       # Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true # Cache lại Flutter SDK để lần sau chạy nhanh hơn
+
       # Tạo file .env giả (Quan trọng)
       # Vì ta dùng flutter_dotenv và khai báo assets: .env trong pubspec
       # nhưng file .env thường bị gitignore, nên CI sẽ lỗi "Asset not found" nếu không tạo nó.
@@ -41,11 +43,23 @@ jobs:
           touch .env
           echo "SUPABASE_URL=https://dummy.supabase.co" >> .env
           echo "SUPABASE_KEY=dummy-key" >> .env
+
+      - name: Cache Pub Packages
+        uses: actions/cache@v4
+        with:
+          path: |
+          ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
       # Tải các dependencies
       - name: Install Dependencies
         run: flutter pub get
+
       - name: Check Code Formatting
         run: dart format --set-exit-if-changed .
+
       # Phân tích tĩnh code (Tìm lỗi tiềm ẩn & tuân thủ lint)
       - name: Analyze Code
         run: flutter analyze
@@ -59,20 +73,24 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
       # Lặp lại setup vì đây là máy ảo mới
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true 
+
       # Lặp lại tạo .env vì máy này chưa có
       - name: Create Dummy .env
         run: |
           touch .env
           echo "SUPABASE_URL=https://dummy.supabase.co" >> .env
           echo "SUPABASE_KEY=dummy-key" >> .env
+
       - name: Install Dependencies
         run: flutter pub get
+        
       # Chạy toàn bộ test coverage
       - name: Run Tests
         run: flutter test --coverage
