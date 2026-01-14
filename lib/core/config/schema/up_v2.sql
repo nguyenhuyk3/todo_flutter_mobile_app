@@ -3,7 +3,7 @@
 CREATE TYPE public.todo_priority AS ENUM ('low', 'medium', 'high', 'urgent');
 
 CREATE TYPE public.todo_status AS ENUM (
-    'PENDING',
+    'pending',
     'in_progress',
     'completed',
     'cancelled'
@@ -51,11 +51,11 @@ CREATE TABLE
         "title" VARCHAR(256) NOT NULL DEFAULT '',
         "description" TEXT NOT NULL DEFAULT '',
         "priority" todo_priority NOT NULL DEFAULT 'low',
-        "status" todo_status NOT NULL DEFAULT 'PENDING_COLOR',
+        "status" todo_status NOT NULL DEFAULT 'pending',
         "started_date" timestamptz,
         "due_date" timestamptz,
         "reminder_at" timestamptz DEFAULT NULL,
-        "completed_at" timestamptz,
+        "completed_at" timestamptz DEFAULT NULL,
         "recurrence_pattern" recurrence_pattern DEFAULT 'none',
         "parent_todo_id" UUID REFERENCES public.todos (id) ON DELETE CASCADE,
         "position" INTEGER NOT NULL DEFAULT 0,
@@ -90,8 +90,6 @@ CREATE TABLE
         "uploaded_at" timestamptz NOT NULL DEFAULT now ()
     );
 
--- ================================================= END =================================================
--- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -- ================================================= INDEXES =================================================
 -- 1. Bảng Categories
 CREATE INDEX IF NOT EXISTS idx_categories_user_id ON public.categories (user_id);
@@ -138,8 +136,6 @@ CREATE INDEX IF NOT EXISTS idx_todo_tags_tag_id ON public.todo_tags (tag_id);
 -- 6. Bảng Attachments
 CREATE INDEX IF NOT EXISTS idx_attachments_todo_id ON public.attachments (todo_id);
 
--- ================================================= END =================================================
--- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -- ================================================= COMMENTS =================================================
 -- CATEGORIES
 COMMENT ON TABLE public.categories IS 'Lưu trữ các phân loại công việc của người dùng.';
@@ -177,5 +173,3 @@ COMMENT ON TABLE public.attachments IS 'Lưu trữ thông tin file đính kèm c
 COMMENT ON COLUMN public.attachments.file_url IS 'Đường dẫn tới file (thường là link Storage Bucket).';
 
 COMMENT ON COLUMN public.attachments.file_type IS 'Loại file phân loại để hiển thị icon/preview phù hợp.';
-
--- ================================================= END =================================================
