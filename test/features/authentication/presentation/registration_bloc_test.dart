@@ -69,7 +69,7 @@ void main() {
   });
   // =================== STEP 1 ===================
   group('RegistrationBloc - Step 1 Logic', () {
-    // Kiemr tra trạng thái ban đầu
+    // Kiểm tra trạng thái ban đầu
     test('Initial state should be RegistrationStepOne.initial()', () {
       expect(registrationBloc.state, isA<RegistrationStepOne>());
       expect((registrationBloc.state as RegistrationStepOne).email.value, '');
@@ -231,7 +231,6 @@ void main() {
           ],
     );
   });
-  // =================== END ===================
   // =================== STEP 2 ===================
   group('RegistrationBloc - Step 2 (OTP) Logic', () {
     // 1. Kiểm tra nhập OTP
@@ -269,6 +268,7 @@ void main() {
       act: (bloc) => bloc.add(RegistrationResendOTPRequested()),
       expect: () => [],
       verify: (_) {
+        // ?? Có thể chưa đúng vì khi đăng kí có thể gửi nhiều lần
         verify(
           () => mockResendOTPUseCase.execute(
             email: any<String>(named: 'email'),
@@ -394,7 +394,6 @@ void main() {
           ],
     );
   });
-  // =================== END ===================
   // =================== ADDITIONAL TESTS ===================
   group('RegistrationBloc - Additional Tests', () {
     // Kiểm tra mật khẩu không khớp
@@ -480,5 +479,4 @@ void main() {
           ],
     );
   });
-  // =================== END ===================
 }
