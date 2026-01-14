@@ -8,7 +8,7 @@ import '../../domain/entities/registration_params.dart';
 import '../../domain/repositories/authentication.dart';
 import '../datasources/authentication_remote_data_source.dart';
 
-class AuthenticationService implements AuthenticationRepository {
+class AuthenticationService implements IAuthenticationRepository {
   final AuthenticationRemoteDataSource _authenticationRemoteDataSource;
 
   AuthenticationService({

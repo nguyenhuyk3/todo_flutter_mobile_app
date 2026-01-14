@@ -1,0 +1,13 @@
+Tạo file lcov.info - Flutter
+
+flutter test --coverage
+
+Tạo file lcov.info - Dart
+
+dart test --coverage=coverage
+
+format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
+
+Format code
+
+dart format .

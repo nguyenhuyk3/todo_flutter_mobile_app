@@ -22,7 +22,7 @@ import '../entities/registration_params.dart';
       + Left = Failure / Error
       + Right = Data / Success
 */
-abstract class AuthenticationRepository {
+abstract class IAuthenticationRepository {
   Future<Either<Failure, bool>> checkEmailExists({required String email});
 
   Future<Either<Failure, bool>> resendOTP({
