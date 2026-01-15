@@ -117,7 +117,7 @@ class _MainAppState extends State<MainApp> {
               scrolledUnderElevation: 0,
             ),
           ),
-          home: AddTodoScreen(),
+          home: AddTodoPage(),
         ),
       ),
     );

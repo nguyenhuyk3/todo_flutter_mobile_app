@@ -15,14 +15,14 @@ import '../widgets/todo_project_selector.dart';
 import '../widgets/todo_recurrence_selector.dart';
 import '../widgets/todo_title_input.dart';
 
-class AddTodoScreen extends StatefulWidget {
-  const AddTodoScreen({super.key});
+class AddTodoPage extends StatefulWidget {
+  const AddTodoPage({super.key});
 
   @override
-  State<AddTodoScreen> createState() => _AddTodoScreenState();
+  State<AddTodoPage> createState() => _AddTodoPageState();
 }
 
-class _AddTodoScreenState extends State<AddTodoScreen> {
+class _AddTodoPageState extends State<AddTodoPage> {
   final TextEditingController _titleController = TextEditingController();
   List<MockFile> mockAttachments = [
     MockFile(name: "hinh_anh_loi.jpg", extension: "img", size: "2.5 MB"),

@@ -17,8 +17,6 @@ class RegistrationStepTwoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = context.read<RegistrationBloc>().email;
-
     return AuthenticationForm(
       title: 'Nhập mã OTP',
       child: BlocListener<RegistrationBloc, RegistrationState>(
@@ -46,13 +44,13 @@ class RegistrationStepTwoPage extends StatelessWidget {
           children: [
             const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
-            RegistrationOtpInfoSection(email: email),
+            RegistrationOtpInfoSection(),
 
-            const SizedBox(height: HEIGTH_SIZED_BOX_12),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             const RegistrationOtpPinInput(),
 
-            const SizedBox(height: HEIGTH_SIZED_BOX_12),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             const RegistrationOtpTimerResend(),
 
