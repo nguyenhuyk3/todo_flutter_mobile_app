@@ -73,7 +73,7 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                 duration: const Duration(milliseconds: 150),
                 curve: Curves.easeInOut,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: COLORS.INPUT_BG,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: borderColor, width: 1),
                   boxShadow: [
@@ -114,7 +114,7 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                           hasError
                               ? COLORS.ERROR
                               : (isFocused
-                                  ? COLORS.ICON_DEFAULT_COLOR
+                                  ? COLORS.ICON_DEFAULT
                                   : COLORS.ICON_PRIMARY),
                       size: IconSizes.ICON_20,
                     ),
@@ -131,7 +131,7 @@ class _LoginPasswordInputState extends State<LoginPasswordInput> {
                                     hasError
                                         ? COLORS.ERROR
                                         : (isFocused
-                                            ? COLORS.ICON_DEFAULT_COLOR
+                                            ? COLORS.ICON_DEFAULT
                                             : COLORS.ICON_PRIMARY),
                               ),
                               onPressed: () {

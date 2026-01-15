@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/others.dart';
+import '../../../../core/constants/sizes.dart';
+
 class TodoPrioritySelector extends StatelessWidget {
   final String selectedPriority;
   final Function(String?) onChanged;
 
-  // Dữ liệu fix cứng trong widget hoặc truyền từ ngoài vào
   final Map<String, Color> priorities = const {
     'Thấp': Colors.grey,
-    'Trung bình': Color(0xFFEAB308), // Vàng
-    'Cao': Color(0xFFEF4444), // Đỏ
+    'Trung bình': Colors.yellowAccent,
+    'Cao': Colors.redAccent,
   };
 
   const TodoPrioritySelector({
@@ -19,29 +21,53 @@ class TodoPrioritySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F222E),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        color: COLORS.INPUT_BG,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.PRIMARY_SHADOW,
+            offset: const Offset(0, 3), // Bóng cứng đổ xuống dưới
+            blurRadius: 0, // Không làm mờ
+          ),
+        ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.flag_outlined, color: Colors.grey, size: 20),
-          const SizedBox(width: 12),
-          const Text(
-            "Độ ưu tiên:",
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          Icon(
+            Icons.flag_outlined,
+            color: COLORS.ICON_PRIMARY,
+            size: IconSizes.ICON_20,
           ),
-          const SizedBox(width: 12),
+
+          SizedBox(width: WIDTH_SIZED_BOX_4),
+
+          Text(
+            "Độ ưu tiên:",
+            style: TextStyle(
+              color: COLORS.SECONDARY_TEXT,
+              fontWeight: FontWeight.bold,
+              fontSize: TextSizes.TITLE_14,
+            ),
+          ),
+
+          SizedBox(width: WIDTH_SIZED_BOX_4 * 10),
+
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: selectedPriority,
-                icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                dropdownColor: const Color(0xFF2B303F),
-                style: const TextStyle(color: Colors.white, fontSize: 15),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: COLORS.ICON_PRIMARY,
+                ),
+                dropdownColor: COLORS.PRIMARY_BG,
+                style: const TextStyle(color: Colors.red, fontSize: 15),
                 isExpanded: true,
                 onChanged: onChanged,
                 items:
@@ -61,14 +87,16 @@ class TodoPrioritySelector extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                             ),
-                            const SizedBox(width: 10),
+
+                            const SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
+
                             Text(
                               value,
                               style: TextStyle(
                                 color:
                                     value == selectedPriority
-                                        ? Colors.white
-                                        : Colors.white70,
+                                        ? COLORS.PRIMARY_TEXT
+                                        : COLORS.SECONDARY_TEXT,
                                 fontWeight:
                                     value == selectedPriority
                                         ? FontWeight.bold

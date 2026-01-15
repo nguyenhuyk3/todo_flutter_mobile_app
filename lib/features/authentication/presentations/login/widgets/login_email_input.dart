@@ -103,7 +103,7 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
               duration: const Duration(milliseconds: 150),
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: COLORS.INPUT_BG,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: borderColor, width: 1),
                 boxShadow: [
@@ -149,7 +149,7 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
                             : (isFocused
                                 // Giả định COLORS.ICON_DEFAULT_COLOR tồn tại như trong code cũ của bạn
                                 // nếu không có thể thay bằng Colors.black
-                                ? COLORS.ICON_DEFAULT_COLOR
+                                ? COLORS.ICON_DEFAULT
                                 : COLORS.ICON_PRIMARY),
                     size: IconSizes.ICON_20,
                   ),

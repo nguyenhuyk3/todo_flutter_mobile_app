@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo_flutter_mobile_app/features/todo/presentations/pages/todo.dart';
+
+import 'package:todo_flutter_mobile_app/features/todo/presentations/pages/add_todo_screen.dart';
 
 import 'core/constants/keys.dart';
 import 'features/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -12,7 +13,6 @@ import 'features/authentication/domain/repositories/authentication.dart';
 import 'features/authentication/domain/usecases/authentication_use_case.dart';
 import 'features/authentication/presentations/forgot_password/bloc/bloc.dart';
 import 'features/authentication/presentations/login/bloc/bloc.dart';
-import 'features/authentication/presentations/login/pages/login.dart';
 import 'features/authentication/presentations/registration/bloc/bloc.dart';
 
 /* 
@@ -109,7 +109,16 @@ class _MainAppState extends State<MainApp> {
                 ),
           ),
         ],
-        child: MaterialApp(home: TodoScreen()),
+        child: MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              surfaceTintColor: Colors.transparent,
+              scrolledUnderElevation: 0,
+            ),
+          ),
+          home: AddTodoScreen(),
+        ),
       ),
     );
   }

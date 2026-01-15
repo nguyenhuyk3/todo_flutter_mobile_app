@@ -157,7 +157,7 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                           hasError
                               ? COLORS.ERROR
                               : (isFocused
-                                  ? COLORS.ICON_DEFAULT_COLOR
+                                  ? COLORS.ICON_DEFAULT
                                   : COLORS.ICON_PRIMARY),
                       size: IconSizes.ICON_20,
                     ),
@@ -174,7 +174,7 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
                                     hasError
                                         ? COLORS.ERROR
                                         : (isFocused
-                                            ? COLORS.ICON_DEFAULT_COLOR
+                                            ? COLORS.ICON_DEFAULT
                                             : COLORS.ICON_PRIMARY),
                               ),
                               onPressed: () {

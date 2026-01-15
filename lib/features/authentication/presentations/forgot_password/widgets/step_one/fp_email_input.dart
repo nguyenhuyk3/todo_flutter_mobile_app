@@ -109,7 +109,7 @@ class _FPEmailInputState extends State<FPEmailInput> {
                         hasError
                             ? COLORS.ERROR
                             : (isFocused
-                                ? COLORS.ICON_DEFAULT_COLOR
+                                ? COLORS.ICON_DEFAULT
                                 : COLORS.ICON_PRIMARY),
                     size: IconSizes.ICON_20,
                   ),

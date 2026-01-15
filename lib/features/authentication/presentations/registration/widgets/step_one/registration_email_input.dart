@@ -130,7 +130,7 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
                     hasError
                         ? COLORS.ERROR
                         : (isFocused
-                            ? COLORS.ICON_DEFAULT_COLOR
+                            ? COLORS.ICON_DEFAULT
                             : COLORS.ICON_PRIMARY),
                 size: IconSizes.ICON_20,
               ),

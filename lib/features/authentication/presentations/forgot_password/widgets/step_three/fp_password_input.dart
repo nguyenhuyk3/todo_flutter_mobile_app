@@ -162,7 +162,7 @@ class _FPPasswordInputState extends State<FPPasswordInput> {
                           hasError
                               ? COLORS.ERROR
                               : (isFocused
-                                  ? COLORS.ICON_DEFAULT_COLOR
+                                  ? COLORS.ICON_DEFAULT
                                   : COLORS.ICON_PRIMARY),
                       size: IconSizes.ICON_20,
                     ),
@@ -179,7 +179,7 @@ class _FPPasswordInputState extends State<FPPasswordInput> {
                                     hasError
                                         ? COLORS.ERROR
                                         : (isFocused
-                                            ? COLORS.ICON_DEFAULT_COLOR
+                                            ? COLORS.ICON_DEFAULT
                                             : COLORS.ICON_PRIMARY),
                               ),
                               onPressed: () {

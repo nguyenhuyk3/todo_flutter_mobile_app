@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/others.dart';
+import '../../../../core/constants/sizes.dart';
+
 class TodoParentTaskSelector extends StatelessWidget {
   final String? selectedParentTask; // Có thể null nếu chưa chọn
   final List<String> availableTasks; // Danh sách công việc cha khả dụng
@@ -14,38 +17,61 @@ class TodoParentTaskSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F222E),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        color: COLORS.INPUT_BG,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.PRIMARY_SHADOW,
+            offset: const Offset(0, 3), // Bóng cứng đổ xuống dưới
+            blurRadius: 0, // Không làm mờ
+          ),
+        ],
       ),
       child: Row(
         children: [
-          // Icon thể hiện sự phân cấp
-          const Icon(
+          Icon(
             Icons.subdirectory_arrow_right,
-            color: Color(0xFF22D3EE),
-            size: 20,
+            color: COLORS.ICON_PRIMARY,
+            size: IconSizes.ICON_20,
           ),
-          const SizedBox(width: 12),
-          const Text(
+
+          SizedBox(width: WIDTH_SIZED_BOX_4),
+
+          Text(
             "Công việc cha:",
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: COLORS.SECONDARY_TEXT,
+              fontWeight: FontWeight.bold,
+              fontSize: TextSizes.TITLE_14,
+            ),
           ),
-          const SizedBox(width: 12),
+
+          SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
+
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: selectedParentTask,
-                hint: const Text(
+                hint: Text(
                   "Chọn công việc...",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                    color: COLORS.HINT_TEXT,
+                    fontWeight: FontWeight.normal,
+                    fontSize: TextSizes.TITLE_14,
+                  ),
                 ),
-                icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                dropdownColor: const Color(0xFF2B303F),
-                style: const TextStyle(color: Colors.white, fontSize: 15),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: COLORS.ICON_PRIMARY,
+                ),
+                dropdownColor: COLORS.PRIMARY_BG,
+                style: const TextStyle(color: Colors.red, fontSize: 15),
                 isExpanded: true,
                 onChanged: onChanged,
                 items:
@@ -59,8 +85,8 @@ class TodoParentTaskSelector extends StatelessWidget {
                           style: TextStyle(
                             color:
                                 value == selectedParentTask
-                                    ? Colors.white
-                                    : Colors.white70,
+                                    ? COLORS.PRIMARY_TEXT
+                                    : COLORS.SECONDARY_TEXT,
                             fontWeight:
                                 value == selectedParentTask
                                     ? FontWeight.bold

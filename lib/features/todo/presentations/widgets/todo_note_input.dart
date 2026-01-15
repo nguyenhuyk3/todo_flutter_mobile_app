@@ -1,58 +1,66 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/others.dart';
+import '../../../../core/constants/sizes.dart';
+
 class TodoNoteInput extends StatelessWidget {
   const TodoNoteInput({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 180,
-      padding: const EdgeInsets.all(12),
+    return AnimatedContainer(
+      height: 200,
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F222E),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        color: COLORS.INPUT_BG,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.PRIMARY_SHADOW,
+            offset: const Offset(0, 3), // Bóng cứng đổ xuống dưới
+            blurRadius: 0, // Không làm mờ
+          ),
+        ],
       ),
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
               maxLines: null,
               decoration: InputDecoration(
-                hintText: 'Viết một lưu ý...',
+                hintText: 'Viết mô tả của công việc ...',
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(
+                  color: COLORS.HINT_TEXT,
+                  fontWeight: FontWeight.normal,
+                  fontSize: TextSizes.TITLE_14,
+                ),
               ),
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                fontSize: TextSizes.TITLE_16,
+                fontWeight: FontWeight.w500,
+                color: COLORS.PRIMARY_TEXT,
+              ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '(0/1000)',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF22D3EE),
-                  foregroundColor: Colors.black87,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  '(0/1000)',
+                  style: TextStyle(
+                    color: COLORS.PRIMARY_TEXT,
+                    fontSize: TextSizes.TITLE_12,
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  minimumSize: const Size(0, 36),
                 ),
-                child: const Text(
-                  'Nhận',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

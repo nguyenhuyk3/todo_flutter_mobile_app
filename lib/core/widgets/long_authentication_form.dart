@@ -91,7 +91,6 @@ class LongAuthenticationForm extends StatelessWidget {
 
                       const SizedBox(height: HEIGTH_SIZED_BOX_12),
 
-                      // Bỏ Expanded đi, chỉ cần render child
                       child,
 
                       const SizedBox(height: HEIGTH_SIZED_BOX_12 * 2),

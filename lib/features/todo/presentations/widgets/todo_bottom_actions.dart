@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_flutter_mobile_app/core/constants/sizes.dart';
+
+import '../../../../core/constants/others.dart';
 
 class TodoBottomActions extends StatelessWidget {
   final VoidCallback onSave;
@@ -13,8 +16,8 @@ class TodoBottomActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      color: const Color(0xFF13151C),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      color: COLORS.PRIMARY_BG,
       child: Row(
         children: [
           Expanded(
@@ -22,31 +25,39 @@ class TodoBottomActions extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onSave,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2B303F),
+                backgroundColor: COLORS.PRIMARY_APP,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Lưu', style: TextStyle(color: Colors.white)),
+              child: Text(
+                'Lưu',
+                style: TextStyle(
+                  color: COLORS.PRIMARY_TEXT,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
-          const SizedBox(width: 12),
+
+          const SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
+
           Expanded(
             flex: 1,
             child: ElevatedButton(
               onPressed: onClose,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF22D3EE),
+                backgroundColor: COLORS.SECONDARY_BG,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Đóng',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: COLORS.PRIMARY_TEXT,
                   fontWeight: FontWeight.bold,
                 ),
               ),

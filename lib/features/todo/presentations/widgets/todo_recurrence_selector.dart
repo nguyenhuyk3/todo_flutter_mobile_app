@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/others.dart';
+import '../../../../core/constants/sizes.dart';
+
 class TodoRecurrenceSelector extends StatelessWidget {
   final String selectedRecurrence; // Giá trị: 'none', 'daily', ...
   final Function(String?) onChanged;
@@ -21,30 +24,50 @@ class TodoRecurrenceSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F222E),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        color: COLORS.INPUT_BG,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: COLORS.FOCUSED_BORDER_IP, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: COLORS.PRIMARY_SHADOW,
+            offset: const Offset(0, 3), // Bóng cứng đổ xuống dưới
+            blurRadius: 0, // Không làm mờ
+          ),
+        ],
       ),
       child: Row(
         children: [
-          // Icon Repeat
-          const Icon(Icons.repeat, color: Color(0xFF22D3EE), size: 20),
-          const SizedBox(width: 12),
-          const Text(
-            "Lặp lại:",
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          Icon(
+            Icons.repeat,
+            color: COLORS.ICON_PRIMARY,
+            size: IconSizes.ICON_20,
           ),
-          const SizedBox(width: 12),
+
+          SizedBox(width: WIDTH_SIZED_BOX_4),
+
+          Text(
+            "Lặp lại:",
+            style: TextStyle(
+              color: COLORS.SECONDARY_TEXT,
+              fontWeight: FontWeight.bold,
+              fontSize: TextSizes.TITLE_14,
+            ),
+          ),
+
+          SizedBox(width: WIDTH_SIZED_BOX_4 * 16),
+
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: selectedRecurrence,
-                dropdownColor: const Color(0xFF2B303F),
+                dropdownColor: COLORS.PRIMARY_BG,
                 icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                style: const TextStyle(color: Colors.white, fontSize: 15),
+                style: const TextStyle(color: Colors.red, fontSize: 15),
                 isExpanded: true,
                 onChanged: onChanged,
                 items:
@@ -56,8 +79,8 @@ class TodoRecurrenceSelector extends StatelessWidget {
                           style: TextStyle(
                             color:
                                 entry.key == selectedRecurrence
-                                    ? Colors.white
-                                    : Colors.white70,
+                                    ? COLORS.PRIMARY_TEXT
+                                    : COLORS.SECONDARY_TEXT,
                             fontWeight:
                                 entry.key == selectedRecurrence
                                     ? FontWeight.bold
