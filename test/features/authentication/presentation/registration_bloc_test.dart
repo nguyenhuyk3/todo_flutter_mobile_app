@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_flutter_mobile_app/core/constants/others.dart';
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/domain/entities/enums.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/domain/entities/registration_params.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/domain/usecases/params/registration_param.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/domain/usecases/authentication_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/inputs/email.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/inputs/otp.dart';

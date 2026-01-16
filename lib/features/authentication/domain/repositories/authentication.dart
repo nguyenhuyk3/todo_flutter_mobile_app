@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../entities/registration_params.dart';
+import '../usecases/params/registration_param.dart';
 
 /*
   dartz là functional programming library cho Dart

@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
-import '../../domain/entities/registration_params.dart';
+import '../../domain/usecases/params/registration_param.dart';
 import '../../domain/repositories/authentication.dart';
 import '../datasources/authentication_remote_data_source.dart';
 

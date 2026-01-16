@@ -18,7 +18,7 @@ class TodoEditLabelDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
-    
+
     return Dialog(
       backgroundColor: COLORS.PRIMARY_BG,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

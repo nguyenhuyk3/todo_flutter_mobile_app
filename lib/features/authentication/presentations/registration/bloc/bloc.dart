@@ -9,7 +9,7 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/utils/validator/validation_error_message.dart';
 import '../../../domain/entities/enums.dart';
-import '../../../domain/entities/registration_params.dart';
+import '../../../domain/usecases/params/registration_param.dart';
 import '../../../domain/usecases/authentication_use_case.dart';
 import '../../../inputs/email.dart';
 import '../../../inputs/otp.dart';

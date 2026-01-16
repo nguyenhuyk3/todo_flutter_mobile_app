@@ -1,4 +1,4 @@
-import 'enums.dart';
+import '../../entities/enums.dart';
 
 class RegistrationParams {
   final String email;
