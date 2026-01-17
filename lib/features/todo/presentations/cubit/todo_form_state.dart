@@ -36,6 +36,7 @@ class TodoFormState extends Equatable {
 
     return !end.isBefore(start);
   }
+
   bool get isFormValid =>
       isTitleValid && isDescriptionValid && isRangeDateValid;
 

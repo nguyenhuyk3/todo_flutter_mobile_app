@@ -68,9 +68,12 @@ class AuthenticationRemoteDataSource {
       email: email,
       password: password,
     );
+    final session = authResponse.session;
+    final accessToken = session?.accessToken;
+    final refreshToken = session?.refreshToken;
 
     if (authResponse.user == null) {
-      throw const AuthException('Đăng nhập thất bại.');
+      throw const AuthException('Đăng nhập thất bại');
     }
     // 2. Query thông tin từ bảng profiles (Vì AuthUser chỉ có id & email)
     final profileData =
@@ -81,9 +84,11 @@ class AuthenticationRemoteDataSource {
             .single();
     // 3. Merge data thành Model hoàn chỉnh
     return UserModel.fromSupabase(
-      profileData,
-      authResponse.user!.email!,
-      authResponse.user!.id,
+      profileJson: profileData,
+      email: authResponse.user!.email!,
+      uid: authResponse.user!.id,
+      accessToken: accessToken!,
+      refreshToken: refreshToken!,
     );
   }
 

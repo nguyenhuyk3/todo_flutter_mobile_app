@@ -79,7 +79,6 @@ class TodoFormCubit extends Cubit<TodoFormState> {
       );
       return null;
     }
-
     // 4. Thành công → build AppTodo
     emit(state.copyWith(formzSubmissionStatus: FormzSubmissionStatus.success));
 

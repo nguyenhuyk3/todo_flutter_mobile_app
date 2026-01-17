@@ -1,4 +1,4 @@
-part of 'bloc.dart';
+part of 'todo_bloc.dart';
 
 class TodoState extends Equatable {
   final FormzSubmissionStatus status;

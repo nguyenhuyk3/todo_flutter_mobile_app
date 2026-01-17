@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart'; // Cung cấp test, expect, mat
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart'; // Dùng để mock (giả lập)
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/data/models/token_pair.dart';
 
+import 'package:todo_flutter_mobile_app/features/authentication/data/models/user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/domain/entities/enums.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/domain/usecases/authentication_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/inputs/email.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/inputs/password.dart';
@@ -193,7 +196,22 @@ void main() {
             email: validEmail,
             password: validPassword,
           ),
-        ).thenAnswer((_) async => const Right(true));
+        ).thenAnswer(
+          (_) async => Right(
+            UserModel(
+              tokenPair: TokenPair(
+                accessToken: 'access-token',
+                refreshToken: 'refresh-token',
+              ),
+              id: 'test-uid',
+              email: 'test@email.com',
+              fullName: 'fullname',
+              avatarUrl: 'avatar-url',
+              dateOfBirth: DateTime.now(),
+              sex: Sex.female,
+            ),
+          ),
+        );
 
         return loginBloc;
       },

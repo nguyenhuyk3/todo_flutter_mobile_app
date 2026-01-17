@@ -2,8 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
-import 'params/registration_param.dart';
+import '../../data/models/user.dart';
 import '../repositories/authentication.dart';
+
+import 'params/registration_param.dart';
 
 part 'registration_use_case.dart';
 part 'forgot_password_use_case.dart';
