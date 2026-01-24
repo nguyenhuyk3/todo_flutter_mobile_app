@@ -17,6 +17,12 @@ import '../../bloc/bloc.dart';
     TextEditingController là bộ điều khiển nội dung của TextField.
     Controller quản lý "View State" (vị trí con trỏ, vùng chọn), Bloc quản lý "Data State" (giá trị email).
 */
+/*
+  TextEditingController cho phép:
+    Lấy text hiện tại: _controller.text (để hiện nút clear)
+    Xóa text: _controller.clear()
+    Lắng nghe thay đổi text: _controller.addListener(() { setState(() {}); })
+*/
 class RegistrationEmailInput extends StatefulWidget {
   const RegistrationEmailInput({super.key});
 
@@ -34,7 +40,6 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
 
     _controller = TextEditingController();
     _focusNode = FocusNode();
-
     // Rebuild khi text thay đổi để update nút xoá (suffixIcon)
     _controller.addListener(() {
       setState(() {});
@@ -49,6 +54,7 @@ class _RegistrationEmailInputState extends State<RegistrationEmailInput> {
   void dispose() {
     _controller.dispose();
     _focusNode.dispose();
+
     super.dispose();
   }
 

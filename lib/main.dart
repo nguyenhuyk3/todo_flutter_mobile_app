@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/cubit/todo_form_cubit.dart';
 
 import 'package:todo_flutter_mobile_app/features/todo/presentations/pages/add_todo_screen.dart';
 
@@ -108,8 +110,19 @@ class _MainAppState extends State<MainApp> {
                   ),
                 ),
           ),
+          BlocProvider(create: (_) => TodoFormCubit()),
         ],
         child: MaterialApp(
+          locale: const Locale('vi', 'VN'),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('vi', 'VN'), // Hỗ trợ Tiếng Việt
+          ],
           theme: ThemeData(
             useMaterial3: true,
             appBarTheme: const AppBarTheme(

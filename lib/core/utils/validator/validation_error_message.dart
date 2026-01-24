@@ -1,6 +1,6 @@
-import '../../../features/authentication/inputs/email.dart';
-import '../../../features/authentication/inputs/otp.dart';
-import '../../../features/authentication/inputs/password.dart';
+import '../../../features/authentication/presentations/inputs/email.dart';
+import '../../../features/authentication/presentations/inputs/otp.dart';
+import '../../../features/authentication/presentations/inputs/password.dart';
 import '../../constants/others.dart';
 import '../../errors/failure.dart';
 

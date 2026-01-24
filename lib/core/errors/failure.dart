@@ -35,7 +35,12 @@ enum ErrorInformation {
   DB_INVALID_FORMAT(message: 'Dữ liệu không đúng định dạng'),
   DB_PERMISSION_DENIED(message: 'Không có quyền thực hiện thao tác'),
   DB_RLS_VIOLATION(message: 'Dữ liệu bị chặn bởi chính sách bảo mật'),
-
+  // Todo
+  EMPTY_TITLE(message: 'Tiêu đề không được bỏ trống'),
+  EMPTY_DESCRIPTION(message: 'Mô tả không được bỏ trống'),
+  EMPTY_DATE_RANGE(message: 'Khoảng thời gian không được bỏ trống'),
+  EMPTY_REMINDER_TIME(message: 'Thời gian nhắc nhở không được bỏ trống'),
+  
   UNDEFINED_ERROR(message: 'Lỗi không xác định được');
 
   final String message;

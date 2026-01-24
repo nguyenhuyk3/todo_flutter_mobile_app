@@ -4,24 +4,27 @@ class TodoFormState extends Equatable {
   // ===================== Input values =====================
   final String title;
   final String description;
+  final String? projectId;
   final TodoPriority priority;
   final TodoStatus status;
   final String startedDate; // yyyy-MM-dd
   final String dueDate; // yyyy-MM-dd
-  final String? reminderAt;
+  final String? reminderAt; // HH:mm
   final RecurrencePattern recurrencePattern;
   final String? parentTodoId;
   final int position;
+
   // ===================== Validation flags =====================
   final bool showTitleError;
   final bool showDescriptionError;
   final bool showRangeDateError;
+  final bool showReminderError;
+
   // ===================== Submission =====================
   final FormzSubmissionStatus formzSubmissionStatus;
   final String error;
-  // ===================== Validators =====================
-  bool get isTitleValid => title.trim().isNotEmpty;
-  bool get isDescriptionValid => description.trim().isNotEmpty;
+
+  // ===================== Validations =====================
   bool get isRangeDateValid {
     if (startedDate.isEmpty || dueDate.isEmpty) {
       return false;
@@ -37,25 +40,26 @@ class TodoFormState extends Equatable {
     return !end.isBefore(start);
   }
 
-  bool get isFormValid =>
-      isTitleValid && isDescriptionValid && isRangeDateValid;
-
   const TodoFormState({
     // input
     required this.title,
     required this.description,
-    required this.priority,
+    this.projectId,
+    this.priority = TodoPriority.low,
     required this.status,
     required this.startedDate,
     required this.dueDate,
     this.reminderAt,
-    required this.recurrencePattern,
+    this.recurrencePattern = RecurrencePattern.none,
     this.parentTodoId,
     required this.position,
+
     // validation
     required this.showTitleError,
     required this.showDescriptionError,
     required this.showRangeDateError,
+    required this.showReminderError,
+
     // submission
     required this.formzSubmissionStatus,
     this.error = '',
@@ -65,15 +69,21 @@ class TodoFormState extends Equatable {
     return TodoFormState(
       title: '',
       description: '',
+      projectId: null,
       priority: TodoPriority.low,
       status: TodoStatus.pending,
       startedDate: '',
       dueDate: '',
+      reminderAt: null,
       recurrencePattern: RecurrencePattern.none,
+      parentTodoId: null,
       position: 0,
+
       showTitleError: false,
       showDescriptionError: false,
       showRangeDateError: false,
+      showReminderError: false,
+
       formzSubmissionStatus: FormzSubmissionStatus.initial,
     );
   }
@@ -82,17 +92,21 @@ class TodoFormState extends Equatable {
     return TodoFormState(
       title: todo.title,
       description: todo.description,
+      projectId: todo.projectId,
       priority: todo.priority,
       status: todo.status,
       startedDate: todo.startedDate.toIso8601String(),
       dueDate: todo.dueDate.toIso8601String(),
-      reminderAt: todo.reminderAt?.toIso8601String(),
-      recurrencePattern: todo.recurrencePattern,
+      reminderAt: todo.recurrence?.reminderAt,
+      recurrencePattern: RecurrencePattern.daily,
       parentTodoId: todo.parentTodoId,
       position: todo.position,
+
       showTitleError: false,
       showDescriptionError: false,
       showRangeDateError: false,
+      showReminderError: false,
+
       formzSubmissionStatus: FormzSubmissionStatus.initial,
     );
   }
@@ -100,34 +114,42 @@ class TodoFormState extends Equatable {
   TodoFormState copyWith({
     String? title,
     String? description,
+    String? Function()? projectId,
     TodoPriority? priority,
     TodoStatus? status,
     String? startedDate,
     String? dueDate,
-    String? reminderAt,
+    String? Function()? reminderAt,
     RecurrencePattern? recurrencePattern,
-    String? parentTodoId,
+    String? Function()? parentTodoId,
     int? position,
+
     bool? showTitleError,
     bool? showDescriptionError,
     bool? showRangeDateError,
+    bool? showReminderError,
+
     FormzSubmissionStatus? formzSubmissionStatus,
     String? error,
   }) {
     return TodoFormState(
       title: title ?? this.title,
       description: description ?? this.description,
+      projectId: projectId != null ? projectId() : this.projectId,
       priority: priority ?? this.priority,
       status: status ?? this.status,
       startedDate: startedDate ?? this.startedDate,
       dueDate: dueDate ?? this.dueDate,
-      reminderAt: reminderAt ?? this.reminderAt,
+      reminderAt: reminderAt != null ? reminderAt() : this.reminderAt,
       recurrencePattern: recurrencePattern ?? this.recurrencePattern,
-      parentTodoId: parentTodoId ?? this.parentTodoId,
+      parentTodoId: parentTodoId != null ? parentTodoId() : this.parentTodoId,
       position: position ?? this.position,
+
       showTitleError: showTitleError ?? this.showTitleError,
       showDescriptionError: showDescriptionError ?? this.showDescriptionError,
       showRangeDateError: showRangeDateError ?? this.showRangeDateError,
+      showReminderError: showReminderError ?? this.showReminderError,
+
       formzSubmissionStatus:
           formzSubmissionStatus ?? this.formzSubmissionStatus,
       error: error ?? this.error,
@@ -138,6 +160,7 @@ class TodoFormState extends Equatable {
   List<Object?> get props => [
     title,
     description,
+    projectId,
     priority,
     status,
     startedDate,
@@ -146,9 +169,11 @@ class TodoFormState extends Equatable {
     recurrencePattern,
     parentTodoId,
     position,
+
     showTitleError,
     showDescriptionError,
     showRangeDateError,
+
     formzSubmissionStatus,
     error,
   ];

@@ -65,7 +65,7 @@ CREATE TABLE
         "updated_at" timestamptz NOT NULL DEFAULT (now ())
     );
 
--- TABLE: RECURRENCES (Mới tách ra)
+-- TABLE: RECURRENCES
 CREATE TABLE
     "public"."recurrences" (
         "id" UUID PRIMARY KEY DEFAULT gen_random_uuid (),
@@ -74,10 +74,10 @@ CREATE TABLE
         CONSTRAINT uniq_recurrences_todo_id UNIQUE (todo_id),
         "recurrence_pattern" recurrence_pattern DEFAULT 'daily',
         -- Cấu hình lặp lại có thể cần thời gian riêng biệt với todo gốc
-        "start_date" timestamptz NOT NULL DEFAULT (now ()),
-        "end_date" timestamptz, -- NULL nghĩa là lặp vô tận
+        "started_date" timestamptz NOT NULL DEFAULT (now ()),
+        "due_date" timestamptz, -- NULL nghĩa là lặp vô tận
         -- Nếu cần nhắc nhở lặp lại theo quy luật khác với task gốc
-        "reminder_at" timestamptz,
+        "reminder_at" time,
         "created_at" timestamptz NOT NULL DEFAULT (now ())
     );
 

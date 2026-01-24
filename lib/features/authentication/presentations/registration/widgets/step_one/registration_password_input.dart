@@ -32,9 +32,12 @@ class _RegistrationPasswordInputState extends State<RegistrationPasswordInput> {
   @override
   void initState() {
     super.initState();
+
     _focusNode = FocusNode();
     _focusNode.addListener(() {
-      if (mounted) setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 

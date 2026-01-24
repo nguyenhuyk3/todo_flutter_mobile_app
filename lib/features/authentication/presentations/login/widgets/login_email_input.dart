@@ -44,6 +44,7 @@ class _LoginEmailInputState extends State<LoginEmailInput> {
 
     _focusNode = FocusNode();
     _controller = TextEditingController();
+
     _controller.addListener(() {
       setState(() {});
     });
