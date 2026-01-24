@@ -1,6 +1,6 @@
-part of 'todo_form_cubit.dart';
+part of 'modify_todo_form_cubit.dart';
 
-class TodoFormState extends Equatable {
+class ModifyTodoFormState extends Equatable {
   // ===================== Input values =====================
   final String title;
   final String description;
@@ -40,7 +40,7 @@ class TodoFormState extends Equatable {
     return !end.isBefore(start);
   }
 
-  const TodoFormState({
+  const ModifyTodoFormState({
     // input
     required this.title,
     required this.description,
@@ -65,8 +65,8 @@ class TodoFormState extends Equatable {
     this.error = '',
   });
 
-  factory TodoFormState.initial() {
-    return TodoFormState(
+  factory ModifyTodoFormState.initial() {
+    return ModifyTodoFormState(
       title: '',
       description: '',
       projectId: null,
@@ -88,8 +88,8 @@ class TodoFormState extends Equatable {
     );
   }
 
-  factory TodoFormState.fromTodo(AppTodo todo) {
-    return TodoFormState(
+  factory ModifyTodoFormState.fromTodo(AppTodo todo) {
+    return ModifyTodoFormState(
       title: todo.title,
       description: todo.description,
       projectId: todo.projectId,
@@ -111,7 +111,7 @@ class TodoFormState extends Equatable {
     );
   }
 
-  TodoFormState copyWith({
+  ModifyTodoFormState copyWith({
     String? title,
     String? description,
     String? Function()? projectId,
@@ -132,7 +132,7 @@ class TodoFormState extends Equatable {
     FormzSubmissionStatus? formzSubmissionStatus,
     String? error,
   }) {
-    return TodoFormState(
+    return ModifyTodoFormState(
       title: title ?? this.title,
       description: description ?? this.description,
       projectId: projectId != null ? projectId() : this.projectId,

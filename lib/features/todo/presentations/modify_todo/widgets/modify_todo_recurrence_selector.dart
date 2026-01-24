@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../../domain/entities/enums.dart';
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../domain/entities/enums.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class TodoRecurrenceSelector extends StatelessWidget {
   const TodoRecurrenceSelector({super.key});
@@ -22,7 +22,7 @@ class TodoRecurrenceSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final currentPattern = state.recurrencePattern;
 
@@ -76,7 +76,7 @@ class TodoRecurrenceSelector extends StatelessWidget {
                     isExpanded: true,
                     onChanged: (RecurrencePattern? newValue) {
                       if (newValue != null) {
-                        context.read<TodoFormCubit>().recurrenceChanged(
+                        context.read<ModifyTodoFormCubit>().recurrenceChanged(
                           pattern: newValue,
                         );
                       }

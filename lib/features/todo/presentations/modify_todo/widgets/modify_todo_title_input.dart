@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:todo_flutter_mobile_app/features/todo/presentations/cubit/todo_form_cubit.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../../../../core/widgets/error_displayer.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../../../core/widgets/error_displayer.dart';
 
 class TodoTitleInput extends StatelessWidget {
   const TodoTitleInput({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final borderColor =
             state.showTitleError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
@@ -41,7 +41,7 @@ class TodoTitleInput extends StatelessWidget {
               ),
               child: TextField(
                 onChanged:
-                    (title) => context.read<TodoFormCubit>().titleChanged(
+                    (title) => context.read<ModifyTodoFormCubit>().titleChanged(
                       title: title,
                     ),
                 textInputAction: TextInputAction.next,

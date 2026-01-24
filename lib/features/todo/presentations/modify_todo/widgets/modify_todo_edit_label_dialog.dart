@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-
-import 'todo_model.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../models/label_item.dart';
 
 class TodoEditLabelDialog extends StatelessWidget {
-  final TodoLabelItem label;
+  final LabelItem label;
   final Function(String) onSave;
 
   const TodoEditLabelDialog({

@@ -1,34 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../cubit/todo_form_cubit.dart';
-
-/// Model nội bộ dùng để giả lập ID + Tên Task
-class _ParentTaskOption {
-  final String? id;
-  final String name;
-
-  const _ParentTaskOption({this.id, required this.name});
-}
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../models/parent_task_option.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class TodoParentTaskSelector extends StatelessWidget {
   const TodoParentTaskSelector({super.key});
 
   // Giả lập danh sách công việc có ID (Sau này có thể fetch từ API/DB)
-  static const List<_ParentTaskOption> _availableTasks = [
-    _ParentTaskOption(id: null, name: 'Không'),
-    _ParentTaskOption(id: 'task-001', name: 'Thiết kế giao diện Mobile'),
-    _ParentTaskOption(id: 'task-002', name: 'Phân tích cơ sở dữ liệu'),
-    _ParentTaskOption(id: 'task-003', name: 'Họp Client giai đoạn 1'),
-    _ParentTaskOption(id: 'task-004', name: 'Viết API đăng nhập'),
-    _ParentTaskOption(id: 'task-005', name: 'Mua sắm thiết bị'),
+  static const List<ParentTaskOption> _availableTasks = [
+    ParentTaskOption(id: null, name: 'Không'),
+    ParentTaskOption(id: 'task-001', name: 'Thiết kế giao diện Mobile'),
+    ParentTaskOption(id: 'task-002', name: 'Phân tích cơ sở dữ liệu'),
+    ParentTaskOption(id: 'task-003', name: 'Họp Client giai đoạn 1'),
+    ParentTaskOption(id: 'task-004', name: 'Viết API đăng nhập'),
+    ParentTaskOption(id: 'task-005', name: 'Mua sắm thiết bị'),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final currentParentId = state.parentTodoId;
         // Kiểm tra an toàn: Nếu ID đang chọn không nằm trong list (do filter hoặc delete)
@@ -95,12 +88,14 @@ class TodoParentTaskSelector extends StatelessWidget {
                     style: const TextStyle(color: Colors.red, fontSize: 15),
                     isExpanded: true,
                     onChanged: (String? newId) {
-                      context.read<TodoFormCubit>().parentTodoChanged(newId);
+                      context.read<ModifyTodoFormCubit>().parentTodoChanged(
+                        newId,
+                      );
                     },
 
                     items:
                         _availableTasks.map<DropdownMenuItem<String>>((
-                          _ParentTaskOption task,
+                          ParentTaskOption task,
                         ) {
                           final isSelected = task.id == currentParentId;
 

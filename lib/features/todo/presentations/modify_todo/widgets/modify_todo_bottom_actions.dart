@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_flutter_mobile_app/core/constants/sizes.dart';
-import 'package:todo_flutter_mobile_app/features/todo/presentations/cubit/todo_form_cubit.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 
-import '../../../../core/constants/others.dart';
+import '../../../../../core/constants/others.dart';
 
 class TodoBottomActions extends StatelessWidget {
   final VoidCallback onClose;
@@ -14,7 +14,7 @@ class TodoBottomActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
@@ -29,7 +29,7 @@ class TodoBottomActions extends StatelessWidget {
                     //   key: SecureStorageKeys.USER_ID,
                     // );
 
-                    context.read<TodoFormCubit>().submitForm(
+                    context.read<ModifyTodoFormCubit>().submitForm(
                       userId: 'lsjflksjdlkfsjldkfjlkds',
                     );
                   },

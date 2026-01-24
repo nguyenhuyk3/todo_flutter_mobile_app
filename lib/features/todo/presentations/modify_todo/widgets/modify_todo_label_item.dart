@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:todo_flutter_mobile_app/core/constants/sizes.dart';
 
-import '../../../../core/constants/others.dart';
-import 'todo_model.dart'; // Import model của bạn
+import '../../../../../core/constants/others.dart';
+import '../../models/label_item.dart';
 
-class TodoLabelItemWidget extends StatelessWidget {
-  final TodoLabelItem item;
+class ModifyTodoLabelItemWidget extends StatelessWidget {
+  final LabelItem item;
   final VoidCallback onTap;
   final VoidCallback onEditTap;
 
-  const TodoLabelItemWidget({
+  const ModifyTodoLabelItemWidget({
     super.key,
     required this.item,
     required this.onTap,

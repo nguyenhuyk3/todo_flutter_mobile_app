@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-
-// Model đơn giản chỉ dùng cho UI demo này
-class MockFile {
-  final String name;
-  final String extension; // 'pdf', 'doc', 'img'
-  final String size;
-
-  MockFile({required this.name, required this.extension, required this.size});
-}
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../models/mock_file.dart';
 
 class TodoAttachmentWidget extends StatelessWidget {
   final List<MockFile> files;

@@ -6,18 +6,18 @@ import 'package:formz/formz.dart';
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/domain/entities/app_recurrence.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../domain/entities/app_todo.dart';
-import '../../domain/entities/enums.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../domain/entities/app_todo.dart';
+import '../../../domain/entities/enums.dart';
 
-part 'todo_form_state.dart';
+part 'modify_todo_form_state.dart';
 
-class TodoFormCubit extends Cubit<TodoFormState> {
-  TodoFormCubit({AppTodo? initialTodo})
+class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
+  ModifyTodoFormCubit({AppTodo? initialTodo})
     : super(
         initialTodo == null
-            ? TodoFormState.initial()
-            : TodoFormState.fromTodo(initialTodo),
+            ? ModifyTodoFormState.initial()
+            : ModifyTodoFormState.fromTodo(initialTodo),
       );
 
   void titleChanged({required String title}) {
@@ -133,7 +133,7 @@ class TodoFormCubit extends Cubit<TodoFormState> {
           error: ErrorInformation.EMPTY_DESCRIPTION.message,
         ),
       );
-      
+
       return null;
     }
     // 3. Validate Date range

@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../../../../core/widgets/error_displayer.dart';
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../../../core/widgets/error_displayer.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class TodoDescriptionInput extends StatelessWidget {
   const TodoDescriptionInput({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final borderColor =
-            state.showDescriptionError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
+            state.showDescriptionError
+                ? COLORS.ERROR
+                : COLORS.FOCUSED_BORDER_IP;
         final shadowColor =
             state.showDescriptionError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
 
@@ -50,7 +52,7 @@ class TodoDescriptionInput extends StatelessWidget {
                         maxLines: null,
                         onChanged:
                             (description) => context
-                                .read<TodoFormCubit>()
+                                .read<ModifyTodoFormCubit>()
                                 .descriptionChanged(description: description),
                         decoration: InputDecoration(
                           hintText: 'Viết mô tả của công việc ...',

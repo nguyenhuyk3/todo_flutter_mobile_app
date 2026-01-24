@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../../domain/entities/enums.dart'; // Import Enum TodoPriority
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../domain/entities/enums.dart'; // Import Enum TodoPriority
+import '../cubit/modify_todo_form_cubit.dart';
 
 /// Helper class để quản lý thông tin hiển thị của từng độ ưu tiên
 class _PriorityProps {
@@ -26,7 +26,7 @@ class TodoPrioritySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final currentPriority = state.priority;
 
@@ -81,7 +81,7 @@ class TodoPrioritySelector extends StatelessWidget {
                     // Gọi Cubit khi thay đổi
                     onChanged: (TodoPriority? newPriority) {
                       if (newPriority != null) {
-                        context.read<TodoFormCubit>().priorityChanged(
+                        context.read<ModifyTodoFormCubit>().priorityChanged(
                           newPriority,
                         );
                       }

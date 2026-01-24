@@ -40,7 +40,7 @@ enum ErrorInformation {
   EMPTY_DESCRIPTION(message: 'Mô tả không được bỏ trống'),
   EMPTY_DATE_RANGE(message: 'Khoảng thời gian không được bỏ trống'),
   EMPTY_REMINDER_TIME(message: 'Thời gian nhắc nhở không được bỏ trống'),
-  
+
   UNDEFINED_ERROR(message: 'Lỗi không xác định được');
 
   final String message;

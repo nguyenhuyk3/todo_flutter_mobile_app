@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_flutter_mobile_app/features/todo/domain/entities/enums.dart'; // Import để dùng RecurrencePattern
-import 'package:todo_flutter_mobile_app/features/todo/presentations/cubit/todo_form_cubit.dart';
-import 'package:todo_flutter_mobile_app/features/todo/presentations/widgets/todo_hour_selector.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../widgets/todo_attachment_widget.dart';
-import '../widgets/todo_bottom_actions.dart';
-import '../widgets/todo_date_range_selector.dart';
-import '../widgets/todo_edit_label_dialog.dart';
-import '../widgets/todo_labels_grid.dart';
-import '../widgets/todo_model.dart';
-import '../widgets/todo_description_input.dart';
-import '../widgets/todo_parent_task_selector.dart';
-import '../widgets/todo_priority_selector.dart';
-import '../widgets/todo_project_selector.dart';
-import '../widgets/todo_recurrence_selector.dart';
-import '../widgets/todo_title_input.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/widgets/modify_todo_time_selector.dart';
 
-class AddTodoPage extends StatefulWidget {
-  const AddTodoPage({super.key});
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../domain/entities/enums.dart';
+import '../../models/label_item.dart';
+import '../../models/mock_file.dart';
+import '../widgets/modify_todo_attachment_widget.dart';
+import '../widgets/modify_todo_bottom_actions.dart';
+import '../widgets/modify_todo_date_range_selector.dart';
+import '../widgets/modify_todo_description_input.dart';
+import '../widgets/modify_todo_edit_label_dialog.dart';
+import '../widgets/modify_todo_labels_grid.dart';
+import '../widgets/modify_todo_parent_task_selector.dart';
+import '../widgets/modify_todo_priority_selector.dart';
+import '../widgets/modify_todo_project_selector.dart';
+import '../widgets/modify_todo_recurrence_selector.dart';
+import '../widgets/modify_todo_title_input.dart';
+
+class ModifyTodoPage extends StatefulWidget {
+  const ModifyTodoPage({super.key});
 
   @override
-  State<AddTodoPage> createState() => _AddTodoPageState();
+  State<ModifyTodoPage> createState() => _ModifyTodoPageState();
 }
 
-class _AddTodoPageState extends State<AddTodoPage> {
+class _ModifyTodoPageState extends State<ModifyTodoPage> {
   // Các state vẫn tạm giữ lại ở UI (Attachment, Label, Time, ParentTask, Priority)
   // Vì chưa có yêu cầu refactor các phần này
   List<MockFile> mockAttachments = [
@@ -35,18 +38,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
     MockFile(name: "ghi_chu_hop.docx", extension: "doc", size: "500 KB"),
   ];
 
-  List<TodoLabelItem> labels = [
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFF1FC389)),
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFF8B5CF6)),
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFFEF4444)),
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFFF59E0B)),
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFF3B82F6)),
-    TodoLabelItem(name: "Chưa đặt tên", color: const Color(0xFFEAB308)),
+  List<LabelItem> labels = [
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF1FC389)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF8B5CF6)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEF4444)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFF59E0B)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF3B82F6)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEAB308)),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final bool hasProject = state.projectId != null;
         final bool isRecurring =
@@ -74,44 +77,44 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      TodoTitleInput(),
+                      ModifyTodoTitleInput(),
 
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
-                      const TodoDescriptionInput(),
+                      const ModifyTodoDescriptionInput(),
 
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
-                      TodoProjectSelector(),
+                      ModifyTodoProjectSelector(),
 
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
                       if (hasProject) ...[
-                        TodoParentTaskSelector(),
+                        ModifyTodoParentTaskSelector(),
 
                         const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
                       ] else ...[
-                        TodoRecurrenceSelector(),
+                        ModifyTodoRecurrenceSelector(),
 
                         const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
                       ],
 
-                      TodoDateRangeSelector(),
+                      ModifyTodoDateRangeSelector(),
 
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
                       if (isRecurring) ...[
-                        TodoTimeSelector(),
+                        ModifyTodoTimeSelector(),
 
                         const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
                       ],
 
-                      TodoPrioritySelector(),
+                      ModifyTodoPrioritySelector(),
 
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
                       // File đính kèm
-                      TodoAttachmentWidget(
+                      ModifyTodoAttachmentWidget(
                         files: mockAttachments,
                         onAddTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -131,7 +134,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                       const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
                       // Grid Nhãn
-                      TodoLabelsGrid(
+                      ModifyTodoLabelsGrid(
                         labels: labels,
                         onLabelTap: (index) {
                           setState(() {
@@ -143,7 +146,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                           showDialog(
                             context: context,
                             builder:
-                                (ctx) => TodoEditLabelDialog(
+                                (ctx) => ModifyTodoEditLabelDialog(
                                   label: labels[index],
                                   onSave: (newName) {
                                     setState(() {
@@ -166,7 +169,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 ),
               ),
 
-              TodoBottomActions(
+              ModifyTodoBottomActions(
                 onClose: () {
                   Navigator.pop(context);
                 },

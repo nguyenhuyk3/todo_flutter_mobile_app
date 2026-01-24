@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/others.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../models/label_item.dart';
 
-import '../../../../core/constants/sizes.dart';
-import 'todo_label_item.dart';
-import 'todo_model.dart';
+import 'modify_todo_label_item.dart';
 
 class TodoLabelsGrid extends StatelessWidget {
-  final List<TodoLabelItem> labels;
+  final List<LabelItem> labels;
   final Function(int index) onLabelTap;
   final Function(int index) onLabelEdit;
 

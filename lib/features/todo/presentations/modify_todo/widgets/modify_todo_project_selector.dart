@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class _ProjectOption {
   final String? id;
@@ -25,7 +25,7 @@ class TodoProjectSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final selectedId = state.projectId;
         // Logic hiển thị an toàn: Đảm bảo ID đang chọn thực sự có trong List
@@ -83,7 +83,7 @@ class TodoProjectSelector extends StatelessWidget {
                     // style: const TextStyle(color: Colors.red, fontSize: 15),
                     isExpanded: true,
                     onChanged: (String? newId) {
-                      context.read<TodoFormCubit>().projectChanged(
+                      context.read<ModifyTodoFormCubit>().projectChanged(
                         projectId: newId,
                       );
                     },

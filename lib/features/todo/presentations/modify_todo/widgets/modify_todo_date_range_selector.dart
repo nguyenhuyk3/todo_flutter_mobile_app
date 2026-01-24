@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_flutter_mobile_app/core/widgets/error_displayer.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class TodoDateRangeSelector extends StatelessWidget {
   const TodoDateRangeSelector({super.key});
@@ -81,7 +81,7 @@ class TodoDateRangeSelector extends StatelessWidget {
     );
     // Update Cubit nếu user bấm "Lưu"
     if (picked != null && context.mounted) {
-      context.read<TodoFormCubit>().dateRangeChanged(
+      context.read<ModifyTodoFormCubit>().dateRangeChanged(
         startedDate: picked.start.toIso8601String(),
         dueDate: picked.end.toIso8601String(),
       );
@@ -90,7 +90,7 @@ class TodoDateRangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final dateText = _getDateText(state.startedDate, state.dueDate);
         final initialRange = _getInitialRange(state.startedDate, state.dueDate);

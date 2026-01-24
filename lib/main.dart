@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo_flutter_mobile_app/features/todo/presentations/cubit/todo_form_cubit.dart';
 
-import 'package:todo_flutter_mobile_app/features/todo/presentations/pages/add_todo_screen.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
+import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/pages/modify_todo_screen.dart';
 
 import 'core/constants/keys.dart';
 import 'features/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -110,7 +110,7 @@ class _MainAppState extends State<MainApp> {
                   ),
                 ),
           ),
-          BlocProvider(create: (_) => TodoFormCubit()),
+          BlocProvider(create: (_) => ModifyTodoFormCubit()),
         ],
         child: MaterialApp(
           locale: const Locale('vi', 'VN'),
@@ -130,7 +130,7 @@ class _MainAppState extends State<MainApp> {
               scrolledUnderElevation: 0,
             ),
           ),
-          home: AddTodoPage(),
+          home: ModifyTodoPage(),
         ),
       ),
     );

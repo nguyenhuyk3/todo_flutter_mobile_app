@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/others.dart';
-import '../../../../core/constants/sizes.dart';
-import '../../../../core/widgets/error_displayer.dart';
-import '../cubit/todo_form_cubit.dart';
+import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
+import '../../../../../core/widgets/error_displayer.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 
 class TodoTimeSelector extends StatelessWidget {
   const TodoTimeSelector({super.key});
@@ -86,19 +86,17 @@ class TodoTimeSelector extends StatelessWidget {
     );
 
     if (picked != null && context.mounted) {
-      context.read<TodoFormCubit>().reminderTimeChanged(time: picked);
+      context.read<ModifyTodoFormCubit>().reminderTimeChanged(time: picked);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoFormCubit, TodoFormState>(
+    return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final reminderAt = state.reminderAt;
         final borderColor =
-            state.showReminderError
-                ? COLORS.ERROR
-                : COLORS.FOCUSED_BORDER_IP;
+            state.showReminderError ? COLORS.ERROR : COLORS.FOCUSED_BORDER_IP;
         final shadowColor =
             state.showReminderError ? COLORS.ERROR : COLORS.PRIMARY_SHADOW;
 
