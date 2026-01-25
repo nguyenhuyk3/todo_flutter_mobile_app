@@ -162,6 +162,7 @@ class ModifyTodoParentTaskSelector extends StatelessWidget {
 
                 SizedBox(width: WIDTH_SIZED_BOX_4),
 
+                // Label cố định: "Công việc cha:"
                 Text(
                   "Công việc cha:",
                   style: TextStyle(
@@ -171,19 +172,26 @@ class ModifyTodoParentTaskSelector extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(width: WIDTH_SIZED_BOX_4 * 2),
+                const SizedBox(width: WIDTH_SIZED_BOX_4),
 
-                Text(
-                  taskObj.name,
-                  style: TextStyle(
-                    color: COLORS.PRIMARY_TEXT,
-                    fontWeight: FontWeight.bold,
-                    fontSize: TextSizes.TITLE_14,
+                Expanded(
+                  child: Text(
+                    taskObj.name,
+                    maxLines: 1, // Bắt buộc để hiện ellipsis đẹp
+                    overflow: TextOverflow.ellipsis,
+                    textAlign:
+                        TextAlign
+                            .left, // (Tuỳ chọn) Đẩy chữ sang phải cho đẹp mắt
+                    style: TextStyle(
+                      color: COLORS.PRIMARY_TEXT,
+                      fontWeight: FontWeight.bold,
+                      fontSize: TextSizes.TITLE_14,
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
 
-                const Spacer(),
+                // Thêm một khoảng cách nhỏ để chữ không dính sát vào mũi tên
+                const SizedBox(width: WIDTH_SIZED_BOX_4),
 
                 Icon(
                   Icons.arrow_forward_ios_rounded,

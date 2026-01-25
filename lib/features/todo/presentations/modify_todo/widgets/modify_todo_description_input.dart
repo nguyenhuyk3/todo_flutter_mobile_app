@@ -50,6 +50,10 @@ class ModifyTodoDescriptionInput extends StatelessWidget {
                     Expanded(
                       child: TextField(
                         maxLines: null,
+                        onTapOutside: (event) {
+                          // Dòng này sẽ tắt bàn phím và xóa focus khi bấm ra ngoài
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         onChanged:
                             (description) => context
                                 .read<ModifyTodoFormCubit>()

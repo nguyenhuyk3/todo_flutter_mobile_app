@@ -129,10 +129,7 @@ class ModifyTodoTimeSelector extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.access_time_filled,
-                      color:
-                          reminderAt == null
-                              ? COLORS.ICON_PRIMARY
-                              : COLORS.ICON_DEFAULT,
+                      color: COLORS.ICON_PRIMARY,
                       size: IconSizes.ICON_20,
                     ),
 

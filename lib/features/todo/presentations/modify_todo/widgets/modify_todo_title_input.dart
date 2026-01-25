@@ -44,6 +44,10 @@ class ModifyTodoTitleInput extends StatelessWidget {
                     (title) => context.read<ModifyTodoFormCubit>().titleChanged(
                       title: title,
                     ),
+                onTapOutside: (event) {
+                  // Dòng này sẽ tắt bàn phím và xóa focus khi bấm ra ngoài
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 textInputAction: TextInputAction.next,
                 style: TextStyle(
                   fontSize: TextSizes.TITLE_16,

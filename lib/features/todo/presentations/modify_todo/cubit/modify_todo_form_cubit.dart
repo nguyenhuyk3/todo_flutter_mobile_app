@@ -1,12 +1,12 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/domain/entities/app_recurrence.dart';
 
-import '../../../../../core/constants/others.dart';
 import '../../../domain/entities/app_todo.dart';
 import '../../../domain/entities/enums.dart';
 
@@ -260,7 +260,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       updatedAt: DateTime.now(),
     );
 
-    LOGGER.i(state.toJson());
+    // LOGGER.i(state.toJson());
 
     return todo;
   }

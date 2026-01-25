@@ -302,7 +302,7 @@ class ModifyTodoRecurrenceSelector extends StatelessWidget {
           final selected = List<int>.from(state.customWeekdays)..sort();
           // Logic hiển thị thông minh: Nếu chọn cả tuần thì hiện "Hàng ngày"
           if (selected.length == 7) {
-            displayValue = 'Hàng ngày';
+            displayValue = 'Từ T2 đến CN';
           } else {
             final names = selected
                 .map((day) {

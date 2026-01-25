@@ -56,6 +56,11 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
             behavior:
                 HitTestBehavior
                     .opaque, // Đảm bảo bắt được sự kiện tap ở cả chỗ trống
+            onTap: () {
+              FocusScope.of(
+                context,
+              ).unfocus(); // Tắt bàn phím khi bấm vào vùng trống
+            },
             child: Column(
               children: [
                 Expanded(
