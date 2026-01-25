@@ -7,8 +7,8 @@ import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/widgets/error_displayer.dart';
 import '../cubit/modify_todo_form_cubit.dart';
 
-class TodoDescriptionInput extends StatelessWidget {
-  const TodoDescriptionInput({super.key});
+class ModifyTodoDescriptionInput extends StatelessWidget {
+  const ModifyTodoDescriptionInput({super.key});
 
   @override
   Widget build(BuildContext context) {

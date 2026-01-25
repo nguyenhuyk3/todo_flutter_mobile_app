@@ -8,8 +8,8 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/widgets/error_displayer.dart';
 
-class TodoTitleInput extends StatelessWidget {
-  const TodoTitleInput({super.key});
+class ModifyTodoTitleInput extends StatelessWidget {
+  const ModifyTodoTitleInput({super.key});
 
   @override
   Widget build(BuildContext context) {

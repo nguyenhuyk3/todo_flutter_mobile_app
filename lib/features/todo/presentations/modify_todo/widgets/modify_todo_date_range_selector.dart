@@ -9,8 +9,8 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../cubit/modify_todo_form_cubit.dart';
 
-class TodoDateRangeSelector extends StatelessWidget {
-  const TodoDateRangeSelector({super.key});
+class ModifyTodoDateRangeSelector extends StatelessWidget {
+  const ModifyTodoDateRangeSelector({super.key});
 
   /// Hàm helper để lấy Text hiển thị từ State
   String _getDateText(String startedDateStr, String dueDateStr) {
@@ -129,8 +129,7 @@ class TodoDateRangeSelector extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.calendar_month_outlined,
-                      color:
-                          !hasValue ? COLORS.ICON_PRIMARY : COLORS.ICON_DEFAULT,
+                      color: COLORS.ICON_PRIMARY,
                       size: IconSizes.ICON_20,
                     ),
 

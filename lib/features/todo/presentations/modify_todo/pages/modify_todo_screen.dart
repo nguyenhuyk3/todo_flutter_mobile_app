@@ -8,13 +8,9 @@ import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../domain/entities/enums.dart';
-import '../../models/label_item.dart';
-import '../../models/mock_file.dart';
-import '../widgets/modify_todo_attachment_widget.dart';
 import '../widgets/modify_todo_bottom_actions.dart';
 import '../widgets/modify_todo_date_range_selector.dart';
 import '../widgets/modify_todo_description_input.dart';
-import '../widgets/modify_todo_edit_label_dialog.dart';
 import '../widgets/modify_todo_labels_grid.dart';
 import '../widgets/modify_todo_parent_task_selector.dart';
 import '../widgets/modify_todo_priority_selector.dart';
@@ -30,30 +26,16 @@ class ModifyTodoPage extends StatefulWidget {
 }
 
 class _ModifyTodoPageState extends State<ModifyTodoPage> {
-  // Các state vẫn tạm giữ lại ở UI (Attachment, Label, Time, ParentTask, Priority)
-  // Vì chưa có yêu cầu refactor các phần này
-  List<MockFile> mockAttachments = [
-    MockFile(name: "hinh_anh_loi.jpg", extension: "img", size: "2.5 MB"),
-    MockFile(name: "yeu_cau_du_an.pdf", extension: "pdf", size: "1.2 MB"),
-    MockFile(name: "ghi_chu_hop.docx", extension: "doc", size: "500 KB"),
-  ];
-
-  List<LabelItem> labels = [
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF1FC389)),
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF8B5CF6)),
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEF4444)),
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFF59E0B)),
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF3B82F6)),
-    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEAB308)),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
         final bool hasProject = state.projectId != null;
         final bool isRecurring =
-            state.recurrencePattern != RecurrencePattern.none;
+            state.recurrencePattern != RecurrencePattern.once;
+
+        // Kiểm tra xem khoảng thời gian đã được chọn hợp lệ chưa
+        final bool isDateRangeValid = state.isRangeDateValid;
 
         return Scaffold(
           backgroundColor: COLORS.PRIMARY_BG,
@@ -70,111 +52,83 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
               ),
             ),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: [
-                      ModifyTodoTitleInput(),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      const ModifyTodoDescriptionInput(),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      ModifyTodoProjectSelector(),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      if (hasProject) ...[
-                        ModifyTodoParentTaskSelector(),
+          body: GestureDetector(
+            behavior:
+                HitTestBehavior
+                    .opaque, // Đảm bảo bắt được sự kiện tap ở cả chỗ trống
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        ModifyTodoTitleInput(),
 
                         const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-                      ] else ...[
-                        ModifyTodoRecurrenceSelector(),
+
+                        const ModifyTodoDescriptionInput(),
 
                         const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+
+                        ModifyTodoProjectSelector(),
+
+                        const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+
+                        // Nếu có Project -> Chỉ hiển thị Task cha, KHÔNG hiển thị Lặp lại
+                        if (hasProject) ...[
+                          ModifyTodoParentTaskSelector(),
+
+                          const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+                        ],
+
+                        // Hiển thị chọn Ngày TRƯỚC
+                        ModifyTodoDateRangeSelector(),
+
+                        const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+
+                        // YÊU CẦU: Chỉ hiển thị Lặp lại KHI (Không có Project VÀ Ngày đã chọn hợp lệ)
+                        if (!hasProject && isDateRangeValid) ...[
+                          ModifyTodoRecurrenceSelector(),
+
+                          const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+                        ],
+
+                        // Hiển thị chọn Giờ nếu đang bật chế độ Lặp lại
+                        if (isRecurring) ...[
+                          ModifyTodoTimeSelector(),
+
+                          const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+                        ],
+
+                        ModifyTodoPrioritySelector(),
+
+                        const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+
+                        // ModifyTodoAttachmentWidget(),
+
+                        // const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+                        //
+                        ModifyTodoLabelsGrid(),
+
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).viewInsets.bottom > 0
+                                  ? 300
+                                  : 20,
+                        ),
                       ],
-
-                      ModifyTodoDateRangeSelector(),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      if (isRecurring) ...[
-                        ModifyTodoTimeSelector(),
-
-                        const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-                      ],
-
-                      ModifyTodoPrioritySelector(),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      // File đính kèm
-                      ModifyTodoAttachmentWidget(
-                        files: mockAttachments,
-                        onAddTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Tính năng này sẽ phát triển sau!'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                        onDeleteTap: (index) {
-                          setState(() {
-                            mockAttachments.removeAt(index);
-                          });
-                        },
-                      ),
-
-                      const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-
-                      // Grid Nhãn
-                      ModifyTodoLabelsGrid(
-                        labels: labels,
-                        onLabelTap: (index) {
-                          setState(() {
-                            labels[index].isSelected =
-                                !labels[index].isSelected;
-                          });
-                        },
-                        onLabelEdit: (index) {
-                          showDialog(
-                            context: context,
-                            builder:
-                                (ctx) => ModifyTodoEditLabelDialog(
-                                  label: labels[index],
-                                  onSave: (newName) {
-                                    setState(() {
-                                      labels[index].name = newName;
-                                    });
-                                  },
-                                ),
-                          );
-                        },
-                      ),
-
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).viewInsets.bottom > 0
-                                ? 300
-                                : 20,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
 
-              ModifyTodoBottomActions(
-                onClose: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                ModifyTodoBottomActions(
+                  onClose: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -4,26 +4,53 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../models/label_item.dart';
 
+import 'modify_todo_edit_label_dialog.dart';
 import 'modify_todo_label_item.dart';
 
-class TodoLabelsGrid extends StatelessWidget {
-  final List<LabelItem> labels;
-  final Function(int index) onLabelTap;
-  final Function(int index) onLabelEdit;
+class ModifyTodoLabelsGrid extends StatefulWidget {
+  const ModifyTodoLabelsGrid({super.key});
 
-  const TodoLabelsGrid({
-    super.key,
-    required this.labels,
-    required this.onLabelTap,
-    required this.onLabelEdit,
-  });
+  @override
+  State<ModifyTodoLabelsGrid> createState() => _ModifyTodoLabelsGridState();
+}
+
+class _ModifyTodoLabelsGridState extends State<ModifyTodoLabelsGrid> {
+  final List<LabelItem> _labels = [
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF1FC389)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF8B5CF6)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEF4444)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFF59E0B)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFF3B82F6)),
+    LabelItem(name: "Chưa đặt tên", color: const Color(0xFFEAB308)),
+  ];
+
+  void _onLabelTap(int index) {
+    setState(() {
+      _labels[index].isSelected = !_labels[index].isSelected;
+    });
+  }
+
+  void _onLabelEdit(int index) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => ModifyTodoEditLabelDialog(
+            label: _labels[index],
+            onSave: (newName) {
+              setState(() {
+                _labels[index].name = newName;
+              });
+            },
+          ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       curve: Curves.easeInOut,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
         color: COLORS.INPUT_BG,
         borderRadius: BorderRadius.circular(16),
@@ -31,8 +58,8 @@ class TodoLabelsGrid extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: COLORS.PRIMARY_SHADOW,
-            offset: const Offset(0, 3), // Bóng cứng đổ xuống dưới
-            blurRadius: 0, // Không làm mờ
+            offset: const Offset(0, 3),
+            blurRadius: 0,
           ),
         ],
       ),
@@ -66,7 +93,7 @@ class TodoLabelsGrid extends StatelessWidget {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: labels.length,
+            itemCount: _labels.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 3.5,
@@ -74,10 +101,11 @@ class TodoLabelsGrid extends StatelessWidget {
               mainAxisSpacing: 10,
             ),
             itemBuilder: (context, index) {
-              return TodoLabelItemWidget(
-                item: labels[index],
-                onTap: () => onLabelTap(index),
-                onEditTap: () => onLabelEdit(index),
+              return ModifyTodoLabelItemWidget(
+                item: _labels[index],
+                // Gọi các hàm xử lý nội bộ
+                onTap: () => _onLabelTap(index),
+                onEditTap: () => _onLabelEdit(index),
               );
             },
           ),

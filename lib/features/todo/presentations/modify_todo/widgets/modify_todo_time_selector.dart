@@ -7,8 +7,8 @@ import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/widgets/error_displayer.dart';
 import '../cubit/modify_todo_form_cubit.dart';
 
-class TodoTimeSelector extends StatelessWidget {
-  const TodoTimeSelector({super.key});
+class ModifyTodoTimeSelector extends StatelessWidget {
+  const ModifyTodoTimeSelector({super.key});
 
   /// 1. Hiển thị Text
   /// Vì state đã lưu dạng "HH:mm" rồi nên ta hiển thị trực tiếp

@@ -14,6 +14,13 @@ class ModifyTodoFormState extends Equatable {
   final String? parentTodoId;
   final int position;
 
+  // ===================== Recurrence options =====================
+  // Danh sách các thứ (1=T2, ..., 7=CN) khả dụng trong DateRange
+  final List<int> availableWeekdays;
+
+  /// Danh sách các thứ người dùng đã chọn khi chọn Custom
+  final List<int> customWeekdays;
+
   // ===================== Validation flags =====================
   final bool showTitleError;
   final bool showDescriptionError;
@@ -50,9 +57,12 @@ class ModifyTodoFormState extends Equatable {
     required this.startedDate,
     required this.dueDate,
     this.reminderAt,
-    this.recurrencePattern = RecurrencePattern.none,
+    this.recurrencePattern = RecurrencePattern.once,
     this.parentTodoId,
     required this.position,
+
+    this.availableWeekdays = const [],
+    this.customWeekdays = const [],
 
     // validation
     required this.showTitleError,
@@ -75,9 +85,12 @@ class ModifyTodoFormState extends Equatable {
       startedDate: '',
       dueDate: '',
       reminderAt: null,
-      recurrencePattern: RecurrencePattern.none,
+      recurrencePattern: RecurrencePattern.once,
       parentTodoId: null,
       position: 0,
+
+      availableWeekdays: const [],
+      customWeekdays: const [],
 
       showTitleError: false,
       showDescriptionError: false,
@@ -98,7 +111,7 @@ class ModifyTodoFormState extends Equatable {
       startedDate: todo.startedDate.toIso8601String(),
       dueDate: todo.dueDate.toIso8601String(),
       reminderAt: todo.recurrence?.reminderAt,
-      recurrencePattern: RecurrencePattern.daily,
+      recurrencePattern: todo.recurrence!.recurrencePattern,
       parentTodoId: todo.parentTodoId,
       position: todo.position,
 
@@ -124,6 +137,9 @@ class ModifyTodoFormState extends Equatable {
     String? Function()? parentTodoId,
     int? position,
 
+    List<int>? availableWeekdays,
+    List<int>? customWeekdays,
+
     bool? showTitleError,
     bool? showDescriptionError,
     bool? showRangeDateError,
@@ -144,6 +160,9 @@ class ModifyTodoFormState extends Equatable {
       recurrencePattern: recurrencePattern ?? this.recurrencePattern,
       parentTodoId: parentTodoId != null ? parentTodoId() : this.parentTodoId,
       position: position ?? this.position,
+
+      availableWeekdays: availableWeekdays ?? this.availableWeekdays,
+      customWeekdays: customWeekdays ?? this.customWeekdays,
 
       showTitleError: showTitleError ?? this.showTitleError,
       showDescriptionError: showDescriptionError ?? this.showDescriptionError,
@@ -170,6 +189,9 @@ class ModifyTodoFormState extends Equatable {
     parentTodoId,
     position,
 
+    availableWeekdays,
+    customWeekdays,
+
     showTitleError,
     showDescriptionError,
     showRangeDateError,
@@ -177,4 +199,31 @@ class ModifyTodoFormState extends Equatable {
     formzSubmissionStatus,
     error,
   ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'projectId': projectId,
+      'priority': priority.name,
+      'status': status.name,
+      'startedDate': startedDate,
+      'dueDate': dueDate,
+      'reminderAt': reminderAt,
+      'recurrencePattern': recurrencePattern.name,
+      'parentTodoId': parentTodoId,
+      'position': position,
+
+      'availableWeekdays': availableWeekdays,
+      'customWeekdays': customWeekdays,
+
+      'showTitleError': showTitleError,
+      'showDescriptionError': showDescriptionError,
+      'showRangeDateError': showRangeDateError,
+      'showReminderError': showReminderError,
+
+      'formzSubmissionStatus': formzSubmissionStatus.name,
+      'error': error,
+    };
+  }
 }

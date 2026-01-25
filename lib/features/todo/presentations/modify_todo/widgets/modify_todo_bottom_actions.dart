@@ -7,10 +7,10 @@ import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/
 
 import '../../../../../core/constants/others.dart';
 
-class TodoBottomActions extends StatelessWidget {
+class ModifyTodoBottomActions extends StatelessWidget {
   final VoidCallback onClose;
 
-  const TodoBottomActions({super.key, required this.onClose});
+  const ModifyTodoBottomActions({super.key, required this.onClose});
 
   @override
   Widget build(BuildContext context) {

@@ -4,11 +4,11 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../models/label_item.dart';
 
-class TodoEditLabelDialog extends StatelessWidget {
+class ModifyTodoEditLabelDialog extends StatelessWidget {
   final LabelItem label;
   final Function(String) onSave;
 
-  const TodoEditLabelDialog({
+  const ModifyTodoEditLabelDialog({
     super.key,
     required this.label,
     required this.onSave,

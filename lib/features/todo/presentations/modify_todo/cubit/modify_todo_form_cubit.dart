@@ -20,6 +20,42 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
             : ModifyTodoFormState.fromTodo(initialTodo),
       );
 
+  // ===== Logic Tính toán thứ khả dụng =====
+  List<int> _calculateAvailableWeekdays(String startStr, String endStr) {
+    if (startStr.isEmpty || endStr.isEmpty) {
+      return [];
+    }
+
+    final start = DateTime.parse(startStr);
+    final end = DateTime.parse(endStr);
+
+    // Nếu khoảng cách ngày >= 6 ngày (tức là trọn 1 tuần), thì TẤT CẢ các thứ đều khả dụng
+    if (end.difference(start).inDays >= 6) {
+      return [1, 2, 3, 4, 5, 6, 7];
+    }
+    // Nếu khoảng cách < 1 tuần, duyệt từng ngày để xem nó là thứ mấy
+    final List<int> days = [];
+    DateTime current = start;
+    // convert end về date-only để so sánh (tránh lỗi giờ giấc)
+    final dateEnd = DateTime(end.year, end.month, end.day);
+
+    while (!DateTime(
+      current.year,
+      current.month,
+      current.day,
+    ).isAfter(dateEnd)) {
+      if (!days.contains(current.weekday)) {
+        days.add(current.weekday);
+      }
+
+      current = current.add(const Duration(days: 1));
+    }
+
+    days.sort(); // 1->7
+
+    return days;
+  }
+
   void titleChanged({required String title}) {
     emit(state.copyWith(title: title, showTitleError: false));
   }
@@ -39,6 +75,13 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
           parentTodoId: () => null, // Reset việc cha về null
         ),
       );
+
+      final availableWeekdays = _calculateAvailableWeekdays(
+        state.startedDate,
+        state.dueDate,
+      );
+
+      emit(state.copyWith(availableWeekdays: availableWeekdays));
     } else {
       // TRƯỜNG HỢP: Có chọn Dự án
       // UI: Hiện "Công việc cha", Ẩn "Lặp lại" & "Giờ"
@@ -46,8 +89,10 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       emit(
         state.copyWith(
           projectId: () => projectId,
-          recurrencePattern: RecurrencePattern.none, // Reset lặp lại về none
+          recurrencePattern: RecurrencePattern.once, // Reset lặp lại về none
           reminderAt: () => null, // Reset giờ nhắc
+          availableWeekdays: [],
+          customWeekdays: [],
         ),
       );
     }
@@ -58,21 +103,29 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
   }
 
   void recurrenceChanged({required RecurrencePattern pattern}) {
-    if (pattern == RecurrencePattern.none) {
-      // TRƯỜNG HỢP: Chọn "Không lặp lại"
-      // UI: Sẽ ẩn widget chọn Giờ (TimeSelector)
-      // Logic: Reset biến thời gian nhắc (reminderAt) về null
+    if (pattern == RecurrencePattern.once) {
+      // TRƯỜNG HỢP 1: Chọn "Một lần" (Không lặp lại)
       emit(
         state.copyWith(
-          recurrencePattern: RecurrencePattern.none,
-          reminderAt: () => null, // Quan trọng: Xóa dữ liệu giờ
+          recurrencePattern: RecurrencePattern.once,
+          reminderAt: () => null, // Reset giờ nhắc
+          customWeekdays: const [], // Clear danh sách tùy chỉnh
         ),
       );
-    } else {
-      // TRƯỜNG HỢP: Chọn Lặp lại (Ngày/Tuần/Tháng...)
-      // Giữ nguyên logic cũ, cập nhật pattern mới.
-      // reminderAt giữ nguyên (nếu đã chọn trước đó) hoặc null
+    } else if (pattern == RecurrencePattern.custom) {
+      // TRƯỜNG HỢP 2: Chọn "Tùy chỉnh" (Logic mở dialog sẽ xử lý customWeekdays sau)
+      // Ở đây chỉ cập nhật pattern, GIỮ NGUYÊN customWeekdays nếu đã có
       emit(state.copyWith(recurrencePattern: pattern));
+    } else {
+      // TRƯỜNG HỢP 3: Các mẫu khác (Hàng ngày, T2-T6...)
+      // Giữ nguyên giờ nhắc (nếu có), Cập nhật pattern
+      // Clear customWeekdays để tránh dữ liệu rác
+      emit(
+        state.copyWith(
+          recurrencePattern: pattern,
+          customWeekdays: const [], // Clear danh sách tùy chỉnh
+        ),
+      );
     }
   }
 
@@ -80,10 +133,17 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     required String startedDate,
     required String dueDate,
   }) {
+    final availableWeekdays = _calculateAvailableWeekdays(startedDate, dueDate);
+    final currentCustom = List<int>.from(state.customWeekdays);
+
+    currentCustom.removeWhere((day) => !availableWeekdays.contains(day));
+
     emit(
       state.copyWith(
         startedDate: startedDate,
         dueDate: dueDate,
+        availableWeekdays: availableWeekdays, // Cập nhật availableWeekdays
+        customWeekdays: currentCustom, // Cập nhập lại list chọn nếu bị conflict
         showRangeDateError: false,
       ),
     );
@@ -100,6 +160,16 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
 
   void priorityChanged(TodoPriority priority) {
     emit(state.copyWith(priority: priority));
+  }
+
+  void customWeekdaysChanged({required List<int> days}) {
+    emit(
+      state.copyWith(
+        customWeekdays: days,
+        // Nếu user chọn custom days -> Pattern tự động set là custom
+        recurrencePattern: RecurrencePattern.custom,
+      ),
+    );
   }
 
   AppTodo? submitForm({required String userId}) {
@@ -149,7 +219,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       return null;
     }
     // 4. Validate Reminder time (nếu có chọn lặp lại)
-    if (state.recurrencePattern != RecurrencePattern.none) {
+    if (state.recurrencePattern != RecurrencePattern.once) {
       if (state.reminderAt == null || state.reminderAt!.isEmpty) {
         emit(
           state.copyWith(
@@ -165,16 +235,16 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     // 5. Thành công → build AppTodo
     emit(state.copyWith(formzSubmissionStatus: FormzSubmissionStatus.success));
 
-    final appTodo = AppTodo(
+    final todo = AppTodo(
       userId: userId,
       title: state.title.trim(),
       description: state.description.trim(),
       projectId: state.projectId,
       parentTodoId: state.parentTodoId,
       recurrence:
-          state.recurrencePattern != RecurrencePattern.none
+          state.recurrencePattern != RecurrencePattern.once
               ? AppRecurrence(
-                recurrencePattern: RecurrencePattern.daily,
+                recurrencePattern: state.recurrencePattern,
                 startedDate: DateTime.parse(state.startedDate),
                 dueDate: DateTime.parse(state.dueDate),
                 reminderAt: state.reminderAt,
@@ -190,26 +260,8 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       updatedAt: DateTime.now(),
     );
 
-    LOGGER.i(appTodo.toJson());
+    LOGGER.i(state.toJson());
 
-    return AppTodo(
-      userId: userId,
-      title: state.title.trim(),
-      description: state.description.trim(),
-      parentTodoId: state.parentTodoId,
-      recurrence: AppRecurrence(
-        recurrencePattern: RecurrencePattern.daily,
-        startedDate: DateTime.parse(state.startedDate),
-        dueDate: DateTime.parse(state.dueDate),
-        createdAt: DateTime.now(),
-      ),
-      startedDate: DateTime.parse(state.startedDate),
-      dueDate: DateTime.parse(state.dueDate),
-      priority: state.priority,
-      status: state.status,
-      position: state.position,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+    return todo;
   }
 }

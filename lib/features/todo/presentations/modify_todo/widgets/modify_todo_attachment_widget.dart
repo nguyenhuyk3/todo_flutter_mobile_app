@@ -4,17 +4,22 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../models/mock_file.dart';
 
-class TodoAttachmentWidget extends StatelessWidget {
-  final List<MockFile> files;
-  final VoidCallback onAddTap;
-  final Function(int) onDeleteTap;
+class ModifyTodoAttachmentWidget extends StatefulWidget {
+  // Đã bỏ hết các tham số truyền vào
+  const ModifyTodoAttachmentWidget({super.key});
 
-  const TodoAttachmentWidget({
-    super.key,
-    required this.files,
-    required this.onAddTap,
-    required this.onDeleteTap,
-  });
+  @override
+  State<ModifyTodoAttachmentWidget> createState() =>
+      _ModifyTodoAttachmentWidgetState();
+}
+
+class _ModifyTodoAttachmentWidgetState
+    extends State<ModifyTodoAttachmentWidget> {
+  final List<MockFile> _files = [
+    MockFile(name: "hinh_anh_loi.jpg", extension: "img", size: "2.5 MB"),
+    MockFile(name: "yeu_cau_du_an.pdf", extension: "pdf", size: "1.2 MB"),
+    MockFile(name: "ghi_chu_hop.docx", extension: "doc", size: "500 KB"),
+  ];
 
   Widget _getFileIcon(String ext) {
     switch (ext) {
@@ -48,12 +53,27 @@ class TodoAttachmentWidget extends StatelessWidget {
     }
   }
 
+  void _onAddTap() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Tính năng này sẽ phát triển sau!'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _onDeleteTap(int index) {
+    setState(() {
+      _files.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       curve: Curves.easeInOut,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
         color: COLORS.INPUT_BG,
         borderRadius: BorderRadius.circular(16),
@@ -96,7 +116,8 @@ class TodoAttachmentWidget extends StatelessWidget {
             height: 70, // Chiều cao cố định cho list ngang
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: files.length + 1, // +1 cho nút Thêm
+              // Dùng _files nội bộ
+              itemCount: _files.length + 1, // +1 cho nút Thêm
               separatorBuilder:
                   (context, index) =>
                       const SizedBox(width: WIDTH_SIZED_BOX_4 * 2),
@@ -104,7 +125,7 @@ class TodoAttachmentWidget extends StatelessWidget {
                 // Item đầu tiên là nút Thêm
                 if (index == 0) {
                   return GestureDetector(
-                    onTap: onAddTap,
+                    onTap: _onAddTap, // Gọi hàm nội bộ
                     child: Container(
                       width: 70,
                       decoration: BoxDecoration(
@@ -119,8 +140,9 @@ class TodoAttachmentWidget extends StatelessWidget {
                     ),
                   );
                 }
+
                 // Các Item file (Index - 1 vì trừ đi nút thêm)
-                final file = files[index - 1];
+                final file = _files[index - 1];
 
                 return Container(
                   width: 180,
@@ -165,11 +187,12 @@ class TodoAttachmentWidget extends StatelessWidget {
                       SizedBox(width: WIDTH_SIZED_BOX_4),
                       // Nút Xóa
                       GestureDetector(
-                        onTap: () => onDeleteTap(index - 1),
+                        // Gọi hàm nội bộ xóa phần tử tương ứng
+                        onTap: () => _onDeleteTap(index - 1),
                         child: Icon(
                           Icons.close,
-                          color: COLORS.ICON_PRIMARY,
                           size: IconSizes.ICON_16,
+                          color: COLORS.ICON_PRIMARY,
                         ),
                       ),
                     ],

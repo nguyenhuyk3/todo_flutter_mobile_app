@@ -1,5 +1,5 @@
 -- ================================================= 1. ENUMS & TYPES =================================================
-CREATE TYPE public.todo_priority AS ENUM ('low', 'medium', 'high', 'urgent');
+CREATE TYPE public.todo_priority AS ENUM ('undefined', 'low', 'medium', 'high', 'urgent');
 
 CREATE TYPE public.todo_status AS ENUM (
     'pending',
