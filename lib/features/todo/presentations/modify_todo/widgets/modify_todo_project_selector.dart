@@ -15,9 +15,20 @@ class ModifyTodoProjectSelector extends StatelessWidget {
     ProjectOption(id: 'project-id-002', name: 'Công việc'),
     ProjectOption(id: 'project-id-003', name: 'Gia đình'),
     ProjectOption(id: 'project-id-004', name: 'Học tập'),
+    ProjectOption(id: 'project-id-001', name: 'Cá nhân'),
+    ProjectOption(id: 'project-id-002', name: 'Công việc'),
+    ProjectOption(id: 'project-id-003', name: 'Gia đình'),
+    ProjectOption(id: 'project-id-004', name: 'Học tập'),
+    ProjectOption(id: 'project-id-001', name: 'Cá nhân'),
+    ProjectOption(id: 'project-id-002', name: 'Công việc'),
+    ProjectOption(id: 'project-id-003', name: 'Gia đình'),
+    ProjectOption(id: 'project-id-004', name: 'Học tập'),
   ];
 
-  void _showProjectPicker(BuildContext parentContext, String? currentId) {
+  void _showProjectPicker({
+    required BuildContext parentContext,
+    String? currentId,
+  }) {
     final cubit = parentContext.read<ModifyTodoFormCubit>();
 
     showModalBottomSheet(
@@ -31,18 +42,19 @@ class ModifyTodoProjectSelector extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Thanh kéo (Handle)
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: COLORS.PRIMARY_APP,
+                  color: COLORS.PRIMARY,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-
               // Giới hạn chiều cao nếu danh sách quá dài (dùng Flexible/Expanded)
               Flexible(
+                // Danh sách dự án hiện có
                 child: ListView(
                   shrinkWrap:
                       true, // Quan trọng để dùng trong Column minAxisSize
@@ -79,7 +91,7 @@ class ModifyTodoProjectSelector extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     color:
                                         isSelected
-                                            ? COLORS.PRIMARY_APP
+                                            ? COLORS.PRIMARY
                                             : COLORS.PRIMARY_TEXT,
                                   ),
                                 ),
@@ -87,7 +99,7 @@ class ModifyTodoProjectSelector extends StatelessWidget {
                                 if (isSelected)
                                   Icon(
                                     Icons.check,
-                                    color: COLORS.PRIMARY_APP,
+                                    color: COLORS.PRIMARY,
                                     size: IconSizes.ICON_20,
                                   ),
                               ],
@@ -95,6 +107,69 @@ class ModifyTodoProjectSelector extends StatelessWidget {
                           ),
                         );
                       }).toList(),
+                ),
+              ),
+
+              Divider(
+                height: 1,
+                color: COLORS.UNFOCUSED_BORDER_IP,
+                thickness: 0.5,
+              ),
+
+              InkWell(
+                onTap: () {
+                  // Assume what needs to be done
+
+                  // Bước 1: Đóng bottom sheet hiện tại
+                  // Navigator.pop(context);
+                  // Bước 2: Chuyển sang màn hình Tạo dự án
+                  // Bạn thay CreateProjectScreen() bằng Widget màn hình thật của bạn
+                  /*
+                  Navigator.of(parentContext).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CreateProjectScreen(),
+                    ),
+                  ).then((newProjectId) {
+                     // (Tuỳ chọn) Nếu bạn muốn sau khi tạo xong thì tự chọn project mới
+                    if (newProjectId != null) {
+                        cubit.projectChanged(projectId: newProjectId);
+                    }
+                  });
+                  */
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16, // Padding lớn chút cho dễ bấm
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          // ignore: deprecated_member_use
+                          color: COLORS.PRIMARY.withOpacity(0.1),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          color: COLORS.PRIMARY,
+                          size: IconSizes.ICON_20,
+                        ),
+                      ),
+
+                      SizedBox(width: WIDTH_SIZED_BOX_4 * 3),
+
+                      Text(
+                        "Tạo dự án mới",
+                        style: TextStyle(
+                          fontSize: TextSizes.TITLE_16,
+                          fontWeight: FontWeight.w600,
+                          color: COLORS.PRIMARY,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -119,7 +194,11 @@ class ModifyTodoProjectSelector extends StatelessWidget {
         final displayName = projectObj.name;
 
         return GestureDetector(
-          onTap: () => _showProjectPicker(context, selectedId),
+          onTap:
+              () => _showProjectPicker(
+                parentContext: context,
+                currentId: selectedId,
+              ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             curve: Curves.easeInOut,

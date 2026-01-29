@@ -23,7 +23,7 @@ class AppColors {
   final SECONDARY_TEXT = const Color.fromARGB(255, 152, 151, 150);
   final HINT_TEXT = Colors.grey.shade400;
   // App
-  final PRIMARY_APP = Color(0xFFFF6B5B);
+  final PRIMARY = Color(0xFFFF6B5B);
   // Icon
   final ICON_PRIMARY = const Color.fromARGB(255, 152, 150, 150);
   final ICON_DEFAULT = Colors.black;

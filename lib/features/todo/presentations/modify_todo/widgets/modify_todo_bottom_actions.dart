@@ -8,9 +8,7 @@ import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/
 import '../../../../../core/constants/others.dart';
 
 class ModifyTodoBottomActions extends StatelessWidget {
-  final VoidCallback onClose;
-
-  const ModifyTodoBottomActions({super.key, required this.onClose});
+  const ModifyTodoBottomActions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +22,11 @@ class ModifyTodoBottomActions extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // final userId = await SECURE_STORAGE.read(
-                    //   key: SecureStorageKeys.USER_ID,
-                    // );
-
-                    context.read<ModifyTodoFormCubit>().submitForm(
-                      userId: 'lsjflksjdlkfsjldkfjlkds',
-                    );
+                  onPressed: () {
+                    context.read<ModifyTodoFormCubit>().submitForm();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: COLORS.PRIMARY_APP,
+                    backgroundColor: COLORS.PRIMARY,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -55,7 +47,9 @@ class ModifyTodoBottomActions extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
-                  onPressed: onClose,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: COLORS.SECONDARY_BG,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -64,7 +58,7 @@ class ModifyTodoBottomActions extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Đóng',
+                    'Trở về',
                     style: TextStyle(
                       color: COLORS.PRIMARY_TEXT,
                       fontWeight: FontWeight.bold,

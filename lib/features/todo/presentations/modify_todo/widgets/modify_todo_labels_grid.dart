@@ -29,6 +29,7 @@ class _ModifyTodoLabelsGridState extends State<ModifyTodoLabelsGrid> {
       _labels[index].isSelected = !_labels[index].isSelected;
     });
   }
+
   void _onLabelEdit(int index) {
     showDialog(
       context: context,
@@ -92,7 +93,7 @@ class _ModifyTodoLabelsGridState extends State<ModifyTodoLabelsGrid> {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _labels.length, 
+            itemCount: _labels.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 3.5,

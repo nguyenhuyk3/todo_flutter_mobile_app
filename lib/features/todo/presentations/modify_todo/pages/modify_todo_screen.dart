@@ -127,11 +127,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
                   ),
                 ),
 
-                ModifyTodoBottomActions(
-                  onClose: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                ModifyTodoBottomActions(),
               ],
             ),
           ),

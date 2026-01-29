@@ -1,19 +1,26 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../domain/entities/app_todo.dart';
-import '../../domain/repositories/todo.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
-  final ITodoRepository _todoRepository;
+  // final ITodoRepository _todoRepository;
 
-  TodoBloc({required ITodoRepository todoRepository})
-    : _todoRepository = todoRepository,
-      super(const TodoState()) {
+  // TodoBloc({required ITodoRepository todoRepository})
+  //   : _todoRepository = todoRepository,
+  //     super(const TodoState()) {
+  //   on<TodoLoaded>(_onLoaded);
+  //   on<TodoAdded>(_onAdded);
+  //   on<TodoUpdated>(_onUpdated);
+  //   on<TodoStatusChanged>(_onStatusChanged);
+  //   on<TodoDeleted>(_onDeleted);
+  // }
+
+  TodoBloc() : super(const TodoState()) {
     on<TodoLoaded>(_onLoaded);
     on<TodoAdded>(_onAdded);
     on<TodoUpdated>(_onUpdated);

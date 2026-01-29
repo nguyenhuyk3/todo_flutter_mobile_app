@@ -57,7 +57,6 @@ CREATE TABLE
         "started_date" timestamptz,
         "due_date" timestamptz,
         "completed_at" timestamptz DEFAULT NULL,
-        "reminder_at" timestamptz DEFAULT NULL,
         -- Cấu trúc
         "parent_todo_id" UUID REFERENCES public.todos (id) ON DELETE CASCADE,
         "position" INTEGER NOT NULL DEFAULT 1, -- Thứ tự sắp xếp
@@ -73,9 +72,9 @@ CREATE TABLE
         -- Đảm bảo 1 todo chỉ có 1 settings lặp lại
         CONSTRAINT uniq_recurrences_todo_id UNIQUE (todo_id),
         "recurrence_pattern" recurrence_pattern DEFAULT 'daily',
-        -- Cấu hình lặp lại có thể cần thời gian riêng biệt với todo gốc
-        "started_date" timestamptz NOT NULL DEFAULT (now ()),
-        "due_date" timestamptz, -- NULL nghĩa là lặp vô tận
+        -- -- Cấu hình lặp lại có thể cần thời gian riêng biệt với todo gốc
+        -- "started_date" timestamptz NOT NULL DEFAULT (now ()),
+        -- "due_date" timestamptz, -- NULL nghĩa là lặp vô tận
         -- Nếu cần nhắc nhở lặp lại theo quy luật khác với task gốc
         "reminder_at" time,
         "created_at" timestamptz NOT NULL DEFAULT (now ())

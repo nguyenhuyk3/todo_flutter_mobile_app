@@ -67,9 +67,9 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: COLORS.PRIMARY_APP,
+              primary: COLORS.PRIMARY,
               onPrimary: COLORS.PRIMARY_TEXT,
-              secondary: COLORS.PRIMARY_APP,
+              secondary: COLORS.PRIMARY,
               onSecondary: COLORS.SECONDARY_TEXT,
               surface: COLORS.PRIMARY_BG,
               onSurface: COLORS.PRIMARY_TEXT,

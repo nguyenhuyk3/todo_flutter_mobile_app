@@ -44,7 +44,7 @@ class ModifyTodoPrioritySelector extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: COLORS.PRIMARY_APP,
+                  color: COLORS.PRIMARY,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -94,7 +94,7 @@ class ModifyTodoPrioritySelector extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               color:
                                   isSelected
-                                      ? COLORS.PRIMARY_APP
+                                      ? COLORS.PRIMARY
                                       : COLORS.PRIMARY_TEXT,
                             ),
                           ),
@@ -103,7 +103,7 @@ class ModifyTodoPrioritySelector extends StatelessWidget {
                         if (isSelected)
                           Icon(
                             Icons.check,
-                            color: COLORS.PRIMARY_APP,
+                            color: COLORS.PRIMARY,
                             size: IconSizes.ICON_20,
                           ),
                       ],

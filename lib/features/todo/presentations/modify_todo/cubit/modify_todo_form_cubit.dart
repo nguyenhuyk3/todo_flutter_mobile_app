@@ -7,6 +7,8 @@ import 'package:formz/formz.dart';
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/domain/entities/app_recurrence.dart';
 
+import '../../../../../core/constants/keys.dart';
+import '../../../../../core/constants/others.dart';
 import '../../../domain/entities/app_todo.dart';
 import '../../../domain/entities/enums.dart';
 
@@ -172,7 +174,9 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     );
   }
 
-  AppTodo? submitForm({required String userId}) {
+  Future<AppTodo?> submitForm() async {
+    final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
+
     // Reset trạng thái submit
     emit(
       state.copyWith(
@@ -236,7 +240,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     emit(state.copyWith(formzSubmissionStatus: FormzSubmissionStatus.success));
 
     final todo = AppTodo(
-      userId: userId,
+      userId: userId!,
       title: state.title.trim(),
       description: state.description.trim(),
       projectId: state.projectId,

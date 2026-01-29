@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:todo_flutter_mobile_app/features/todo/presentations/bloc/todo_bloc.dart';
 import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/presentations/modify_todo/pages/modify_todo_screen.dart';
 
@@ -111,6 +112,7 @@ class _MainAppState extends State<MainApp> {
                 ),
           ),
           BlocProvider(create: (_) => ModifyTodoFormCubit()),
+          BlocProvider(create: (_) => TodoBloc()),
         ],
         child: MaterialApp(
           locale: const Locale('vi', 'VN'),

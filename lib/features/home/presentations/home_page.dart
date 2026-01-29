@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: const HomeBottomNavBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: COLORS.PRIMARY_APP,
+        backgroundColor: COLORS.PRIMARY,
         elevation: 4,
         shape: const CircleBorder(),
         child: Icon(Icons.add, color: Colors.white, size: IconSizes.ICON_28),

@@ -81,7 +81,7 @@ class RegistrationSexSelection extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: isSelected ? COLORS.PRIMARY_APP : Colors.white,
+            color: isSelected ? COLORS.PRIMARY : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: COLORS.FOCUSED_BORDER_IP,

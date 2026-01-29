@@ -21,12 +21,12 @@ class HomeBottomNavBar extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.home_filled, size: 28),
             // Active button color
-            color: COLORS.PRIMARY_APP,
+            color: COLORS.PRIMARY,
           ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.calendar_today_outlined, size: 24),
-            color: COLORS.PRIMARY_APP,
+            color: COLORS.PRIMARY,
           ),
 
           // Spacer để chừa chỗ cho FloatingActionButton
@@ -35,13 +35,13 @@ class HomeBottomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.assignment_outlined, size: 26),
-            color: COLORS.PRIMARY_APP,
+            color: COLORS.PRIMARY,
           ),
 
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.person_outline, size: 28),
-            color: COLORS.PRIMARY_APP,
+            color: COLORS.PRIMARY,
           ),
         ],
       ),
