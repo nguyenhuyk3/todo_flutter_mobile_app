@@ -1,29 +1,31 @@
 import '../../a_domain/entities/recurrence_entity.dart';
 import '../../a_domain/entities/enums.dart';
 
-class RecurrenceModel extends RecurrenceEntity {
+class RecurrenceModel {
+  final String? id;
+  final String? todoId;
+  final RecurrencePattern recurrencePattern;
+  final String? reminderAt;
+  final DateTime createdAt;
+
   const RecurrenceModel({
-    super.id,
-    super.todoId,
-    required super.recurrencePattern,
-    super.reminderAt,
-    required super.createdAt,
+    this.id,
+    this.todoId,
+    required this.recurrencePattern,
+    this.reminderAt,
+    required this.createdAt,
   });
 
   factory RecurrenceModel.fromJson(Map<String, dynamic> json) {
     return RecurrenceModel(
       id: json['id'],
       todoId: json['todo_id'],
-      recurrencePattern: RecurrencePattern.values.firstWhere(
-        (e) => e.name == json['recurrence_pattern'],
-        orElse: () => RecurrencePattern.daily,
-      ),
+      recurrencePattern: RecurrencePatternX.fromDB(json['recurrence_pattern']),
       reminderAt: json['reminder_at'],
       createdAt: DateTime.parse(json['created_at']),
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       // id tự sinh, todo_id lấy từ kết quả insert todo
@@ -40,6 +42,16 @@ class RecurrenceModel extends RecurrenceEntity {
       recurrencePattern: entity.recurrencePattern,
       reminderAt: entity.reminderAt,
       createdAt: entity.createdAt,
+    );
+  }
+
+  RecurrenceEntity toEntity() {
+    return RecurrenceEntity(
+      id: id,
+      todoId: todoId,
+      recurrencePattern: recurrencePattern,
+      reminderAt: reminderAt,
+      createdAt: createdAt,
     );
   }
 }

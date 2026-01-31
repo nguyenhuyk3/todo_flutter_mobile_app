@@ -14,7 +14,7 @@ class RecurrenceEntity {
     this.reminderAt,
     required this.createdAt,
   });
-  // Dùng để in thông tin ra log
+  // Dùng để in thông tin ra log để debug
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -17,13 +17,15 @@ class TodoLoaded extends TodoEvent {
 // 2. Thêm mới Todo
 class TodoAdded extends TodoEvent {
   final TodoModel todo;
+
   const TodoAdded(this.todo);
 }
 
 // 3. Cập nhật nội dung (Edit, Change Priority...)
 class TodoUpdated extends TodoEvent {
   final TodoEntity todo;
-  const TodoUpdated(this.todo);
+  const TodoUpdated(this.todo)
+  ;
 }
 
 // 4. Đánh dấu hoàn thành / Chuyển trạng thái nhanh

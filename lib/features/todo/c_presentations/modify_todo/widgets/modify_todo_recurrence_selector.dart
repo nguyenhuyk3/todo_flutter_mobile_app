@@ -5,7 +5,7 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../a_domain/entities/enums.dart';
 import '../cubit/modify_todo_form_cubit.dart';
-import 'utils/modify_todo_recurrence_sheet.dart';
+import 'dialog/modify_todo_recurrence_sheet.dart';
 
 class ModifyTodoRecurrenceSelector extends StatelessWidget {
   const ModifyTodoRecurrenceSelector({super.key});

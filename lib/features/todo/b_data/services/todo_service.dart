@@ -7,6 +7,7 @@ import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/todo
 import 'package:todo_flutter_mobile_app/features/todo/b_data/data_sources/todo_remote_data_source.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 
+import '../../../../core/constants/others.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
 import '../../a_domain/entities/todo_entity.dart';
 
@@ -17,14 +18,16 @@ class TodoService implements ITodoRepository {
     : _todoRemoteDataSource = todoRemoteDataSource;
 
   @override
-  Future<Either<Failure, TodoModel>> addTodo({required TodoEntity todo}) async {
+  Future<Either<Failure, TodoEntity>> addTodo({required TodoModel todo}) async {
     try {
       final resultModel = await _todoRemoteDataSource.addTodo(todo: todo);
 
       return Right(resultModel);
     } on AuthException catch (e) {
+      LOGGER.i(e);
       return Left(Failure(error: mapAuthException(e), details: e.message));
     } on PostgrestException catch (e) {
+      LOGGER.i(e);
       return Left(
         Failure(
           error: mapPostgrestException(e),
@@ -32,6 +35,7 @@ class TodoService implements ITodoRepository {
         ),
       );
     } catch (e) {
+      LOGGER.i(e);
       return Left(
         Failure(error: ErrorInformation.UNDEFINED_ERROR, details: e.toString()),
       );

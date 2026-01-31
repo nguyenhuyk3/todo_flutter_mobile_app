@@ -58,7 +58,7 @@ class TodoEntity {
     required this.createdAt,
     required this.updatedAt,
   });
-  // Dùng để in thông tin ra log
+  // Dùng để in thông tin ra log để debug
   Map<String, dynamic> toJson() {
     return {
       'id': id,

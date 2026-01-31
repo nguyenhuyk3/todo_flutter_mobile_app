@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
-import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/recurrence_entity.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/models/recurrence_model.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 
 import '../../../../../core/constants/keys.dart';
 import '../../../../../core/constants/others.dart';
@@ -22,7 +23,37 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
             : ModifyTodoFormState.fromTodo(initialTodo),
       );
 
-  // ===== Logic Tính toán thứ khả dụng =====
+  /// Tính danh sách các thứ trong tuần (1–7) xuất hiện trong khoảng thời gian
+  /// từ [startStr] đến [endStr] (bao gồm cả hai đầu mút).
+  ///
+  /// Tham số:
+  /// - [startStr], [endStr]: chuỗi ngày ở định dạng ISO-8601 (yyyy-MM-dd hoặc full datetime).
+  ///
+  /// Quy tắc xử lý:
+  /// 1. Nếu một trong hai chuỗi rỗng → trả về danh sách rỗng.
+  /// 2. Nếu khoảng cách ngày >= 6 (tức bao phủ tối thiểu 7 ngày liên tiếp)
+  ///    → mặc định trả về toàn bộ các thứ [1,2,3,4,5,6,7].
+  /// 3. Nếu < 7 ngày:
+  ///    → duyệt từng ngày trong khoảng, thu thập `DateTime.weekday`
+  ///      và loại bỏ trùng lặp.
+  ///
+  /// Lưu ý kỹ thuật:
+  /// - Kết quả sử dụng chuẩn `DateTime.weekday` của Dart:
+  ///     1 = Monday, ..., 7 = Sunday.
+  /// - So sánh theo "date-only" (bỏ giờ/phút/giây) để tránh sai lệch do time component.
+  /// - Khoảng thời gian là inclusive (bao gồm cả start và end).
+  ///
+  /// Ví dụ:
+  /// start = 2026-01-01 (Thu)
+  /// end   = 2026-01-03 (Sat)
+  /// → [4,5,6]
+  ///
+  /// start = 2026-01-01
+  /// end   = 2026-01-08
+  /// → [1,2,3,4,5,6,7]
+  ///
+  /// Trả về:
+  /// - Các weekday đã sắp xếp tăng dần.
   List<int> _calculateAvailableWeekdays(String startStr, String endStr) {
     if (startStr.isEmpty || endStr.isEmpty) {
       return [];
@@ -73,10 +104,11 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       emit(
         state.copyWith(
           projectId: () => null,
-          parentTodoId: () => null, // Reset việc cha về null
+          parentTodoId: () => null, // Reset parentTodo về null
         ),
       );
 
+      // !! Hiện tại chưa biết là có cần 2 đoạn code phía dưới hay không
       final availableWeekdays = _calculateAvailableWeekdays(
         state.startedDate,
         state.dueDate,
@@ -90,7 +122,9 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       emit(
         state.copyWith(
           projectId: () => projectId,
-          recurrencePattern: RecurrencePattern.once, // Reset lặp lại về none
+          recurrencePattern:
+              RecurrencePattern
+                  .once, // Reset lặp lại về none (mặc định sẽ là once)
           reminderAt: () => null, // Reset giờ nhắc
           availableWeekdays: [],
           customWeekdays: [],
@@ -109,7 +143,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       emit(
         state.copyWith(
           recurrencePattern: RecurrencePattern.once,
-          reminderAt: () => null, // Reset giờ nhắc
+          reminderAt: () => null, // Reset giờ nhắc (Sẽ không hiển thị lên UI)
           customWeekdays: const [], // Clear danh sách tùy chỉnh
         ),
       );
@@ -173,7 +207,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     );
   }
 
-  Future<TodoEntity?> submitForm() async {
+  Future<TodoModel?> submitForm() async {
     // Reset trạng thái submit
     emit(
       state.copyWith(
@@ -237,7 +271,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     emit(state.copyWith(formzSubmissionStatus: FormzSubmissionStatus.success));
 
     final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
-    final todo = TodoEntity(
+    final todo = TodoModel(
       userId: userId!,
       title: state.title.trim(),
       description: state.description.trim(),
@@ -245,7 +279,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       parentTodoId: state.parentTodoId,
       recurrence:
           state.recurrencePattern != RecurrencePattern.once
-              ? RecurrenceEntity(
+              ? RecurrenceModel(
                 recurrencePattern: state.recurrencePattern,
                 reminderAt: state.reminderAt,
                 createdAt: DateTime.now(),
@@ -259,6 +293,8 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
+
+    LOGGER.f(todo.toJson());
 
     return todo;
   }

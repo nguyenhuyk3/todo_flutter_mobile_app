@@ -22,7 +22,7 @@ class ModifyTodoLabelItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
           color: COLORS.SECONDARY_BG,
           borderRadius: BorderRadius.circular(8),

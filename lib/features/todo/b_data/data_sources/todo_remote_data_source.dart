@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/todo_entity.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 
+import '../../../../core/constants/others.dart';
 import '../models/recurrence_model.dart';
 
 class TodoRemoteDataSource {
@@ -11,7 +12,7 @@ class TodoRemoteDataSource {
   TodoRemoteDataSource({required SupabaseClient supabaseClient})
     : _supabaseClient = supabaseClient;
 
-  Future<TodoModel> addTodo({required TodoEntity todo}) async {
+  Future<TodoEntity> addTodo({required TodoModel todo}) async {
     final todoResponse =
         await _supabaseClient
             .from('todos')
@@ -19,13 +20,14 @@ class TodoRemoteDataSource {
             .select() // Yêu cầu trả về dữ liệu vừa tạo
             .single();
     var createdTodo = TodoModel.fromJson(todoResponse);
+
+    LOGGER.i(todo.toJson());
     // Nếu có cấu hình Recurrence -> Insert vào bảng recurrences
     if (todo.recurrence != null) {
-      // Tạo Model từ Entity recurrence và gán ID của Todo vừa tạo vào
-      final recurrenceData =
-          RecurrenceModel.fromEntity(todo.recurrence!).toJson();
+      LOGGER.e(todo.toJson());
+      final recurrenceData = todo.recurrence!.toJson();
 
-      recurrenceData['todo_id'] = createdTodo.id; // FK quan trọng
+      recurrenceData['todo_id'] = createdTodo.id; // FK
 
       final recurrenceResponse =
           await _supabaseClient
@@ -34,10 +36,7 @@ class TodoRemoteDataSource {
               .select()
               .single();
 
-      // Cập nhật lại createdTodo để trả về đủ data cho UI
       createdTodo = TodoModel(
-        // ... copy lại hết thuộc tính từ createdTodo cũ ...
-        // Mình demo cách copy ngắn gọn, bạn nên dùng copyWith ở Entity/Model
         id: createdTodo.id,
         userId: createdTodo.userId,
         title: createdTodo.title,
@@ -46,15 +45,12 @@ class TodoRemoteDataSource {
         dueDate: createdTodo.dueDate,
         createdAt: createdTodo.createdAt,
         updatedAt: createdTodo.updatedAt,
-        recurrence: RecurrenceModel.fromJson(
-          recurrenceResponse,
-        ), // Gắn cái vừa insert xong vào
-        // ... copy tiếp các field còn thiếu ...
+        recurrence: RecurrenceModel.fromJson(recurrenceResponse),
         priority: createdTodo.priority,
         status: createdTodo.status,
       );
     }
 
-    return createdTodo;
+    return createdTodo.toEntity();
   }
 }

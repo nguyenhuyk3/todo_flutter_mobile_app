@@ -141,7 +141,6 @@ ALTER TABLE public.todos ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.recurrences ENABLE ROW LEVEL SECURITY;
 
--- Nhớ bật cho bảng mới
 ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.todo_tags ENABLE ROW LEVEL SECURITY;
@@ -153,6 +152,29 @@ ON "public"."todos"
 FOR INSERT
 TO authenticated -- Chỉ user đã đăng nhập mới được làm
 WITH CHECK (auth.uid() = user_id);
+
+-- Tạo Policy kiểm tra quyền sở hữu thông qua bảng cha (todos)
+CREATE POLICY "Policy for recurrences based on todo ownership"
+ON "public"."recurrences"
+FOR ALL
+USING (
+    -- Kiểm tra cho lệnh SELECT/UPDATE/DELETE:
+    -- Tìm xem cái todo_id của dòng này thuộc user nào
+    exists (
+        select 1 from public.todos
+        where todos.id = recurrences.todo_id
+        and todos.user_id = auth.uid()
+    )
+)
+WITH CHECK (
+    -- Kiểm tra cho lệnh INSERT:
+    -- Dữ liệu sắp được thêm vào phải trỏ tới 1 todo của chính mình
+    exists (
+        select 1 from public.todos
+        where todos.id = todo_id
+        and todos.user_id = auth.uid()
+    )
+);
 -- ================================================= 6. TRIGGERS & FUNCTIONS =================================================
 -- Auto-update `updated_at`
 CREATE EXTENSION IF NOT EXISTS moddatetime SCHEMA extensions;

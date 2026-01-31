@@ -5,7 +5,6 @@ import '../../../../../core/constants/sizes.dart';
 import '../../models/mock_file.dart';
 
 class ModifyTodoAttachmentWidget extends StatefulWidget {
-  // Đã bỏ hết các tham số truyền vào
   const ModifyTodoAttachmentWidget({super.key});
 
   @override

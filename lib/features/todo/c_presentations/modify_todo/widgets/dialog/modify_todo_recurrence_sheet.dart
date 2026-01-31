@@ -27,7 +27,7 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
     RecurrencePattern.weekdays:
         'Công việc chỉ lặp lại vào các ngày làm việc (Thứ Hai đến Thứ Sáu), nghỉ Thứ 7 và CN',
     RecurrencePattern.custom:
-        'Bạn có thể tự chọn các ngày cụ thể trong tuần mà công việc này sẽ diễn ra (chỉ chọn được các thứ có thể có trong thời gian diễn ra công việc)',
+        'Bạn có thể tự chọn các ngày cụ thể trong tuần mà công việc này sẽ diễn ra (chỉ chọn được các thứ có thể có trong thời gian diễn ra công việc - nếu thời hạn chỉ có 1 ngày thì chức năng này không thể hoạt động)',
   };
 
   static void show(BuildContext parentContext) {
@@ -55,12 +55,16 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
     // Ở đây tôi giả sử nếu rỗng thì coi như là [1..7] (thoải mái)
     // hoặc xử lý tùy theo logic cubit của bạn khởi tạo.
     // Tuy nhiên, theo logic dateRangeChanged, nó thường sẽ có dữ liệu.
-    if (availableWeekdays.isEmpty) return true;
+    if (availableWeekdays.isEmpty) {
+      return true;
+    }
 
     switch (pattern) {
       case RecurrencePattern.once:
       case RecurrencePattern.daily:
+        return true;
       case RecurrencePattern.custom:
+        // Todo: Cần kiểm tra lại là nếu chỉ có 1 ngày thì option này sẽ bị vô hiệu hóa
         return true;
       case RecurrencePattern.weekdays:
         // "Thứ 2 - Thứ 6" yêu cầu PHẢI CÓ ĐỦ [1, 2, 3, 4, 5]
@@ -88,6 +92,7 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
       );
     } else {
       cubit.recurrenceChanged(pattern: pattern);
+
       Navigator.pop(context);
     }
   }
@@ -120,16 +125,15 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
+
               ..._displayMap.entries.map((entry) {
                 final pattern = entry.key;
                 final isSelected = pattern == currentPattern;
-
                 // 1. Kiểm tra xem pattern này có được phép enable không
                 final isEnabled = _isPatternEnabled(
                   pattern: pattern,
                   availableWeekdays: availableWeekdays,
                 );
-
                 // 2. Xác định màu sắc text và icon
                 final Color contentColor;
                 if (!isEnabled) {
@@ -179,7 +183,6 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
                         ),
 
                         const SizedBox(width: WIDTH_SIZED_BOX_4 * 2),
-
                         // Info Icon (vẫn cho bấm để đọc info kể cả khi disable,
                         // hoặc disable luôn tuỳ logic của bạn. Ở đây mình để bấm được để hiểu why)
                         GestureDetector(
@@ -194,10 +197,11 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
                             padding: const EdgeInsets.all(4),
                             child: Icon(
                               Icons.info_outline,
-                              // ignore: deprecated_member_use
                               color:
                                   isEnabled
+                                      // ignore: deprecated_member_use
                                       ? COLORS.SECONDARY_TEXT.withOpacity(0.6)
+                                      // ignore: deprecated_member_use
                                       : COLORS.SECONDARY_TEXT.withOpacity(0.2),
                               size: IconSizes.ICON_20,
                             ),

@@ -25,12 +25,10 @@ class ModifyTodoBottomActions extends StatelessWidget {
                 flex: 1,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final todoEntity =
+                    final todoModel =
                         await context.read<ModifyTodoFormCubit>().submitForm();
-
-                    context.read<TodoBloc>().add(
-                      TodoAdded(TodoModel.fromEntity(todoEntity!)),
-                    );
+                    // ignore: use_build_context_synchronously
+                    context.read<TodoBloc>().add(TodoAdded(todoModel!));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: COLORS.PRIMARY,

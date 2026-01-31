@@ -1,54 +1,60 @@
 import '../../a_domain/entities/enums.dart';
 import '../../a_domain/entities/todo_entity.dart';
 
-class TodoModel extends TodoEntity {
-  TodoModel({
-    super.id,
+import 'recurrence_model.dart';
 
-    required super.userId,
+class TodoModel {
+  final String? id;
 
-    required super.title,
-    required super.description,
+  final String userId;
 
-    super.projectId,
-    super.parentTodoId,
+  final String title;
+  final String description;
 
-    super.recurrence,
+  final String? projectId;
+  final String? parentTodoId;
 
-    super.priority,
-    super.status,
+  final RecurrenceModel? recurrence;
 
-    super.completedAt,
+  final DateTime startedDate;
+  final DateTime dueDate;
 
-    super.position,
+  final TodoPriority priority;
+  final TodoStatus status;
 
-    required super.startedDate,
-    required super.dueDate,
+  final DateTime? completedAt;
 
-    required super.createdAt,
-    required super.updatedAt,
+  final int position;
+
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  const TodoModel({
+    this.id,
+
+    required this.userId,
+
+    required this.title,
+    required this.description,
+
+    this.projectId,
+    this.parentTodoId,
+
+    this.recurrence,
+
+    required this.startedDate,
+    required this.dueDate,
+
+    this.priority = TodoPriority.low,
+    this.status = TodoStatus.pending,
+
+    this.completedAt,
+
+    this.position = 0,
+
+    required this.createdAt,
+    required this.updatedAt,
   });
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'user_id': userId,
-
-      'title': title,
-      'description': description,
-
-      'project_id': projectId,
-      'parent_todo_id': parentTodoId,
-
-      'priority': priority.toDB(),
-      'status': status.toDB(),
-
-      'position': position,
-
-      'started_date': startedDate.toIso8601String(),
-      'due_date': dueDate.toIso8601String(),
-    };
-  }
 
   factory TodoModel.fromJson(Map<String, dynamic> json) {
     return TodoModel(
@@ -62,14 +68,8 @@ class TodoModel extends TodoEntity {
       projectId: json['project_id'],
       parentTodoId: json['parent_todo_id'],
 
-      priority: TodoPriority.values.firstWhere(
-        (e) => e.toDB() == json['priority'],
-        orElse: () => TodoPriority.low,
-      ),
-      status: TodoStatus.values.firstWhere(
-        (e) => e.toDB() == json['status'],
-        orElse: () => TodoStatus.pending,
-      ),
+      priority: TodoPriorityX.fromDB(json['priority']),
+      status: TodoStatusX.fromDB(json['status']),
 
       completedAt:
           json['completed_at'] != null
@@ -97,7 +97,10 @@ class TodoModel extends TodoEntity {
       projectId: entity.projectId,
       parentTodoId: entity.parentTodoId,
 
-      recurrence: entity.recurrence,
+      recurrence:
+          entity.recurrence == null
+              ? null
+              : RecurrenceModel.fromEntity(entity.recurrence!),
 
       priority: entity.priority,
       status: entity.status,
@@ -110,6 +113,57 @@ class TodoModel extends TodoEntity {
 
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': userId,
+
+      'title': title,
+      'description': description,
+
+      'project_id': projectId,
+      'parent_todo_id': parentTodoId,
+
+      // 'recurrence': recurrence?.toJson(),
+
+      'priority': priority.toDB(),
+      'status': status.toDB(),
+
+      'position': position,
+
+      'started_date': startedDate.toIso8601String(),
+      'due_date': dueDate.toIso8601String(),
+    };
+  }
+
+  TodoEntity toEntity() {
+    return TodoEntity(
+      id: id,
+
+      userId: userId,
+
+      title: title,
+      description: description,
+
+      projectId: projectId,
+      parentTodoId: parentTodoId,
+
+      recurrence: recurrence?.toEntity(),
+
+      startedDate: startedDate,
+      dueDate: dueDate,
+
+      priority: priority,
+      status: status,
+
+      completedAt: completedAt,
+
+      position: position,
+
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }
