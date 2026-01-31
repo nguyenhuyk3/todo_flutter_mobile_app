@@ -260,8 +260,6 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       updatedAt: DateTime.now(),
     );
 
-    LOGGER.i(state.toJson());
-
     return todo;
   }
 }

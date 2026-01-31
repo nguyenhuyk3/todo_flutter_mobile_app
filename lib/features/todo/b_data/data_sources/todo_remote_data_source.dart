@@ -1,9 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/todo_entity.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 
-import '../../../../core/constants/others.dart';
 import '../models/recurrence_model.dart';
 
 class TodoRemoteDataSource {
@@ -13,8 +12,6 @@ class TodoRemoteDataSource {
     : _supabaseClient = supabaseClient;
 
   Future<TodoModel> addTodo({required TodoEntity todo}) async {
-    LOGGER.e(todo.toJson());
-
     final todoResponse =
         await _supabaseClient
             .from('todos')
