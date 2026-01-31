@@ -275,21 +275,17 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       userId: userId!,
       title: state.title.trim(),
       description: state.description.trim(),
-      projectId: state.projectId,
-      parentTodoId: state.parentTodoId,
       recurrence:
           state.recurrencePattern != RecurrencePattern.once
               ? RecurrenceModel(
                 recurrencePattern: state.recurrencePattern,
                 reminderAt: state.reminderAt,
-                createdAt: DateTime.now(),
               )
               : null,
       startedDate: DateTime.parse(state.startedDate),
       dueDate: DateTime.parse(state.dueDate),
       priority: state.priority,
       status: state.status,
-      position: state.position,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );

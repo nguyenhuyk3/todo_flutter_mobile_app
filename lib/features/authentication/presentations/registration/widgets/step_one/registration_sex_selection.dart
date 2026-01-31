@@ -59,6 +59,16 @@ class RegistrationSexSelection extends StatelessWidget {
     required bool isSelected,
     required bool isLoading,
   }) {
+    Color textColor;
+
+    if (isSelected && isLoading) {
+      textColor = Colors.white;
+    } else if (!isSelected) {
+      textColor = COLORS.SECONDARY_TEXT;
+    } else {
+      textColor = COLORS.PRIMARY_TEXT;
+    }
+
     return Expanded(
       child: GestureDetector(
         onTap:
@@ -99,7 +109,7 @@ class RegistrationSexSelection extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                color: isLoading ? Colors.white : COLORS.PRIMARY_TEXT,
+                color: textColor,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                 fontSize: TextSizes.TITLE_16,
               ),

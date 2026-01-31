@@ -1,6 +1,6 @@
 -- ================================================= SCHEMA =================================================
 
-CREATE TYPE public.sex AS ENUM ('female', 'male');
+CREATE TYPE public.user_sex AS ENUM ('female', 'male');
 
 -- Tạo bảng Profiles để chứa thông tin người dùng
 -- Lưu ý: id của bảng này chính là id của auth.users
@@ -8,7 +8,7 @@ CREATE TABLE "public"."profiles" (
     "id" uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     "full_name" varchar(64) NOT NULL DEFAULT '',
     "date_of_birth" date NOT NULL,
-    "sex" public.sex DEFAULT 'male'::public.sex,
+    "sex" public.user_sex DEFAULT 'male'::public.user_sex,
     "avatar_url" text NOT NULL DEFAULT '',
     "created_at" timestamptz NOT NULL DEFAULT (now()),
     "updated_at" timestamptz NOT NULL DEFAULT (now()),
@@ -66,8 +66,8 @@ BEGIN
         -- Lấy dữ liệu từ meta_data được gửi từ phía Client
         new.raw_user_meta_data ->> 'full_name',
         new.raw_user_meta_data ->> 'avatar_url',
-        (new.raw_user_meta_data ->> 'dob')::date,   -- Cast text sang date
-        (new.raw_user_meta_data ->> 'sex')::sex     -- Cast text sang enum sex
+        (new.raw_user_meta_data ->> 'dob')::date,           -- Cast text sang date
+        (new.raw_user_meta_data ->> 'sex')::user_sex        -- Cast text sang enum sex
     );
     RETURN new;
 END;

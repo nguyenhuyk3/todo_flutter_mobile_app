@@ -6,14 +6,12 @@ class RecurrenceModel {
   final String? todoId;
   final RecurrencePattern recurrencePattern;
   final String? reminderAt;
-  final DateTime createdAt;
 
   const RecurrenceModel({
     this.id,
     this.todoId,
     required this.recurrencePattern,
     this.reminderAt,
-    required this.createdAt,
   });
 
   factory RecurrenceModel.fromJson(Map<String, dynamic> json) {
@@ -22,7 +20,6 @@ class RecurrenceModel {
       todoId: json['todo_id'],
       recurrencePattern: RecurrencePatternX.fromDB(json['recurrence_pattern']),
       reminderAt: json['reminder_at'],
-      createdAt: DateTime.parse(json['created_at']),
     );
   }
 
@@ -41,7 +38,6 @@ class RecurrenceModel {
       todoId: entity.todoId,
       recurrencePattern: entity.recurrencePattern,
       reminderAt: entity.reminderAt,
-      createdAt: entity.createdAt,
     );
   }
 
@@ -51,7 +47,6 @@ class RecurrenceModel {
       todoId: todoId,
       recurrencePattern: recurrencePattern,
       reminderAt: reminderAt,
-      createdAt: createdAt,
     );
   }
 }

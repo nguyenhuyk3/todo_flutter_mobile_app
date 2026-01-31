@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+
 import 'package:todo_flutter_mobile_app/core/utils/toats.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_bloc.dart';
-
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/widgets/modify_todo_time_selector.dart';
 
@@ -15,9 +15,7 @@ import '../widgets/modify_todo_bottom_actions.dart';
 import '../widgets/modify_todo_date_range_selector.dart';
 import '../widgets/modify_todo_description_input.dart';
 import '../widgets/modify_todo_labels_grid.dart';
-import '../widgets/modify_todo_parent_task_selector.dart';
 import '../widgets/modify_todo_priority_selector.dart';
-import '../widgets/modify_todo_project_selector.dart';
 import '../widgets/modify_todo_recurrence_selector.dart';
 import '../widgets/modify_todo_title_input.dart';
 
@@ -33,7 +31,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
-        final bool hasProject = state.projectId != null;
+        // final bool hasProject = state.projectId != null;
         final bool isRecurring =
             state.recurrencePattern != RecurrencePattern.once;
         // Kiểm tra xem khoảng thời gian đã được chọn hợp lệ chưa
@@ -94,24 +92,23 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
 
                           const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
-                          ModifyTodoProjectSelector(),
-
+                          // ModifyTodoProjectSelector(),
                           const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
                           // Nếu có Project -> Chỉ hiển thị Task cha, KHÔNG hiển thị Lặp lại
-                          if (hasProject) ...[
-                            ModifyTodoParentTaskSelector(),
+                          // if (hasProject) ...[
+                          //   ModifyTodoParentTaskSelector(),
 
-                            const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
-                          ],
+                          //   const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
+                          // ],
 
                           // Hiển thị chọn Ngày TRƯỚC
                           ModifyTodoDateRangeSelector(),
 
                           const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),
 
-                          // YÊU CẦU: Chỉ hiển thị Lặp lại KHI (Không có Project VÀ Ngày đã chọn hợp lệ)
-                          if (!hasProject && isDateRangeValid) ...[
+                          // YÊU CẦU: Chỉ hiển thị Lặp lại KHI đã chọn khoảng ngày hợp lệ
+                          if (isDateRangeValid) ...[
                             ModifyTodoRecurrenceSelector(),
 
                             const SizedBox(height: HEIGHT_SIZED_BOX_4 * 4),

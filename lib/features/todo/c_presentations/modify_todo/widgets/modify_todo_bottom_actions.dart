@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_flutter_mobile_app/core/constants/sizes.dart';
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_bloc.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 
@@ -28,7 +27,7 @@ class ModifyTodoBottomActions extends StatelessWidget {
                     final todoModel =
                         await context.read<ModifyTodoFormCubit>().submitForm();
                     // ignore: use_build_context_synchronously
-                    context.read<TodoBloc>().add(TodoAdded(todoModel!));
+                    context.read<TodoBloc>().add(TodoAdded(todo: todoModel!));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: COLORS.PRIMARY,

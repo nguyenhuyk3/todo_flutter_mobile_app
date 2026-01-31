@@ -4,15 +4,12 @@ class ModifyTodoFormState extends Equatable {
   // ===================== Input values =====================
   final String title;
   final String description;
-  final String? projectId;
   final TodoPriority priority;
   final TodoStatus status;
   final String startedDate; // yyyy-MM-dd
   final String dueDate; // yyyy-MM-dd
   final String? reminderAt; // HH:mm
   final RecurrencePattern recurrencePattern;
-  final String? parentTodoId;
-  final int position;
 
   // ===================== Recurrence options =====================
   // Danh sách các thứ (1=T2, ..., 7=CN) khả dụng trong DateRange
@@ -51,15 +48,12 @@ class ModifyTodoFormState extends Equatable {
     // input
     required this.title,
     required this.description,
-    this.projectId,
     this.priority = TodoPriority.low,
     required this.status,
     required this.startedDate,
     required this.dueDate,
     this.reminderAt,
     this.recurrencePattern = RecurrencePattern.once,
-    this.parentTodoId,
-    required this.position,
 
     this.availableWeekdays = const [],
     this.customWeekdays = const [],
@@ -79,15 +73,12 @@ class ModifyTodoFormState extends Equatable {
     return ModifyTodoFormState(
       title: '',
       description: '',
-      projectId: null,
       priority: TodoPriority.low,
       status: TodoStatus.pending,
       startedDate: '',
       dueDate: '',
       reminderAt: null,
       recurrencePattern: RecurrencePattern.once,
-      parentTodoId: null,
-      position: 0,
 
       availableWeekdays: const [],
       customWeekdays: const [],
@@ -105,15 +96,12 @@ class ModifyTodoFormState extends Equatable {
     return ModifyTodoFormState(
       title: todo.title,
       description: todo.description,
-      projectId: todo.projectId,
       priority: todo.priority,
       status: todo.status,
       startedDate: todo.startedDate.toIso8601String(),
       dueDate: todo.dueDate.toIso8601String(),
       reminderAt: todo.recurrence?.reminderAt,
       recurrencePattern: todo.recurrence!.recurrencePattern,
-      parentTodoId: todo.parentTodoId,
-      position: todo.position,
 
       showTitleError: false,
       showDescriptionError: false,
@@ -151,15 +139,12 @@ class ModifyTodoFormState extends Equatable {
     return ModifyTodoFormState(
       title: title ?? this.title,
       description: description ?? this.description,
-      projectId: projectId != null ? projectId() : this.projectId,
       priority: priority ?? this.priority,
       status: status ?? this.status,
       startedDate: startedDate ?? this.startedDate,
       dueDate: dueDate ?? this.dueDate,
       reminderAt: reminderAt != null ? reminderAt() : this.reminderAt,
       recurrencePattern: recurrencePattern ?? this.recurrencePattern,
-      parentTodoId: parentTodoId != null ? parentTodoId() : this.parentTodoId,
-      position: position ?? this.position,
 
       availableWeekdays: availableWeekdays ?? this.availableWeekdays,
       customWeekdays: customWeekdays ?? this.customWeekdays,
@@ -179,15 +164,12 @@ class ModifyTodoFormState extends Equatable {
   List<Object?> get props => [
     title,
     description,
-    projectId,
     priority,
     status,
     startedDate,
     dueDate,
     reminderAt,
     recurrencePattern,
-    parentTodoId,
-    position,
 
     availableWeekdays,
     customWeekdays,
@@ -204,15 +186,12 @@ class ModifyTodoFormState extends Equatable {
     return {
       'title': title,
       'description': description,
-      'projectId': projectId,
       'priority': priority.name,
       'status': status.name,
       'startedDate': startedDate,
       'dueDate': dueDate,
       'reminderAt': reminderAt,
       'recurrencePattern': recurrencePattern.name,
-      'parentTodoId': parentTodoId,
-      'position': position,
 
       'availableWeekdays': availableWeekdays,
       'customWeekdays': customWeekdays,

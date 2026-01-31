@@ -11,11 +11,6 @@ class TodoEntity {
   final String title;
   final String description;
 
-  // Todo thuộc project nào (có thể null)
-  final String? projectId;
-  // Todo cha (dùng cho sub-task)
-  final String? parentTodoId;
-
   final RecurrenceEntity? recurrence;
 
   final DateTime startedDate;
@@ -25,9 +20,6 @@ class TodoEntity {
   final TodoStatus status;
 
   final DateTime? completedAt;
-
-  /// Thứ tự hiển thị trong list
-  final int position;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -40,9 +32,6 @@ class TodoEntity {
     required this.title,
     required this.description,
 
-    this.projectId,
-    this.parentTodoId,
-
     this.recurrence,
 
     required this.startedDate,
@@ -52,8 +41,6 @@ class TodoEntity {
     this.status = TodoStatus.pending,
 
     this.completedAt,
-
-    this.position = 0,
 
     required this.createdAt,
     required this.updatedAt,
@@ -68,9 +55,6 @@ class TodoEntity {
       'title': title,
       'description': description,
 
-      'project_id': projectId,
-      'parent_todo_id': parentTodoId,
-
       'recurrence': recurrence?.toJson(),
 
       'started_date': startedDate.toIso8601String().split('T').first,
@@ -80,7 +64,6 @@ class TodoEntity {
       'status': status.name,
 
       'completed_at': completedAt?.toIso8601String(),
-      'position': position,
 
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
