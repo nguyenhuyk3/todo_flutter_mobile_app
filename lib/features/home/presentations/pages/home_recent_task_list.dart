@@ -22,7 +22,7 @@ class HomeRecentTaskList extends StatelessWidget {
       {
         "title": "Mobile Apps for Track.id",
         "progress": 0.5,
-        "color": COLORS.PRIMARY_APP, // Yellow
+        "color": COLORS.PRIMARY, // Yellow
       },
       {
         "title": "Website for CourierGo.com",

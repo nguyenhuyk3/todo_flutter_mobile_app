@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color logoColor = COLORS.PRIMARY_APP;
+    final Color logoColor = COLORS.PRIMARY;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

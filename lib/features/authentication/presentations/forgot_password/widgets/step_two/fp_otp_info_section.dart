@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
+import '../../bloc/bloc.dart';
 
 class FPOtpInfoSection extends StatelessWidget {
-  final String email;
-
-  const FPOtpInfoSection({super.key, required this.email});
+  const FPOtpInfoSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final email = context.read<ForgotPasswordBloc>().email;
+
     return Text(
       'Chúng tôi đã gửi mã OTP đến địa chỉ $email của bạn',
       style: TextStyle(

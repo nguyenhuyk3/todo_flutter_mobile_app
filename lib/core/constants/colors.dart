@@ -8,6 +8,7 @@ class AppColors {
   final UNFOCUSED_BORDER_IP = const Color.fromARGB(255, 152, 150, 150);
   // Background
   final PRIMARY_BG = Color(0xFFF6F8FA);
+  final SECONDARY_BG = const Color.fromARGB(255, 238, 234, 230);
   final INPUT_BG = Color.fromARGB(255, 247, 247, 247);
   // Label
   final FOCUSED_LABEL = Colors.black;
@@ -22,10 +23,10 @@ class AppColors {
   final SECONDARY_TEXT = const Color.fromARGB(255, 152, 151, 150);
   final HINT_TEXT = Colors.grey.shade400;
   // App
-  final PRIMARY_APP = Color(0xFFFF6B5B);
+  final PRIMARY = Color(0xFFFF6B5B);
   // Icon
   final ICON_PRIMARY = const Color.fromARGB(255, 152, 150, 150);
-  final ICON_DEFAULT_COLOR = Colors.black;
+  final ICON_DEFAULT = Colors.black;
   // Process
   final PENDING = Color(0xFF5F9FFF);
   final IN_PROGRESS = Color.fromRGBO(249, 202, 33, 1);

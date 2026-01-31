@@ -6,8 +6,8 @@ import 'package:formz/formz.dart';
 
 import '../../../../../core/utils/validator/validation_error_message.dart';
 import '../../../domain/usecases/authentication_use_case.dart';
-import '../../../inputs/email.dart';
-import '../../../inputs/password.dart';
+import '../../inputs/email.dart';
+import '../../inputs/password.dart';
 
 part 'event.dart';
 part 'state.dart';

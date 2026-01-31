@@ -1,8 +1,6 @@
 -- ================================================= SCHEMA =================================================
 
--- Giữ nguyên Enum cũ
 CREATE TYPE public.user_sex AS ENUM ('female', 'male');
--- Bỏ enum "sources" vì auth.users tự quản lý provider (google/facebook/email)
 
 -- Tạo bảng Profiles để chứa thông tin người dùng
 -- Lưu ý: id của bảng này chính là id của auth.users
@@ -18,8 +16,6 @@ CREATE TABLE "public"."profiles" (
     PRIMARY KEY ("id")
 );
 
--- ================================================= END =================================================
--- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -- ================================================= POLICY =================================================
 
 -- Bật RLS (Bảo mật dòng dữ liệu)
@@ -37,14 +33,30 @@ ON "public"."profiles"
 FOR UPDATE 
 USING (auth.uid() = id);
 
--- ================================================= END =================================================
--- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -- ================================================= FUNCTION =================================================
 
 -- Hàm xử lý khi có user mới
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
+/*
+    RETURNS trigger: 
+        - Khẳng định đây là trigger function
+        - Hàm này không gọi trực tiếp, mà được gọi bởi một TRIGGER
+*/
 RETURNS trigger 
 LANGUAGE plpgsql 
+/*
+    SECURITY DEFINER:
+        - Hàm chạy với quyền của người tạo hàm, không phải user đang gọi trigger
+        - Trong Supabase:
+            + Trigger được gọi từ auth.users
+            + Nhưng vẫn có thể INSERT vào public.profiles
+        - Nếu không có SECURITY DEFINER → dễ bị permission denied
+    SET search_path = public:
+        - Chỉ định rõ schema được dùng
+        - Tránh:
+            + SQL injection
+            + Lệch schema khi có nhiều schema cùng tên bảng
+*/
 SECURITY DEFINER SET search_path = public
 AS $$
 BEGIN
@@ -54,8 +66,8 @@ BEGIN
         -- Lấy dữ liệu từ meta_data được gửi từ phía Client
         new.raw_user_meta_data ->> 'full_name',
         new.raw_user_meta_data ->> 'avatar_url',
-        (new.raw_user_meta_data ->> 'dob')::date,   -- Cast text sang date
-        (new.raw_user_meta_data ->> 'sex')::sex     -- Cast text sang enum sex
+        (new.raw_user_meta_data ->> 'dob')::date,           -- Cast text sang date
+        (new.raw_user_meta_data ->> 'sex')::user_sex        -- Cast text sang enum sex
     );
     RETURN new;
 END;
@@ -85,4 +97,3 @@ END;
 $$;
 
 -- ================================================= END =================================================
--- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

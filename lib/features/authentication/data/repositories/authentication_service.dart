@@ -2,10 +2,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:todo_flutter_mobile_app/core/constants/others.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/data/models/user.dart';
+
+import '../../../../core/constants/keys.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
-import '../../domain/entities/registration_params.dart';
 import '../../domain/repositories/authentication.dart';
+import '../../domain/usecases/params/registration_param.dart';
 import '../datasources/authentication_remote_data_source.dart';
 
 class AuthenticationService implements IAuthenticationRepository {
@@ -76,10 +80,13 @@ class AuthenticationService implements IAuthenticationRepository {
 
       return const Right(true);
     } on PostgrestException catch (e) {
+      LOGGER.f(e);
       return Left(Failure(error: mapPostgrestException(e), details: e));
     } on AuthException catch (e) {
+      LOGGER.f(e);
       return Left(Failure(error: mapAuthException(e), details: e));
     } catch (e) {
+      LOGGER.f(e);
       return Left(Failure(error: ErrorInformation.UNDEFINED_ERROR, details: e));
     }
   }
@@ -119,18 +126,56 @@ class AuthenticationService implements IAuthenticationRepository {
     }
   }
 
+  Future<void> _saveUserToSecureStorage({required UserModel user}) async {
+    await Future.wait([
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.ACCESS_TOKEN,
+        value: user.tokenPair.accessToken,
+      ),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.REFRESH_TOKEN,
+        value: user.tokenPair.refreshToken,
+      ),
+      SECURE_STORAGE.write(key: SecureStorageKeys.USER_ID, value: user.id),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_EMAIL,
+        value: user.email,
+      ),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_FULL_NAME,
+        value: user.fullName,
+      ),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_AVATAR_URL,
+        value: user.avatarUrl,
+      ),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_DATE_OF_BIRTH,
+        value: user.dateOfBirth.toIso8601String(),
+      ),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_SEX,
+        value: user.sex.toJson(),
+      ),
+    ]);
+  }
+
   @override
-  Future<Either<Failure, Object>> login({
+  Future<Either<Failure, UserModel>> login({
     required String email,
     required String password,
   }) async {
     try {
-      final res = await _authenticationRemoteDataSource.login(
+      SECURE_STORAGE.clearAll();
+
+      final data = await _authenticationRemoteDataSource.login(
         email: email,
         password: password,
       );
 
-      return Right(res);
+      _saveUserToSecureStorage(user: data);
+
+      return Right(data);
     } on AuthException catch (e) {
       return Left(Failure(error: mapAuthException(e), details: e));
     } on PostgrestException catch (e) {

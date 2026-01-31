@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/pages/modify_todo_screen.dart';
+
 import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/utils/toats.dart';
 import '../../../../../core/widgets/authentication_form.dart';
-import '../../../../home/presentations/home_page.dart';
 import '../bloc/bloc.dart';
 import '../widgets/login_email_input.dart';
 import '../widgets/login_password_input.dart';
@@ -31,7 +32,7 @@ class LoginPage extends StatelessWidget {
         } else if (state.status.isSuccess) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => HomePage()),
+            MaterialPageRoute(builder: (_) => ModifyTodoPage()),
             (Route<dynamic> route) => false,
           );
 

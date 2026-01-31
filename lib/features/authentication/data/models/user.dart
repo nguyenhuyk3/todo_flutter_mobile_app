@@ -1,10 +1,15 @@
 import 'package:intl/intl.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/data/models/token_pair.dart';
 
 import '../../domain/entities/app_user.dart';
 import '../../domain/entities/enums.dart';
 
 class UserModel extends AppUser {
-  const UserModel({
+  TokenPair tokenPair;
+
+  UserModel({
+    required this.tokenPair,
+
     required super.id,
     required super.email,
     required super.fullName,
@@ -16,12 +21,18 @@ class UserModel extends AppUser {
   /// Factory để parse dữ liệu kết hợp từ:
   /// 1. Supabase User Object (cho id, email)
   /// 2. Data từ bảng 'profiles' (cho full_name, sex...)
-  factory UserModel.fromSupabase(
-    Map<String, dynamic> profileJson,
-    String email,
-    String uid,
-  ) {
+  factory UserModel.fromSupabase({
+    required Map<String, dynamic> profileJson,
+    required String email,
+    required String uid,
+    required String accessToken,
+    required String refreshToken,
+  }) {
     return UserModel(
+      tokenPair: TokenPair(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      ),
       id: uid,
       email: email,
       fullName: profileJson['full_name'] as String? ?? '',
@@ -41,6 +52,7 @@ class UserModel extends AppUser {
       'avatar_url': avatarUrl,
       'date_of_birth': DateFormat('yyyy-MM-dd').format(dateOfBirth),
       'sex': sex.toJson(),
+      'token_pair': tokenPair.toJson(),
     };
   }
 }

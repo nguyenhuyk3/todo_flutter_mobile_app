@@ -17,8 +17,6 @@ class ForgotPasswordStepTwoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = context.read<ForgotPasswordBloc>().email;
-
     return AuthenticationForm(
       title: 'Nhập mã OTP',
       child: BlocListener<ForgotPasswordBloc, ForgotPasswordState>(
@@ -39,13 +37,15 @@ class ForgotPasswordStepTwoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FPOtpInfoSection(email: email),
-
             const SizedBox(height: HEIGTH_SIZED_BOX_12),
+
+            FPOtpInfoSection(),
+
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             const FPOtpPinInput(),
 
-            const SizedBox(height: HEIGTH_SIZED_BOX_12),
+            const SizedBox(height: HEIGTH_SIZED_BOX_12 * 1.5),
 
             const FPOtpTimerResend(),
 

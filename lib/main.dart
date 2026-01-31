@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/presentations/login/pages/login.dart';
+import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/todo.dart';
+import 'package:todo_flutter_mobile_app/features/todo/a_domain/usecases/todo_use_case.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/data_sources/todo_remote_data_source.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/services/todo_service.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_bloc.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 
 import 'core/constants/keys.dart';
 import 'features/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -11,7 +18,6 @@ import 'features/authentication/domain/repositories/authentication.dart';
 import 'features/authentication/domain/usecases/authentication_use_case.dart';
 import 'features/authentication/presentations/forgot_password/bloc/bloc.dart';
 import 'features/authentication/presentations/login/bloc/bloc.dart';
-import 'features/authentication/presentations/login/pages/login.dart';
 import 'features/authentication/presentations/registration/bloc/bloc.dart';
 
 /* 
@@ -40,6 +46,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   late final IAuthenticationRepository _authenticationRepository;
+  late final ITodoRepository _todoRepository;
 
   @override
   void initState() {
@@ -48,10 +55,14 @@ class _MainAppState extends State<MainApp> {
     final authenticationRemoteDataSource = AuthenticationRemoteDataSource(
       supabaseClient: Supabase.instance.client,
     );
+    final todoRemoteDataSource = TodoRemoteDataSource(
+      supabaseClient: Supabase.instance.client,
+    );
 
     _authenticationRepository = AuthenticationService(
       authenticationRemoteDataSource: authenticationRemoteDataSource,
     );
+    _todoRepository = TodoService(todoRemoteDataSource: todoRemoteDataSource);
   }
 
   @override
@@ -107,8 +118,36 @@ class _MainAppState extends State<MainApp> {
                   ),
                 ),
           ),
+          BlocProvider(create: (_) => ModifyTodoFormCubit()),
+          BlocProvider(
+            create:
+                (_) => TodoBloc(
+                  addTodoUseCase: AddTodoUseCase(
+                    todoRepository: _todoRepository,
+                  ),
+                ),
+          ),
         ],
-        child: MaterialApp(home: LoginPage()),
+        child: MaterialApp(
+          locale: const Locale('vi', 'VN'),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('vi', 'VN'), // Hỗ trợ Tiếng Việt
+          ],
+          theme: ThemeData(
+            useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              surfaceTintColor: Colors.transparent,
+              scrolledUnderElevation: 0,
+            ),
+          ),
+          home: LoginPage(),
+        ),
       ),
     );
   }

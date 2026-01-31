@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/entities/registration_params.dart';
+import '../../domain/usecases/params/registration_param.dart';
 import '../models/user.dart';
 
 class AuthenticationRemoteDataSource {
@@ -63,14 +63,18 @@ class AuthenticationRemoteDataSource {
     required String email,
     required String password,
   }) async {
+    _supabaseClient.auth.signOut();
     // 1. Đăng nhập để lấy Session & Token
     final authResponse = await _supabaseClient.auth.signInWithPassword(
       email: email,
       password: password,
     );
+    final session = authResponse.session;
+    final accessToken = session?.accessToken;
+    final refreshToken = session?.refreshToken;
 
     if (authResponse.user == null) {
-      throw const AuthException('Đăng nhập thất bại.');
+      throw const AuthException('Đăng nhập thất bại');
     }
     // 2. Query thông tin từ bảng profiles (Vì AuthUser chỉ có id & email)
     final profileData =
@@ -81,9 +85,11 @@ class AuthenticationRemoteDataSource {
             .single();
     // 3. Merge data thành Model hoàn chỉnh
     return UserModel.fromSupabase(
-      profileData,
-      authResponse.user!.email!,
-      authResponse.user!.id,
+      profileJson: profileData,
+      email: authResponse.user!.email!,
+      uid: authResponse.user!.id,
+      accessToken: accessToken!,
+      refreshToken: refreshToken!,
     );
   }
 

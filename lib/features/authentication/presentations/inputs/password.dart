@@ -2,7 +2,7 @@
 
 import 'package:formz/formz.dart';
 
-import '../../../core/constants/others.dart';
+import '../../../../core/constants/others.dart';
 
 enum PasswordValidationError {
   empty,

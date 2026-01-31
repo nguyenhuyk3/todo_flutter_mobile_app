@@ -20,7 +20,7 @@ ALTER TABLE public.profiles DISABLE ROW LEVEL SECURITY;
 -- 6. Xóa bảng profiles
 DROP TABLE IF EXISTS public.profiles;
 
--- 7. Xóa enum sex
-DROP TYPE IF EXISTS public.sex;
+-- 7. Xóa enum user_sex
+DROP TYPE IF EXISTS public.user_sex;
 
 -- ================================================= END DOWN =================================================
