@@ -10,6 +10,25 @@ CREATE TYPE public.todo_status AS ENUM (
 
 CREATE TYPE public.recurrence_pattern AS ENUM ('once', 'daily', 'weekday', 'custom');
 
+CREATE TYPE public.attachment_file_extension AS ENUM (
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'heic',
+    'pdf',
+    'doc',
+    'docx',
+    'txt',
+    'csv',
+    'xls',
+    'xlsx',
+    'zip',
+    'rar',
+    'other'
+);
+
 -- ================================================= 2. TABLES =================================================
 -- TABLE: PROJECTS
 CREATE TABLE
@@ -35,8 +54,8 @@ CREATE TABLE
         "priority" todo_priority NOT NULL DEFAULT 'low',
         "status" todo_status NOT NULL DEFAULT 'pending',
         -- Các trường thời gian thực tế của công việc
-        "started_date" date,
-        "due_date" date,
+        "started_date" timestamptz,
+        "due_date" timestamptz,
         "completed_at" timestamptz DEFAULT NULL,
         -- Cấu trúc
         "parent_todo_id" UUID REFERENCES public.todos (id) ON DELETE CASCADE,
@@ -79,6 +98,18 @@ CREATE TABLE
         PRIMARY KEY ("todo_id", "tag_id")
     );
 
+-- TABLE: ATTACHMENTS
+CREATE TABLE
+    "public"."attachments" (
+        "id" UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+        "todo_id" UUID NOT NULL REFERENCES public.todos (id) ON DELETE CASCADE,
+        "file_name" VARCHAR(256) NOT NULL DEFAULT '',
+        "file_url" TEXT NOT NULL DEFAULT '',
+        "file_extension" attachment_file_extension NOT NULL DEFAULT 'other',
+        "file_size" BIGINT DEFAULT 0, -- Dùng BIGINT cho size file để an toàn hơn
+        "uploaded_at" timestamptz NOT NULL DEFAULT now ()
+    );
+
 -- ================================================= 3. INDEXES =================================================
 -- PROJECTS
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON public.projects (user_id);
@@ -108,8 +139,10 @@ CREATE INDEX IF NOT EXISTS idx_tags_user_id ON public.tags (user_id);
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_tags_user_name ON public.tags (user_id, name);
 
--- TODO_TAGS
+-- TODO_TAGS & ATTACHMENTS
 CREATE INDEX IF NOT EXISTS idx_todo_tags_tag_id ON public.todo_tags (tag_id);
+
+CREATE INDEX IF NOT EXISTS idx_attachments_todo_id ON public.attachments (todo_id);
 
 -- ================================================= 4. COMMENTS =================================================
 -- PROJECTS
@@ -134,6 +167,9 @@ COMMENT ON TABLE public.recurrences IS 'Lưu cấu hình lặp lại. Tách kh�
 -- TAGS
 COMMENT ON TABLE public.tags IS 'Nhãn dán cross-project.';
 
+-- ATTACHMENTS
+COMMENT ON COLUMN public.attachments.file_extension IS 'Định dạng file để hiển thị icon UI.';
+
 -- ================================================= 5. RLS (Security) =================================================
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 
@@ -146,13 +182,12 @@ ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.todo_tags ENABLE ROW LEVEL SECURITY;
 
--- Tạo Policy cho phép INSERT
--- Luật: User chỉ được Insert dòng mới nếu cột user_id của dòng đó BẰNG VỚI id của user đang đăng nhập
-CREATE POLICY "Users can insert their own todos"
-ON "public"."todos"
-FOR INSERT
-TO authenticated -- Chỉ user đã đăng nhập mới được làm
-WITH CHECK (auth.uid() = user_id);
+ALTER TABLE public.attachments ENABLE ROW LEVEL SECURITY;
+
+-- Tạo Policy cơ bản (Ví dụ cho bảng Todos, các bảng khác tương tự)
+-- CREATE POLICY "Users can manage their own todos" ON public.todos
+-- USING (auth.uid() = user_id)
+-- WITH CHECK (auth.uid() = user_id);
 -- ================================================= 6. TRIGGERS & FUNCTIONS =================================================
 -- Auto-update `updated_at`
 CREATE EXTENSION IF NOT EXISTS moddatetime SCHEMA extensions;
@@ -186,6 +221,7 @@ BEGIN
         RETURN NEW;
 END;
 $$;
+
 
 -- Trigger tạo Tags khi user mới đăng ký
 CREATE TRIGGER on_auth_user_created_seed_tags AFTER INSERT ON auth.users FOR EACH ROW EXECUTE PROCEDURE public.seed_default_tags ();

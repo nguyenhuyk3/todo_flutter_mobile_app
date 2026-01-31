@@ -63,6 +63,7 @@ class AuthenticationRemoteDataSource {
     required String email,
     required String password,
   }) async {
+    _supabaseClient.auth.signOut();
     // 1. Đăng nhập để lấy Session & Token
     final authResponse = await _supabaseClient.auth.signInWithPassword(
       email: email,

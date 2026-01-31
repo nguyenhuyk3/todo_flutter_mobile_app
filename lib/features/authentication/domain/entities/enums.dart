@@ -9,7 +9,6 @@ enum Sex {
       orElse: () => Sex.male,
     );
   }
-
   // Helper convert sang chuỗi để lưu xuống DB/Json
   String toJson() => name;
 }
