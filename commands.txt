@@ -1,13 +1,19 @@
-Tạo file lcov.info - Flutter
-
+# Chạy tất cả các unit test và tự động sinh file báo cáo độ bao phủ (coverage/lcov.info).
+# File này cho biết bao nhiêu % code đã được test.
 flutter test --coverage
 
-Tạo file lcov.info - Dart
-
+# Chạy test và xuất dữ liệu coverage (dạng JSON của máy ảo Dart) vào thư mục 'coverage/'.
+# Lưu ý: Lệnh này chưa tạo ra file lcov.info ngay.
 dart test --coverage=coverage
 
+# Chuyển đổi dữ liệu từ file JSON (trong thư mục coverage) thành file lcov.info.
+# --lcov: Định dạng đầu ra là lcov.
+# --in: Thư mục chứa dữ liệu JSON từ bước 1.
+# --out: File kết quả đầu ra.
+# --packages: File cấu hình package để định vị source code.
+# --report-on: Chỉ tính coverage cho thư mục lib (bỏ qua file test).
 format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
 
-Format code
-
+# Tự động định dạng (căn lề, xuống dòng, dấu câu) lại toàn bộ source code
+# trong thư mục hiện tại (.) theo chuẩn chính thức của Google Dart Style.
 dart format .

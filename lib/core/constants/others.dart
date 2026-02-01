@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:logger/logger.dart';
+import 'package:todo_flutter_mobile_app/core/utils/storage/secure_storage_service.dart';
 
 import 'colors.dart';
 
@@ -11,3 +12,4 @@ const BIRTH_DATE_DEFAUL_VALUE = '2000-01-01T00:00:00.000';
 
 final COLORS = AppColors();
 final LOGGER = Logger();
+final SECURE_STORAGE = SecureStorageService();
