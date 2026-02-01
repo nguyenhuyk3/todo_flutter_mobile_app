@@ -12,7 +12,10 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
   const ModifyTodoDateRangeSelector({super.key});
 
   /// Hàm helper để lấy Text hiển thị từ State
-  String _getDateText(String startedDateStr, String dueDateStr) {
+  String _getDateText({
+    required String startedDateStr,
+    required String dueDateStr,
+  }) {
     // Dành cho trường hợp thêm todo (Khi đó mới vào màn hình thì chưa có giá trị)
     if (startedDateStr.isEmpty || dueDateStr.isEmpty) {
       return "Chọn thời gian";
@@ -31,7 +34,10 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
   }
 
   /// Hàm helper để convert state về DateTimeRange cho DatePicker khởi tạo
-  DateTimeRange? _getInitialRange(String startedDateStr, String dueDateStr) {
+  DateTimeRange? _getInitialRange({
+    required String startedDateStr,
+    required String dueDateStr,
+  }) {
     // Dành cho trường hợp thêm todo (Khi đó mới vào màn hình thì chưa có giá trị)
     if (startedDateStr.isEmpty || dueDateStr.isEmpty) {
       return null;
@@ -44,12 +50,12 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
   }
 
   /// Hàm xử lý hiển thị DatePicker
-  Future<void> _pickDateRange(
-    BuildContext context,
+  Future<void> _pickDateRange({
+    required BuildContext context,
     // Nếu là thêm mới thì không cho chọn ngày trước hiện tại
-    bool isAdd,
+    required bool isAdd,
     DateTimeRange? initialRange,
-  ) async {
+  }) async {
     final DateTime now = DateTime.now();
     final firstDate = now;
     final DateTimeRange? picked = await showDateRangePicker(
@@ -91,8 +97,14 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ModifyTodoFormCubit, ModifyTodoFormState>(
       builder: (context, state) {
-        final dateText = _getDateText(state.startedDate, state.dueDate);
-        final initialRange = _getInitialRange(state.startedDate, state.dueDate);
+        final dateText = _getDateText(
+          startedDateStr: state.startedDate,
+          dueDateStr: state.dueDate,
+        );
+        final initialRange = _getInitialRange(
+          startedDateStr: state.startedDate,
+          dueDateStr: state.dueDate,
+        );
         final bool hasValue =
             state.startedDate.isNotEmpty && state.dueDate.isNotEmpty;
         final borderColor =
@@ -104,7 +116,12 @@ class ModifyTodoDateRangeSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () => _pickDateRange(context, true, initialRange),
+              onTap:
+                  () => _pickDateRange(
+                    context: context,
+                    isAdd: true,
+                    initialRange: initialRange,
+                  ),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
                 curve: Curves.easeInOut,

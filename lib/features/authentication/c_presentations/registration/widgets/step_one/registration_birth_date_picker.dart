@@ -42,11 +42,27 @@ class RegistrationBirthDatePicker extends StatelessWidget {
               isLoading
                   ? null
                   : () async {
-                    final picked = await showDatePicker(
+                    final DateTime? picked = await showDatePicker(
                       context: context,
                       initialDate: effectiveDate,
                       firstDate: DateTime(1950),
                       lastDate: DateTime.now(),
+                      builder: (context, child) {
+                        return Theme(
+                          data: ThemeData.light().copyWith(
+                            colorScheme: ColorScheme.light(
+                              primary: COLORS.PRIMARY,
+                              onPrimary: COLORS.PRIMARY_TEXT,
+                              secondary: COLORS.PRIMARY,
+                              onSecondary: COLORS.SECONDARY_TEXT,
+                              surface: COLORS.PRIMARY_BG,
+                              onSurface: COLORS.PRIMARY_TEXT,
+                            ),
+                            // dialogBackgroundColor: COLORS.PRIMARY_BG,
+                          ),
+                          child: child!,
+                        );
+                      },
                     );
 
                     if (picked != null) {

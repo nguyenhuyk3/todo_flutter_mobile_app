@@ -131,6 +131,20 @@ class _MainAppState extends State<MainApp> {
           ),
         ],
         child: MaterialApp(
+          /*
+            locale: const Locale('vi', 'VN')
+            - Ý nghĩa:
+              + Ép toàn bộ app dùng tiếng Việt, bất kể ngôn ngữ hệ điều hành
+            localizationsDelegates
+            - Material: DatePicker, button text, snackbar, dialog text
+            - Widgets: TextDirection, semantics
+            - Nếu thiếu:
+              + DatePicker không dịch
+              + Có thể crash hoặc fallback tiếng Anh
+            supportedLocales
+            - Khai báo danh sách ngôn ngữ app thực sự hỗ trợ
+            - Flutter sẽ chọn locale gần nhất
+          */
           locale: const Locale('vi', 'VN'),
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -141,6 +155,20 @@ class _MainAppState extends State<MainApp> {
             Locale('en', 'US'),
             Locale('vi', 'VN'), // Hỗ trợ Tiếng Việt
           ],
+          /*
+            theme: ThemeData(...)
+            - Đây là global theme root.
+            useMaterial3: true
+            - Kích hoạt Material Design 3 (MD3)
+            - DatePicker, Dialog, Button, AppBar → UI mới
+            Nếu không dùng
+            - Widget cũ (Material 2)
+            appBarTheme
+            - surfaceTintColor: Colors.transparent -> Material 3 mặc định thêm overlay màu khi scroll (tinted effect)
+            - Nếu không set:
+              + AppBar có màu đậm lên khi scroll
+              + Nhìn “lạ” so với thiết kế truyền thống
+          */
           theme: ThemeData(
             useMaterial3: true,
             appBarTheme: const AppBarTheme(
