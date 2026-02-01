@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../data/models/user.dart';
+import '../../b_data/models/user.dart';
 import '../repositories/authentication.dart';
 
 import 'params/registration_param.dart';

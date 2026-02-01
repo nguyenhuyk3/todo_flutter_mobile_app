@@ -25,7 +25,9 @@ class RegistrationErrorMessageDisplayer extends StatelessWidget {
             error == ErrorInformation.PASSWORD_TOO_SHORT.message ||
             error == ErrorInformation.EMPTY_CONFIRMED_PASSWORD.message ||
             error == ErrorInformation.CONFIRMED_PASSWORD_MISSMATCH.message ||
-            error == ErrorInformation.EMPTY_FULL_NAME.message) {
+            error == ErrorInformation.EMPTY_FULL_NAME.message ||
+            error == ErrorInformation.PASSWORD_MISSING_UPPERCASE.message ||
+            error == ErrorInformation.PASSWORD_MISSING_SPECIAL_CHAR.message) {
           return ''; // Không hiển thị lỗi validation ở đây
         }
         // Chỉ hiển thị các lỗi hệ thống, API (VD: "Email đã tồn tại", "Mất kết nối")

@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/data/models/token_pair.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/token_pair.dart';
 
-import '../../domain/entities/app_user.dart';
-import '../../domain/entities/enums.dart';
+import '../../a_domain/entities/app_user.dart';
+import '../../a_domain/entities/enums.dart';
 
 class UserModel extends AppUser {
   TokenPair tokenPair;

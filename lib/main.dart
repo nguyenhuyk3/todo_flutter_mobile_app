@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/login/pages/login.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/login/pages/login.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/todo.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/usecases/todo_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/data_sources/todo_remote_data_source.dart';
@@ -14,13 +14,13 @@ import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
 
 import 'core/constants/keys.dart';
-import 'features/authentication/data/datasources/authentication_remote_data_source.dart';
-import 'features/authentication/data/repositories/authentication_service.dart';
-import 'features/authentication/domain/repositories/authentication.dart';
-import 'features/authentication/domain/usecases/authentication_use_case.dart';
-import 'features/authentication/presentations/forgot_password/bloc/bloc.dart';
-import 'features/authentication/presentations/login/bloc/bloc.dart';
-import 'features/authentication/presentations/registration/bloc/bloc.dart';
+import 'features/authentication/b_data/datasources/authentication_remote_data_source.dart';
+import 'features/authentication/b_data/services/authentication_service.dart';
+import 'features/authentication/a_domain/repositories/authentication.dart';
+import 'features/authentication/a_domain/usecases/authentication_use_case.dart';
+import 'features/authentication/c_presentations/forgot_password/bloc/bloc.dart';
+import 'features/authentication/c_presentations/login/bloc/bloc.dart';
+import 'features/authentication/c_presentations/registration/bloc/bloc.dart';
 
 /* 
   Trong Flutter, MaterialApp là widget gốc (root widget) dùng để cấu hình toàn bộ ứng dụng theo Material Design.

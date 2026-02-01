@@ -5,13 +5,13 @@ import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart'; // Dùng để mock (giả lập)
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 
-import 'package:todo_flutter_mobile_app/features/authentication/data/models/token_pair.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/data/models/user.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/domain/entities/enums.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/domain/usecases/authentication_use_case.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/inputs/email.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/inputs/password.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/login/bloc/bloc.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/token_pair.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/enums.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/email.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/password.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/login/bloc/bloc.dart';
 
 // 1. Tạo class Mock cho UseCase
 // Vì Bloc gọi LoginUseCase, ta cần giả lập nó thay vì gọi API thật.

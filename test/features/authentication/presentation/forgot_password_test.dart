@@ -5,11 +5,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/domain/usecases/authentication_use_case.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/inputs/email.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/inputs/otp.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/inputs/password.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/presentations/forgot_password/bloc/bloc.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/email.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/otp.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/password.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/forgot_password/bloc/bloc.dart';
 
 class MockCheckEmailExistsUseCase extends Mock
     implements CheckEmailExistsUseCase {}

@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/usecases/params/registration_param.dart';
+import '../../a_domain/usecases/params/registration_param.dart';
 import '../models/user.dart';
 
 class AuthenticationRemoteDataSource {

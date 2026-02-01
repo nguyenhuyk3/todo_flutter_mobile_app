@@ -3,13 +3,13 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:todo_flutter_mobile_app/core/constants/others.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/data/models/user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user.dart';
 
 import '../../../../core/constants/keys.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
-import '../../domain/repositories/authentication.dart';
-import '../../domain/usecases/params/registration_param.dart';
+import '../../a_domain/repositories/authentication.dart';
+import '../../a_domain/usecases/params/registration_param.dart';
 import '../datasources/authentication_remote_data_source.dart';
 
 class AuthenticationService implements IAuthenticationRepository {
