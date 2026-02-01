@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/constants/others.dart';
 import '../../a_domain/entities/authentication_session.dart';
 import '../../a_domain/usecases/params/login_result_param.dart';
 import '../../a_domain/usecases/params/registration_param.dart';
@@ -65,7 +66,7 @@ class AuthenticationRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    _supabaseClient.auth.signOut();
+    signOut();
     // 1. Đăng nhập để lấy Session & Token
     final authResponse = await _supabaseClient.auth.signInWithPassword(
       email: email,
@@ -105,6 +106,48 @@ class AuthenticationRemoteDataSource {
   }
 
   Future<void> signOut() async {
-    await _supabaseClient.auth.signOut();
+    await Future.wait([
+      SECURE_STORAGE.clearAll(),
+
+      _supabaseClient.auth.signOut(),
+    ]);
+  }
+
+  Future<LoginResultParam?> tryAutoLogin({
+    required String refreshToken,
+    required String userId,
+  }) async {
+    // Hàm setSession này sẽ kiểm tra xem token còn hạn không và cấp access token mới nếu cần
+    final response = await _supabaseClient.auth.setSession(refreshToken);
+    // Nếu session null nghĩa là refresh token đã hết hạn hoặc bị thu hồi
+    if (response.session == null || response.user == null) {
+      await SECURE_STORAGE.clearAll(); // Xóa dữ liệu rác
+
+      return null;
+    }
+
+    final profileData =
+        await _supabaseClient
+            .from('profiles')
+            .select()
+            .eq('id', response.user!.id)
+            .single();
+    final newAccessToken = response.session!.accessToken;
+    final newRefreshToken = response.session!.refreshToken;
+    final userModel = UserModel.fromSupabase(
+      profileJson: profileData,
+      email: response.user!.email!,
+      uid: response.user!.id,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken!,
+    );
+
+    return LoginResultParam(
+      user: userModel.toEntity(),
+      session: AuthenticationSession(
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      ),
+    );
   }
 }

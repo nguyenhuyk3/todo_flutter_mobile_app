@@ -185,4 +185,31 @@ class AuthenticationService implements IAuthenticationRepository {
       return Left(Failure(error: ErrorInformation.UNDEFINED_ERROR, details: e));
     }
   }
+
+  @override
+  Future<Either<Failure, LoginResultParam>> tryAutoLogin({
+    required String refreshToken,
+    required String userId,
+  }) async {
+    try {
+      final data = await _authenticationRemoteDataSource.tryAutoLogin(
+        refreshToken: refreshToken,
+        userId: userId,
+      );
+
+      if (data != null) {
+        _saveUserToSecureStorage(loginResult: data);
+
+        return Right(data);
+      }
+
+      return Left(Failure(error: ErrorInformation.TRY_AUTO_LOGIN_FAILED));
+    } on AuthException catch (e) {
+      return Left(Failure(error: mapAuthException(e), details: e));
+    } on PostgrestException catch (e) {
+      return Left(Failure(error: mapPostgrestException(e), details: e));
+    } catch (e) {
+      return Left(Failure(error: ErrorInformation.UNDEFINED_ERROR, details: e));
+    }
+  }
 }

@@ -18,15 +18,22 @@ import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/
 // Vì Bloc gọi LoginUseCase, ta cần giả lập nó thay vì gọi API thật.
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
+class MockTryAutoLoginUseCase extends Mock implements TryAutoLoginUseCase {}
+
 void main() {
   // late → khởi tạo trong setUp()
   // Mỗi test case dùng Bloc & UseCase mới
   late LoginBloc loginBloc;
   late MockLoginUseCase mockLoginUseCase;
+  late MockTryAutoLoginUseCase mockTryAutoLoginUseCase;
   // Setup chạy trước mỗi test case
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
-    loginBloc = LoginBloc(loginUseCase: mockLoginUseCase);
+    mockTryAutoLoginUseCase = MockTryAutoLoginUseCase();
+    loginBloc = LoginBloc(
+      loginUseCase: mockLoginUseCase,
+      tryAutoLoginUseCase: mockTryAutoLoginUseCase,
+    );
   });
   // Clean up sau mỗi test case
   tearDown(() {
