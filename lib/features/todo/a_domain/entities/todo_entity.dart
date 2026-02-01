@@ -1,6 +1,5 @@
-import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/recurrence_entity.dart';
-
 import 'enums.dart';
+import 'recurrence_entity.dart';
 
 class TodoEntity {
   // Null khi tạo mới (Database tự gen UUID)

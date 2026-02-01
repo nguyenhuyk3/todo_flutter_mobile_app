@@ -4,14 +4,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/recurrence_model.dart';
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
-
 import '../../../../../core/constants/keys.dart';
 import '../../../../../core/constants/others.dart';
+import '../../../../../core/errors/failure.dart';
 import '../../../a_domain/entities/enums.dart';
 import '../../../a_domain/entities/todo_entity.dart';
+import '../../../b_data/models/recurrence_model.dart';
+import '../../../b_data/models/todo_model.dart';
 
 part 'modify_todo_form_state.dart';
 

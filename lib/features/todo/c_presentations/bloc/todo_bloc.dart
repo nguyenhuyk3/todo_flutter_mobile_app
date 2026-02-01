@@ -2,10 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
-
 import '../../a_domain/entities/todo_entity.dart';
 import '../../a_domain/usecases/todo_use_case.dart';
+import '../../b_data/models/todo_model.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';

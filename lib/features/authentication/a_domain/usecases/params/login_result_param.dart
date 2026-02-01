@@ -2,9 +2,9 @@ import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entitie
 
 import '../../entities/user_entity.dart';
 
-class LoginResult {
+class LoginResultParam {
   final UserEntity user;
   final AuthenticationSession session;
 
-  const LoginResult({required this.user, required this.session});
+  const LoginResultParam({required this.user, required this.session});
 }

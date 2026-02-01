@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo_flutter_mobile_app/core/constants/sizes.dart';
-
 import '../../../../../core/constants/others.dart';
+import '../../../../../core/constants/sizes.dart';
 import '../../models/label_item.dart';
 
 class ModifyTodoLabelItemWidget extends StatelessWidget {

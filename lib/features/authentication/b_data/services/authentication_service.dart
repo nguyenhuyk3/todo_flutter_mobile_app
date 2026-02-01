@@ -2,13 +2,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:todo_flutter_mobile_app/core/constants/others.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/login_result.dart';
-
 import '../../../../core/constants/keys.dart';
+import '../../../../core/constants/others.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
 import '../../a_domain/repositories/authentication.dart';
+import '../../a_domain/usecases/params/login_result_param.dart';
 import '../../a_domain/usecases/params/registration_param.dart';
 import '../datasources/authentication_remote_data_source.dart';
 
@@ -124,7 +123,7 @@ class AuthenticationService implements IAuthenticationRepository {
   }
 
   Future<void> _saveUserToSecureStorage({
-    required LoginResult loginResult,
+    required LoginResultParam loginResult,
   }) async {
     await Future.wait([
       SECURE_STORAGE.write(
@@ -163,7 +162,7 @@ class AuthenticationService implements IAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResult>> login({
+  Future<Either<Failure, LoginResultParam>> login({
     required String email,
     required String password,
   }) async {

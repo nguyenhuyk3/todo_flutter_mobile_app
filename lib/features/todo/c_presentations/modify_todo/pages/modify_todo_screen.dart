@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import 'package:todo_flutter_mobile_app/core/utils/toats.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_bloc.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/widgets/modify_todo_time_selector.dart';
-
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
+import '../../../../../core/utils/toats.dart';
+import '../../../../home/presentations/home_page.dart';
 import '../../../a_domain/entities/enums.dart';
+import '../../bloc/todo_bloc.dart';
+import '../cubit/modify_todo_form_cubit.dart';
 import '../widgets/modify_todo_bottom_actions.dart';
 import '../widgets/modify_todo_date_range_selector.dart';
 import '../widgets/modify_todo_description_input.dart';
 import '../widgets/modify_todo_labels_grid.dart';
 import '../widgets/modify_todo_priority_selector.dart';
 import '../widgets/modify_todo_recurrence_selector.dart';
+import '../widgets/modify_todo_time_selector.dart';
 import '../widgets/modify_todo_title_input.dart';
 
 class ModifyTodoPage extends StatefulWidget {
@@ -45,7 +45,10 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
                 message: "Thêm việc thành công",
               );
 
-              // Todo: Sẽ di chuyển sang màn hình khác nếu thêm thành công
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomePage()),
+              );
             } else {
               ToastUtils.showError(
                 context: context,

@@ -1,9 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/authentication_session.dart';
-
-import '../../a_domain/usecases/params/login_result.dart';
+import '../../a_domain/entities/authentication_session.dart';
+import '../../a_domain/usecases/params/login_result_param.dart';
 import '../../a_domain/usecases/params/registration_param.dart';
 import '../models/user_model.dart';
 
@@ -62,7 +61,7 @@ class AuthenticationRemoteDataSource {
     await _supabaseClient.auth.signOut(scope: SignOutScope.global);
   }
 
-  Future<LoginResult> login({
+  Future<LoginResultParam> login({
     required String email,
     required String password,
   }) async {
@@ -96,7 +95,7 @@ class AuthenticationRemoteDataSource {
       refreshToken: refreshToken!,
     );
     
-    return LoginResult(
+    return LoginResultParam(
       user: userModel.toEntity(),
       session: AuthenticationSession(
         accessToken: accessToken,
