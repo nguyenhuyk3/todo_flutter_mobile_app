@@ -94,7 +94,7 @@ class AuthenticationRemoteDataSource {
       accessToken: accessToken!,
       refreshToken: refreshToken!,
     );
-    
+
     return LoginResultParam(
       user: userModel.toEntity(),
       session: AuthenticationSession(
