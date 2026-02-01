@@ -1,10 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
-import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/todo.dart';
-
 import '../../../../core/errors/failure.dart';
+import '../../b_data/models/todo_model.dart';
 import '../entities/todo_entity.dart';
+import '../repositories/todo.dart';
 
 abstract class TodoUseCase {
   final ITodoRepository _todoRepository;
