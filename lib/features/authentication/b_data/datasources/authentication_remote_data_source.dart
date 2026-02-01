@@ -1,8 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/authentication_session.dart';
+
+import '../../a_domain/usecases/params/login_result.dart';
 import '../../a_domain/usecases/params/registration_param.dart';
-import '../models/user.dart';
+import '../models/user_model.dart';
 
 class AuthenticationRemoteDataSource {
   final SupabaseClient _supabaseClient;
@@ -59,7 +62,7 @@ class AuthenticationRemoteDataSource {
     await _supabaseClient.auth.signOut(scope: SignOutScope.global);
   }
 
-  Future<UserModel> login({
+  Future<LoginResult> login({
     required String email,
     required String password,
   }) async {
@@ -69,13 +72,14 @@ class AuthenticationRemoteDataSource {
       email: email,
       password: password,
     );
-    final session = authResponse.session;
-    final accessToken = session?.accessToken;
-    final refreshToken = session?.refreshToken;
 
     if (authResponse.user == null) {
       throw const AuthException('Đăng nhập thất bại');
     }
+
+    final session = authResponse.session;
+    final accessToken = session?.accessToken;
+    final refreshToken = session?.refreshToken;
     // 2. Query thông tin từ bảng profiles (Vì AuthUser chỉ có id & email)
     final profileData =
         await _supabaseClient
@@ -84,12 +88,20 @@ class AuthenticationRemoteDataSource {
             .eq('id', authResponse.user!.id)
             .single();
     // 3. Merge data thành Model hoàn chỉnh
-    return UserModel.fromSupabase(
+    final userModel = UserModel.fromSupabase(
       profileJson: profileData,
       email: authResponse.user!.email!,
       uid: authResponse.user!.id,
       accessToken: accessToken!,
       refreshToken: refreshToken!,
+    );
+    
+    return LoginResult(
+      user: userModel.toEntity(),
+      session: AuthenticationSession(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      ),
     );
   }
 

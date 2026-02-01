@@ -1,6 +1,6 @@
 import 'enums.dart';
 
-class AppUser {
+class UserEntity {
   final String id;
   final String email;
   final String fullName;
@@ -8,7 +8,7 @@ class AppUser {
   final DateTime dateOfBirth;
   final Sex sex;
 
-  const AppUser({
+  const UserEntity({
     required this.id,
     required this.email,
     required this.fullName,

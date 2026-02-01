@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:todo_flutter_mobile_app/core/constants/others.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/login_result.dart';
 
 import '../../../../core/constants/keys.dart';
 import '../../../../core/errors/failure.dart';
@@ -123,42 +123,47 @@ class AuthenticationService implements IAuthenticationRepository {
     }
   }
 
-  Future<void> _saveUserToSecureStorage({required UserModel user}) async {
+  Future<void> _saveUserToSecureStorage({
+    required LoginResult loginResult,
+  }) async {
     await Future.wait([
       SECURE_STORAGE.write(
         key: SecureStorageKeys.ACCESS_TOKEN,
-        value: user.tokenPair.accessToken,
+        value: loginResult.session.accessToken,
       ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.REFRESH_TOKEN,
-        value: user.tokenPair.refreshToken,
+        value: loginResult.session.refreshToken,
       ),
-      SECURE_STORAGE.write(key: SecureStorageKeys.USER_ID, value: user.id),
+      SECURE_STORAGE.write(
+        key: SecureStorageKeys.USER_ID,
+        value: loginResult.user.id,
+      ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.USER_EMAIL,
-        value: user.email,
+        value: loginResult.user.email,
       ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.USER_FULL_NAME,
-        value: user.fullName,
+        value: loginResult.user.fullName,
       ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.USER_AVATAR_URL,
-        value: user.avatarUrl,
+        value: loginResult.user.avatarUrl,
       ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.USER_DATE_OF_BIRTH,
-        value: user.dateOfBirth.toIso8601String(),
+        value: loginResult.user.dateOfBirth.toIso8601String(),
       ),
       SECURE_STORAGE.write(
         key: SecureStorageKeys.USER_SEX,
-        value: user.sex.toJson(),
+        value: loginResult.user.sex.toJson(),
       ),
     ]);
   }
 
   @override
-  Future<Either<Failure, UserModel>> login({
+  Future<Either<Failure, LoginResult>> login({
     required String email,
     required String password,
   }) async {
@@ -170,7 +175,7 @@ class AuthenticationService implements IAuthenticationRepository {
         password: password,
       );
 
-      _saveUserToSecureStorage(user: data);
+      _saveUserToSecureStorage(loginResult: data);
 
       return Right(data);
     } on AuthException catch (e) {

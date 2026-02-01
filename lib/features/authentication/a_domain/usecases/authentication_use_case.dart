@@ -2,14 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../b_data/models/user.dart';
 import '../repositories/authentication.dart';
-
+import 'params/login_result.dart';
 import 'params/registration_param.dart';
 
-part 'registration_use_case.dart';
 part 'forgot_password_use_case.dart';
 part 'login_use_case.dart';
+part 'registration_use_case.dart';
 
 abstract class AuthenticationUsecase {
   final IAuthenticationRepository _authenticationRepository;

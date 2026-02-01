@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../b_data/models/user.dart';
+import '../usecases/params/login_result.dart';
 import '../usecases/params/registration_param.dart';
 
 /*
@@ -45,7 +45,7 @@ abstract class IAuthenticationRepository {
     required String newPassword,
   });
 
-  Future<Either<Failure, UserModel>> login({
+  Future<Either<Failure, LoginResult>> login({
     required String email,
     required String password,
   });

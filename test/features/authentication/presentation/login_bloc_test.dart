@@ -5,10 +5,11 @@ import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart'; // Dùng để mock (giả lập)
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 
-import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/token_pair.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/authentication_session.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/enums.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/login_result.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user_model.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/email.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/password.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/login/bloc/bloc.dart';
@@ -198,17 +199,20 @@ void main() {
           ),
         ).thenAnswer(
           (_) async => Right(
-            UserModel(
-              tokenPair: TokenPair(
+            LoginResult(
+              user:
+                  UserModel(
+                    id: 'test-uid',
+                    email: 'test@email.com',
+                    fullName: 'fullname',
+                    avatarUrl: 'avatar-url',
+                    dateOfBirth: DateTime.now(),
+                    sex: Sex.female,
+                  ).toEntity(),
+              session: AuthenticationSession(
                 accessToken: 'access-token',
                 refreshToken: 'refresh-token',
               ),
-              id: 'test-uid',
-              email: 'test@email.com',
-              fullName: 'fullname',
-              avatarUrl: 'avatar-url',
-              dateOfBirth: DateTime.now(),
-              sex: Sex.female,
             ),
           ),
         );

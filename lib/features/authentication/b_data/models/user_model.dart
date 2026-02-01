@@ -1,21 +1,24 @@
 import 'package:intl/intl.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/token_pair.dart';
 
-import '../../a_domain/entities/app_user.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/user_entity.dart';
+
 import '../../a_domain/entities/enums.dart';
 
-class UserModel extends AppUser {
-  TokenPair tokenPair;
+class UserModel {
+  final String id;
+  final String email;
+  final String fullName;
+  final String avatarUrl;
+  final DateTime dateOfBirth;
+  final Sex sex;
 
   UserModel({
-    required this.tokenPair,
-
-    required super.id,
-    required super.email,
-    required super.fullName,
-    required super.avatarUrl,
-    required super.dateOfBirth,
-    required super.sex,
+    required this.id,
+    required this.email,
+    required this.fullName,
+    required this.avatarUrl,
+    required this.dateOfBirth,
+    required this.sex,
   });
 
   /// Factory để parse dữ liệu kết hợp từ:
@@ -29,10 +32,6 @@ class UserModel extends AppUser {
     required String refreshToken,
   }) {
     return UserModel(
-      tokenPair: TokenPair(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      ),
       id: uid,
       email: email,
       fullName: profileJson['full_name'] as String? ?? '',
@@ -40,6 +39,17 @@ class UserModel extends AppUser {
       // Supabase trả date dạng string 'yyyy-MM-dd'
       dateOfBirth: DateTime.parse(profileJson['date_of_birth']),
       sex: Sex.fromString(profileJson['sex'] as String),
+    );
+  }
+
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      email: email,
+      fullName: fullName,
+      avatarUrl: avatarUrl,
+      dateOfBirth: dateOfBirth,
+      sex: sex,
     );
   }
 
@@ -52,7 +62,6 @@ class UserModel extends AppUser {
       'avatar_url': avatarUrl,
       'date_of_birth': DateFormat('yyyy-MM-dd').format(dateOfBirth),
       'sex': sex.toJson(),
-      'token_pair': tokenPair.toJson(),
     };
   }
 }
