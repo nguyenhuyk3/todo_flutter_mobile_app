@@ -80,13 +80,10 @@ class AuthenticationService implements IAuthenticationRepository {
 
       return const Right(true);
     } on PostgrestException catch (e) {
-      LOGGER.f(e);
       return Left(Failure(error: mapPostgrestException(e), details: e));
     } on AuthException catch (e) {
-      LOGGER.f(e);
       return Left(Failure(error: mapAuthException(e), details: e));
     } catch (e) {
-      LOGGER.f(e);
       return Left(Failure(error: ErrorInformation.UNDEFINED_ERROR, details: e));
     }
   }
