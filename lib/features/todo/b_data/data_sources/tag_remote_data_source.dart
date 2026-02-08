@@ -8,7 +8,7 @@ class TagRemoteDataSource {
   TagRemoteDataSource({required SupabaseClient supabaseClient})
     : _supabaseClient = supabaseClient;
 
-  Future<List<TagModel>> getTagsByUserId(String userId) async {
+  Future<List<TagModel>> getAllTags(String userId) async {
     final response = await _supabaseClient
         .from('tags')
         .select()

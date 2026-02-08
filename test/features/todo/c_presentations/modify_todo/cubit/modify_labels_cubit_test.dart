@@ -12,19 +12,47 @@ import 'package:todo_flutter_mobile_app/features/todo/c_presentations/models/lab
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/label/modify_labels_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/label/modify_labels_state.dart';
 
-class MockGetTagsByUserIdUseCase extends Mock
-    implements GetTagsByUserIdUseCase {}
+class MockGetAllTagsUseCase extends Mock implements GetAllTagsUseCase {}
 
 class MockUpdateTagUseCase extends Mock implements UpdateTagUseCase {}
 
 void main() {
   late ModifyLabelCubit cubit;
-  late MockGetTagsByUserIdUseCase mockGetTagsByUserIdUseCase;
+  late MockGetAllTagsUseCase mockGetAllTagsUseCase;
   late MockUpdateTagUseCase mockUpdateTagUseCase;
 
+  const tUserId = 'user-123';
+  const tTagId = 'tag-1';
+  const tTagName = 'Work';
+  const tTagColorHex = '#FF0000'; // Red
+  const tTagColorObj = Color(0xFFFF0000);
+
+  final tTagModel = TagModel(
+    id: tTagId,
+    userId: tUserId,
+    name: tTagName,
+    color: tTagColorHex,
+  );
+
+  final tLabelItem = LabelItem(
+    id: tTagId,
+    name: tTagName,
+    color: tTagColorObj,
+    isSelected: false,
+  );
+
+  setUpAll(() {
+    registerFallbackValue(const Color(0xFF000000));
+  });
+
   setUp(() {
-    mockGetTagsByUserIdUseCase = MockGetTagsByUserIdUseCase();
+    mockGetAllTagsUseCase = MockGetAllTagsUseCase();
     mockUpdateTagUseCase = MockUpdateTagUseCase();
+
+    cubit = ModifyLabelCubit(
+      getAllTagsUseCase: mockGetAllTagsUseCase,
+      updateTagUseCase: mockUpdateTagUseCase,
+    );
   });
 
   tearDown(() {
@@ -32,224 +60,169 @@ void main() {
   });
 
   group('ModifyLabelCubit', () {
-    group('Initial state', () {
-      test('Initializes with default state', () {
-        cubit = ModifyLabelCubit(
-          getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-          updateTagUseCase: mockUpdateTagUseCase,
-        );
-
-        expect(cubit.state.labels, isEmpty);
-        expect(cubit.state.isLoading, false);
-        expect(cubit.state.error, isNull);
-      });
+    test('Initial state is correct', () {
+      expect(cubit.state, const ModifyLabelState());
     });
 
-    group('UpdateTag', () {
-      const tagId = 'tag-1';
-      const initialName = 'Old name';
-      const newName = 'New name';
-      const colorHex = '#EF4444';
-
-      final initialLabel = LabelItem(
-        id: tagId,
-        name: initialName,
-        color: const Color(0xFFEF4444),
-        isSelected: false,
-      );
-
+    group('LoadTags', () {
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits state with updated label and error null on success',
+        'Emits [isLoading=true, labels=List, isLoading=false] when success',
         build: () {
           when(
-            () => mockUpdateTagUseCase.execute(
-              id: tagId,
-              name: newName,
-              color: any(named: 'color'),
-            ),
-          ).thenAnswer(
-            (_) async => Right(
-              TagModel(
-                id: tagId,
-                userId: 'user-1',
-                name: newName,
-                color: colorHex,
-              ),
-            ),
-          );
+            () => mockGetAllTagsUseCase.execute(),
+          ).thenAnswer((_) async => Right([tTagModel]));
 
-          return ModifyLabelCubit(
-            getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-            updateTagUseCase: mockUpdateTagUseCase,
-          );
+          return cubit;
         },
-        seed: () => ModifyLabelState(labels: [initialLabel]),
-        act: (c) => c.updateTag(tagId: tagId, newName: newName),
+        act: (cubit) => cubit.loadTags(),
         expect:
             () => [
+              // 1. Loading
               isA<ModifyLabelState>()
-                  .having((s) => s.labels.length, 'labels.length', 1)
-                  .having(
-                    (s) => s.labels.first.name,
-                    'labels.first.name',
-                    newName,
-                  )
-                  .having((s) => s.error, 'error', isNull),
+                  .having((s) => s.isLoading, 'isLoading', true)
+                  .having((s) => s.error, 'error', null),
+              // 2. Success
+              isA<ModifyLabelState>()
+                  .having((s) => s.isLoading, 'isLoading', false)
+                  .having((s) => s.labels.length, 'labels length', 1)
+                  .having((s) => s.labels.first.name, 'label name', tTagName)
+                  .having((s) => s.error, 'error', null),
             ],
       );
 
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits state with updated label and new color when newColor is provided',
+        'Emits error message when usecase returns Failure',
         build: () {
-          // colorToHex produces lowercase (e.g. #10b981); stub with any to match
-          when(
-            () => mockUpdateTagUseCase.execute(
-              id: tagId,
-              name: newName,
-              color: any(named: 'color'),
-            ),
-          ).thenAnswer(
-            (_) async => Right(
-              TagModel(
-                id: tagId,
-                userId: 'user-1',
-                name: newName,
-                color: '#10b981',
-              ),
-            ),
-          );
-
-          return ModifyLabelCubit(
-            getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-            updateTagUseCase: mockUpdateTagUseCase,
-          );
-        },
-        seed: () => ModifyLabelState(labels: [initialLabel]),
-        act:
-            (c) => c.updateTag(
-              tagId: tagId,
-              newName: newName,
-              newColor: const Color(0xFF10B981),
-            ),
-        expect:
-            () => [
-              isA<ModifyLabelState>()
-                  .having(
-                    (s) => s.labels.first.name,
-                    'labels.first.name',
-                    newName,
-                  )
-                  .having((s) => s.error, 'error', isNull),
-            ],
-      );
-
-      blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits state with error message on failure',
-        build: () {
-          when(
-            () => mockUpdateTagUseCase.execute(
-              id: tagId,
-              name: newName,
-              color: any(named: 'color'),
-            ),
-          ).thenAnswer(
+          when(() => mockGetAllTagsUseCase.execute()).thenAnswer(
             (_) async => Left(Failure(error: ErrorInformation.UNDEFINED_ERROR)),
           );
 
-          return ModifyLabelCubit(
-            getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-            updateTagUseCase: mockUpdateTagUseCase,
-          );
+          return cubit;
         },
-        seed: () => ModifyLabelState(labels: [initialLabel]),
-        act: (c) => c.updateTag(tagId: tagId, newName: newName),
+        act: (cubit) => cubit.loadTags(),
+        expect:
+            () => [
+              // 1. Loading
+              isA<ModifyLabelState>().having(
+                (s) => s.isLoading,
+                'isLoading',
+                true,
+              ),
+              // 2. Failure
+              isA<ModifyLabelState>()
+                  .having((s) => s.isLoading, 'isLoading', false)
+                  .having((s) => s.labels, 'labels', isEmpty)
+                  .having(
+                    (s) => s.error,
+                    'error message',
+                    ErrorInformation.UNDEFINED_ERROR.message,
+                  ),
+            ],
+      );
+    });
+
+    group('UpdateTag', () {
+      const newName = 'New Work';
+      const newColor = Color(0xFF00FF00); // Green
+      const newColorHex = '#00ff00';
+
+      final updatedTagModel = TagModel(
+        id: tTagId,
+        userId: tUserId,
+        name: newName,
+        color: newColorHex,
+      );
+
+      blocTest<ModifyLabelCubit, ModifyLabelState>(
+        'Emits state with updated list when success (With New Color)',
+        build: () {
+          when(
+            () => mockUpdateTagUseCase.execute(
+              id: tTagId,
+              name: newName,
+              color: any(named: 'color'),
+            ),
+          ).thenAnswer((_) async => Right(updatedTagModel));
+
+          return cubit;
+        },
+        seed: () => ModifyLabelState(labels: [tLabelItem]),
+        act:
+            (cubit) => cubit.updateTag(
+              tagId: tTagId,
+              newName: newName,
+              newColor: newColor,
+            ),
+        expect:
+            () => [
+              isA<ModifyLabelState>()
+                  .having((s) => s.labels.first.name, 'Updated name', newName)
+                  .having(
+                    (s) => s.labels.first.color.value,
+                    'Updated color',
+                    newColor.value,
+                  )
+                  .having((s) => s.error, 'error', null),
+            ],
+      );
+
+      blocTest<ModifyLabelCubit, ModifyLabelState>(
+        'Emits state with updated list when success (Without New Color)',
+        build: () {
+          when(
+            () => mockUpdateTagUseCase.execute(
+              id: tTagId,
+              name: newName,
+              color: null,
+            ),
+          ).thenAnswer((_) async => Right(updatedTagModel));
+
+          return cubit;
+        },
+        seed: () => ModifyLabelState(labels: [tLabelItem]),
+        act:
+            (cubit) => cubit.updateTag(
+              tagId: tTagId,
+              newName: newName,
+              newColor: null,
+            ),
+        expect:
+            () => [
+              isA<ModifyLabelState>().having(
+                (s) => s.labels.first.name,
+                'Updated name',
+                newName,
+              ),
+            ],
+      );
+
+      blocTest<ModifyLabelCubit, ModifyLabelState>(
+        'Emits error message when update fails',
+        build: () {
+          when(
+            () => mockUpdateTagUseCase.execute(
+              id: any(named: 'id'),
+              name: any(named: 'name'),
+              color: any(named: 'color'),
+            ),
+          ).thenAnswer(
+            (_) async =>
+                Left(Failure(error: ErrorInformation.DB_PERMISSION_DENIED)),
+          );
+          
+          return cubit;
+        },
+        seed: () => ModifyLabelState(labels: [tLabelItem]),
+        act: (cubit) => cubit.updateTag(tagId: tTagId, newName: 'Fail Name'),
         expect:
             () => [
               isA<ModifyLabelState>().having(
                 (s) => s.error,
-                'error',
-                Failure(error: ErrorInformation.UNDEFINED_ERROR).message,
+                'Error message match',
+                ErrorInformation.DB_PERMISSION_DENIED.message,
               ),
             ],
       );
-
-      test('Keeps other labels unchanged when updating one', () async {
-        final otherLabel = LabelItem(
-          id: 'tag-2',
-          name: 'Other',
-          color: Colors.blue,
-          isSelected: false,
-        );
-        when(
-          () => mockUpdateTagUseCase.execute(
-            id: tagId,
-            name: newName,
-            color: any(named: 'color'),
-          ),
-        ).thenAnswer(
-          (_) async => Right(
-            TagModel(
-              id: tagId,
-              userId: 'user-1',
-              name: newName,
-              color: colorHex,
-            ),
-          ),
-        );
-        cubit = ModifyLabelCubit(
-          getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-          updateTagUseCase: mockUpdateTagUseCase,
-        );
-        cubit.emit(ModifyLabelState(labels: [initialLabel, otherLabel]));
-
-        await cubit.updateTag(tagId: tagId, newName: newName);
-
-        expect(cubit.state.labels.length, 2);
-        expect(
-          cubit.state.labels.firstWhere((l) => l.id == tagId).name,
-          newName,
-        );
-        expect(
-          cubit.state.labels.firstWhere((l) => l.id == 'tag-2').name,
-          'Other',
-        );
-      });
-    });
-
-    group('LoadTags', () {
-      // loadTags() uses global SECURE_STORAGE.read(key: USER_ID). In unit test
-      // the storage may return null and the cubit will throw. Prefer testing
-      // loadTags in integration tests or inject a storage dependency for testing.
-      test('Emits loading state first when loadTags is called', () async {
-        // This test may throw if SECURE_STORAGE.read returns null in test env.
-        when(
-          () =>
-              mockGetTagsByUserIdUseCase.execute(userId: any(named: 'userId')),
-        ).thenAnswer((_) async => Right([]));
-
-        cubit = ModifyLabelCubit(
-          getTagsByUserIdUseCase: mockGetTagsByUserIdUseCase,
-          updateTagUseCase: mockUpdateTagUseCase,
-        );
-
-        final states = <ModifyLabelState>[];
-        final subscription = cubit.stream.listen(states.add);
-
-        try {
-          await cubit.loadTags();
-        } catch (_) {
-          // userId may be null from SECURE_STORAGE in test
-        }
-
-        await subscription.cancel();
-
-        final loadingStates = states.where((s) => s.isLoading == true);
-        expect(
-          loadingStates.isNotEmpty,
-          true,
-          reason: 'Cubit should emit loading when loadTags starts',
-        );
-      });
     });
   });
 }

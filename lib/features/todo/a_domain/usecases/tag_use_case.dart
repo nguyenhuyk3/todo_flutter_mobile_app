@@ -11,11 +11,11 @@ abstract class TagUseCase {
     : _tagRepository = tagRepository;
 }
 
-class GetTagsByUserIdUseCase extends TagUseCase {
-  GetTagsByUserIdUseCase({required super.tagRepository});
+class GetAllTagsUseCase extends TagUseCase {
+  GetAllTagsUseCase({required super.tagRepository});
 
-  Future<Either<Failure, List<TagModel>>> execute({required String userId}) {
-    return _tagRepository.getTagsByUserId(userId);
+  Future<Either<Failure, List<TagModel>>> execute() {
+    return _tagRepository.getAllTags();
   }
 }
 

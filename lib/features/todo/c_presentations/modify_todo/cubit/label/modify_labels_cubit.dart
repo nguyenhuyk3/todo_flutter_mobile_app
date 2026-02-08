@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/constants/keys.dart';
-import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/utils/color.dart';
 import '../../../../a_domain/usecases/tag_use_case.dart';
 import '../../../../b_data/models/tag_model.dart';
@@ -12,21 +10,21 @@ import '../../../models/label_item.dart';
 import 'modify_labels_state.dart';
 
 class ModifyLabelCubit extends Cubit<ModifyLabelState> {
-  final GetTagsByUserIdUseCase _getTagsByUserIdUseCase;
+  final GetAllTagsUseCase _getAllTagsUseCase;
   final UpdateTagUseCase _updateTagUseCase;
 
   ModifyLabelCubit({
-    required GetTagsByUserIdUseCase getTagsByUserIdUseCase,
+    required GetAllTagsUseCase getAllTagsUseCase,
     required UpdateTagUseCase updateTagUseCase,
-  }) : _getTagsByUserIdUseCase = getTagsByUserIdUseCase,
+  }) : _getAllTagsUseCase = getAllTagsUseCase,
        _updateTagUseCase = updateTagUseCase,
+
        super(const ModifyLabelState());
 
   Future<void> loadTags() async {
     emit(state.copyWith(isLoading: true, error: null));
 
-    final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
-    final result = await _getTagsByUserIdUseCase.execute(userId: userId!);
+    final result = await _getAllTagsUseCase.execute();
 
     result.fold(
       (failure) {

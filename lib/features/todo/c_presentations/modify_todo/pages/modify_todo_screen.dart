@@ -36,7 +36,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
         final repo = context.read<ITagRepository>();
 
         return ModifyLabelCubit(
-          getTagsByUserIdUseCase: GetTagsByUserIdUseCase(tagRepository: repo),
+          getAllTagsUseCase: GetAllTagsUseCase(tagRepository: repo),
           updateTagUseCase: UpdateTagUseCase(tagRepository: repo),
         )..loadTags();
       },
@@ -71,7 +71,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
             builder: (context, homeState) {
               final isLoading =
                   homeState.status == FormzSubmissionStatus.inProgress;
-              
+
               return Stack(
                 children: [
                   Scaffold(

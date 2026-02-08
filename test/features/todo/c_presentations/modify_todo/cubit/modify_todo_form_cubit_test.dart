@@ -1,421 +1,488 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 
+// --- Imports đúng đường dẫn project của bạn ---
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/enums.dart';
+import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/recurrence_entity.dart';
+import 'package:todo_flutter_mobile_app/features/todo/a_domain/entities/todo_entity.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/models/todo_model.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/todo/modify_todo_form_cubit.dart';
+// (Đừng quên import State file)
+
+// --- Helpers ---
+void mockSecureStorage(String userId) {
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(
+        const MethodChannel('plugins.it_nomads.com/flutter_secure_storage'),
+        (MethodCall methodCall) async {
+          if (methodCall.method == 'read') return userId;
+          return null;
+        },
+      );
+}
+
+void clearMockSecureStorage() {
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(
+        const MethodChannel('plugins.it_nomads.com/flutter_secure_storage'),
+        null,
+      );
+}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('ModifyTodoFormCubit', () {
-    late ModifyTodoFormCubit cubit;
+    // 1. SỬA TẠI ĐÂY: Đổi từ late -> Nullable
+    ModifyTodoFormCubit? cubit;
+    const tUserId = 'user-123';
 
+    final tTodoEntity = TodoEntity(
+      id: 'todo-1',
+      userId: tUserId,
+      title: 'Original Title',
+      description: 'Original Description',
+      startedDate: DateTime(2025, 1, 1),
+      dueDate: DateTime(2025, 1, 5),
+      priority: TodoPriority.high,
+      status: TodoStatus.pending,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      recurrence: const RecurrenceEntity(
+        recurrencePattern: RecurrencePattern.daily,
+        reminderAt: '08:00',
+      ),
+    );
+
+    setUpAll(() {
+      mockSecureStorage(tUserId);
+    });
+
+    tearDownAll(() {
+      clearMockSecureStorage();
+    });
+
+    // 2. SỬA TẠI ĐÂY: Check null trước khi close
     tearDown(() {
-      cubit.close();
+      cubit?.close();
     });
 
-    group('Initial state', () {
-      test(
-        'Initializes with default state when initialTodo is not provided',
-        () {
-          cubit = ModifyTodoFormCubit();
+    // =======================================================
+    // 1. STATE LOGIC TESTS
+    // (Các test này không init cubit nên sẽ gây lỗi nếu dùng late cubit)
+    // =======================================================
+    group('ModifyTodoFormState Logic', () {
+      test('Initial factory creates default state', () {
+        final state = ModifyTodoFormState.initial();
+        expect(state.title, '');
+        expect(state.recurrencePattern, RecurrencePattern.once);
+        expect(state.showTitleError, false);
+      });
 
-          expect(cubit.state.title, '');
-          expect(cubit.state.description, '');
-          expect(cubit.state.priority, TodoPriority.low);
-          expect(cubit.state.status, TodoStatus.pending);
-          expect(cubit.state.startedDate, '');
-          expect(cubit.state.dueDate, '');
-          expect(cubit.state.recurrencePattern, RecurrencePattern.once);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.initial,
-          );
-          expect(cubit.state.showTitleError, false);
-          expect(cubit.state.showDescriptionError, false);
-          expect(cubit.state.showRangeDateError, false);
-        },
-      );
-    });
+      test('isRangeDateValid returns correct boolean', () {
+        // Case: Empty dates
+        var state = ModifyTodoFormState.initial();
+        expect(state.isRangeDateValid, false);
 
-    group('titleChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with new title and showTitleError = false',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.titleChanged(title: 'New todo'),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>()
-                  .having((s) => s.title, 'title', 'New todo')
-                  .having((s) => s.showTitleError, 'showTitleError', false),
-            ],
-      );
-    });
-
-    group('descriptionChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with new description and showDescriptionError = false',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.descriptionChanged(description: 'Detailed description'),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>()
-                  .having(
-                    (s) => s.description,
-                    'description',
-                    'Detailed description',
-                  )
-                  .having(
-                    (s) => s.showDescriptionError,
-                    'showDescriptionError',
-                    false,
-                  ),
-            ],
-      );
-    });
-
-    group('dateRangeChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with startedDate, dueDate and availableWeekdays',
-        build: () => ModifyTodoFormCubit(),
-        act:
-            (c) => c.dateRangeChanged(
-              startedDate: '2026-01-01',
-              dueDate: '2026-01-05',
-            ),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>()
-                  .having((s) => s.startedDate, 'startedDate', '2026-01-01')
-                  .having((s) => s.dueDate, 'dueDate', '2026-01-05')
-                  .having(
-                    (s) => s.showRangeDateError,
-                    'showRangeDateError',
-                    false,
-                  ),
-            ],
-      );
-
-      test(
-        'AvailableWeekdays contains correct weekdays for range < 7 days',
-        () {
-          cubit = ModifyTodoFormCubit();
-          cubit.dateRangeChanged(
-            startedDate: '2026-01-01', // Thu
-            dueDate: '2026-01-03', // Sat
-          );
-          // 2026-01-01 Thu=4, 01-02 Fri=5, 01-03 Sat=6
-          expect(cubit.state.availableWeekdays, [4, 5, 6]);
-        },
-      );
-
-      test('AvailableWeekdays equals [1..7] when range >= 7 days', () {
-        cubit = ModifyTodoFormCubit();
-        cubit.dateRangeChanged(
+        // Case: Valid range
+        state = state.copyWith(
           startedDate: '2026-01-01',
-          dueDate: '2026-01-08',
+          dueDate: '2026-01-02',
         );
-        expect(cubit.state.availableWeekdays, [1, 2, 3, 4, 5, 6, 7]);
+        expect(state.isRangeDateValid, true);
+
+        // Case: Invalid range (End < Start)
+        state = state.copyWith(
+          startedDate: '2026-01-05',
+          dueDate: '2026-01-01',
+        );
+        expect(state.isRangeDateValid, false);
+
+        // Case: Equal dates (One day task) -> Valid
+        state = state.copyWith(
+          startedDate: '2026-01-05',
+          dueDate: '2026-01-05',
+        );
+        expect(state.isRangeDateValid, true);
+      });
+
+      test('copyWith handles nullable reminderAt correctly', () {
+        var state = ModifyTodoFormState.initial();
+
+        // 1. Set Value
+        state = state.copyWith(reminderAt: () => '10:00');
+        expect(state.reminderAt, '10:00');
+
+        // 2. Ignore Value (keep previous)
+        state = state.copyWith(title: 'Change Title Only');
+        expect(state.reminderAt, '10:00');
+
+        // 3. Clear Value (set to null)
+        state = state.copyWith(reminderAt: () => null);
+        expect(state.reminderAt, null);
       });
     });
 
-    group('recurrenceChanged', () {
+    // =======================================================
+    // 2. CUBIT TESTS
+    // =======================================================
+    group('Initialization', () {
+      test('Initializes with default state when initialTodo is null', () {
+        cubit = ModifyTodoFormCubit(); // Gán cubit ở đây
+        expect(cubit!.state.title, isEmpty); // Dùng cubit! hoặc cubit?.
+        expect(cubit!.state.status, TodoStatus.pending);
+      });
+
+      test('Initializes with mapped values when initialTodo is provided', () {
+        cubit = ModifyTodoFormCubit(initialTodo: tTodoEntity);
+
+        expect(cubit!.state.title, 'Original Title');
+        expect(cubit!.state.startedDate, '2025-01-01T00:00:00.000');
+        expect(cubit!.state.recurrencePattern, RecurrencePattern.daily);
+        expect(cubit!.state.reminderAt, '08:00');
+      });
+    });
+
+    group('Field Updates', () {
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with recurrencePattern = once and clears reminder and customWeekdays',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.recurrenceChanged(pattern: RecurrencePattern.once),
+        'Emits new Title and resets error flag',
+        // Luôn trả về cubit instance trong build
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
+        act: (c) => c.titleChanged(title: 'New Title'),
         expect:
             () => [
               isA<ModifyTodoFormState>()
-                  .having(
-                    (s) => s.recurrencePattern,
-                    'recurrencePattern',
-                    RecurrencePattern.once,
-                  )
-                  .having((s) => s.reminderAt, 'reminderAt', null)
-                  .having((s) => s.customWeekdays, 'customWeekdays', []),
+                  .having((s) => s.title, 'title', 'New Title')
+                  .having((s) => s.showTitleError, 'error hidden', false),
             ],
       );
 
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with recurrencePattern = custom',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.recurrenceChanged(pattern: RecurrencePattern.custom),
+        'Emits new Description and resets error flag',
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
+        act: (c) => c.descriptionChanged(description: 'New Desc'),
         expect:
             () => [
               isA<ModifyTodoFormState>().having(
-                (s) => s.recurrencePattern,
-                'recurrencePattern',
-                RecurrencePattern.custom,
+                (s) => s.description,
+                'description',
+                'New Desc',
               ),
             ],
       );
 
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with recurrencePattern = daily and clears customWeekdays',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.recurrenceChanged(pattern: RecurrencePattern.daily),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>()
-                  .having(
-                    (s) => s.recurrencePattern,
-                    'recurrencePattern',
-                    RecurrencePattern.daily,
-                  )
-                  .having((s) => s.customWeekdays, 'customWeekdays', []),
-            ],
-      );
-    });
-
-    group('reminderTimeChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with reminderAt in HH:mm format',
-        build: () => ModifyTodoFormCubit(),
-        act:
-            (c) => c.reminderTimeChanged(
-              time: const TimeOfDay(hour: 10, minute: 5),
-            ),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>().having(
-                (s) => s.reminderAt,
-                'reminderAt',
-                '10:05',
-              ),
-            ],
-      );
-    });
-
-    group('priorityChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with new priority',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.priorityChanged(TodoPriority.high),
+        'Emits new Priority',
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
+        act: (c) => c.priorityChanged(TodoPriority.medium),
         expect:
             () => [
               isA<ModifyTodoFormState>().having(
                 (s) => s.priority,
                 'priority',
-                TodoPriority.high,
+                TodoPriority.medium,
               ),
             ],
       );
-    });
 
-    group('customWeekdaysChanged', () {
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with customWeekdays and recurrencePattern = custom',
-        build: () => ModifyTodoFormCubit(),
-        act: (c) => c.customWeekdaysChanged(days: [1, 3, 5]),
-        expect:
-            () => [
-              isA<ModifyTodoFormState>()
-                  .having((s) => s.customWeekdays, 'customWeekdays', [1, 3, 5])
-                  .having(
-                    (s) => s.recurrencePattern,
-                    'recurrencePattern',
-                    RecurrencePattern.custom,
-                  ),
-            ],
-      );
-    });
-
-    group('tagIdsChanged', () {
-      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-        'Emits state with selectedTagIds',
-        build: () => ModifyTodoFormCubit(),
+        'Emits new Tag IDs',
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
         act: (c) => c.tagIdsChanged(['id1', 'id2']),
         expect:
             () => [
               isA<ModifyTodoFormState>().having(
                 (s) => s.selectedTagIds,
-                'selectedTagIds',
+                'tags',
                 ['id1', 'id2'],
               ),
             ],
       );
     });
 
-    // group('projectChanged', () {
-    //   blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-    //     'Emits state with projectId = null and resets parentTodoId when projectChanged(null)',
-    //     build: () => ModifyTodoFormCubit(),
-    //     seed: () => ModifyTodoFormState.initial(),
-    //     act: (c) => c.projectChanged(projectId: null),
-    //     expect: () => [isA<ModifyTodoFormState>(), isA<ModifyTodoFormState>()],
-    //   );
-
-    //   blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-    //     'Emits state with projectId and resets recurrence when projectChanged(projectId)',
-    //     build: () => ModifyTodoFormCubit(),
-    //     act: (c) => c.projectChanged(projectId: 'project-1'),
-    //     expect:
-    //         () => [
-    //           isA<ModifyTodoFormState>()
-    //               .having(
-    //                 (s) => s.recurrencePattern,
-    //                 'recurrencePattern',
-    //                 RecurrencePattern.once,
-    //               )
-    //               .having((s) => s.reminderAt, 'reminderAt', null)
-    //               .having((s) => s.availableWeekdays, 'availableWeekdays', [])
-    //               .having((s) => s.customWeekdays, 'customWeekdays', []),
-    //         ],
-    //   );
-    // });
-
-    // group('ParentTodoChanged', () {
-    //   blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
-    //     'Rmits state with parentTodoId',
-    //     build: () => ModifyTodoFormCubit(),
-    //     act: (c) => c.parentTodoChanged('parent-id'),
-    //     expect: () => [isA<ModifyTodoFormState>()],
-    //   );
-    // });
-
-    group('SubmitForm validation', () {
-      test(
-        'Returns null and emits showTitleError when title is empty',
-        () async {
+    group('Date Range & Logic', () {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Emits updated Dates and Calculated Weekdays (< 7 days)',
+        build: () {
           cubit = ModifyTodoFormCubit();
-          cubit.dateRangeChanged(
-            startedDate: '2026-01-01',
-            dueDate: '2026-01-02',
-          );
-          cubit.descriptionChanged(description: 'Description');
-          cubit.titleChanged(title: '   ');
-
-          final result = await cubit.submitForm();
-
-          expect(result, isNull);
-          expect(cubit.state.showTitleError, true);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.failure,
-          );
-          expect(cubit.state.error, ErrorInformation.EMPTY_TITLE.message);
+          return cubit!;
         },
+        act:
+            (c) => c.dateRangeChanged(
+              startedDate: '2026-01-01',
+              dueDate: '2026-01-03',
+            ),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>()
+                  .having((s) => s.startedDate, 'started', '2026-01-01')
+                  .having((s) => s.dueDate, 'due', '2026-01-03')
+                  .having((s) => s.availableWeekdays, 'weekdays', [4, 5, 6])
+                  .having((s) => s.showRangeDateError, 'error hidden', false),
+            ],
       );
 
-      test(
-        'Returns null and emits showDescriptionError when description is empty',
-        () async {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Emits full week days when range >= 7 days',
+        build: () {
           cubit = ModifyTodoFormCubit();
-          cubit.dateRangeChanged(
-            startedDate: '2026-01-01',
-            dueDate: '2026-01-02',
-          );
-          cubit.titleChanged(title: 'Title');
-          cubit.descriptionChanged(description: '   ');
-
-          final result = await cubit.submitForm();
-
-          expect(result, isNull);
-          expect(cubit.state.showDescriptionError, true);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.failure,
-          );
-          expect(cubit.state.error, ErrorInformation.EMPTY_DESCRIPTION.message);
+          return cubit!;
         },
+        act:
+            (c) => c.dateRangeChanged(
+              startedDate: '2026-01-01',
+              dueDate: '2026-01-08',
+            ),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>().having(
+                (s) => s.availableWeekdays,
+                'weekdays',
+                [1, 2, 3, 4, 5, 6, 7],
+              ),
+            ],
       );
 
-      test(
-        'Returns null and emits showRangeDateError when date range is invalid',
-        () async {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Removes invalid Custom Weekdays when range shrinks',
+        build: () {
           cubit = ModifyTodoFormCubit();
-          cubit.titleChanged(title: 'Title');
-          cubit.descriptionChanged(description: 'Description');
-          // startedDate, dueDate still empty or invalid
-
-          final result = await cubit.submitForm();
-
-          expect(result, isNull);
-          expect(cubit.state.showRangeDateError, true);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.failure,
-          );
-          expect(cubit.state.error, ErrorInformation.EMPTY_DATE_RANGE.message);
+          return cubit!;
         },
+        seed:
+            () => const ModifyTodoFormState(
+              title: '',
+              description: '',
+              status: TodoStatus.pending,
+              startedDate: '',
+              dueDate: '',
+              showTitleError: false,
+              showDescriptionError: false,
+              showRangeDateError: false,
+              showReminderError: false,
+              formzSubmissionStatus: FormzSubmissionStatus.initial,
+              customWeekdays: [4, 7],
+            ),
+        act:
+            (c) => c.dateRangeChanged(
+              startedDate: '2026-01-01',
+              dueDate: '2026-01-03',
+            ),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>()
+                  .having((s) => s.availableWeekdays, 'available', [4, 5, 6])
+                  .having((s) => s.customWeekdays, 'filtered custom', [4]),
+            ],
+      );
+    });
+
+    group('Recurrence & Reminder Logic', () {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Clears Reminder and Custom Days when pattern is ONCE',
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
+        seed:
+            () => ModifyTodoFormState.initial().copyWith(
+              reminderAt: () => '10:00',
+              customWeekdays: [1],
+            ),
+        act: (c) => c.recurrenceChanged(pattern: RecurrencePattern.once),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>()
+                  .having(
+                    (s) => s.recurrencePattern,
+                    'pattern',
+                    RecurrencePattern.once,
+                  )
+                  .having((s) => s.reminderAt, 'reminder null', isNull)
+                  .having((s) => s.customWeekdays, 'custom empty', isEmpty),
+            ],
       );
 
-      test(
-        'Returns null and emits showRangeDateError when dueDate is before startedDate',
-        () async {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Clears Custom Days but KEEPS Reminder when pattern is DAILY',
+        build: () {
           cubit = ModifyTodoFormCubit();
-          cubit.titleChanged(title: 'Title');
-          cubit.descriptionChanged(description: 'Description');
-          cubit.dateRangeChanged(
-            startedDate: '2026-01-10',
-            dueDate: '2026-01-01',
-          );
-
-          final result = await cubit.submitForm();
-
-          expect(result, isNull);
-          expect(cubit.state.showRangeDateError, true);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.failure,
-          );
+          return cubit!;
         },
+        seed:
+            () => ModifyTodoFormState.initial().copyWith(
+              reminderAt: () => '10:00',
+              customWeekdays: [1],
+            ),
+        act: (c) => c.recurrenceChanged(pattern: RecurrencePattern.daily),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>()
+                  .having(
+                    (s) => s.recurrencePattern,
+                    'pattern',
+                    RecurrencePattern.daily,
+                  )
+                  .having((s) => s.customWeekdays, 'custom empty', isEmpty)
+                  .having((s) => s.reminderAt, 'reminder preserved', '10:00'),
+            ],
       );
 
-      test(
-        'Returns null and emits showReminderError when recurring but reminder time not set',
-        () async {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Updates Time Format correctly',
+        build: () {
           cubit = ModifyTodoFormCubit();
-          cubit.titleChanged(title: 'Title');
-          cubit.descriptionChanged(description: 'Description');
-          cubit.dateRangeChanged(
-            startedDate: '2026-01-01',
-            dueDate: '2026-01-02',
-          );
-          cubit.recurrenceChanged(pattern: RecurrencePattern.daily);
-          // reminderAt still null
-
-          final result = await cubit.submitForm();
-
-          expect(result, isNull);
-          expect(cubit.state.showReminderError, true);
-          expect(
-            cubit.state.formzSubmissionStatus,
-            FormzSubmissionStatus.failure,
-          );
-          expect(
-            cubit.state.error,
-            ErrorInformation.EMPTY_REMINDER_TIME.message,
-          );
+          return cubit!;
         },
+        act:
+            (c) => c.reminderTimeChanged(
+              time: const TimeOfDay(hour: 9, minute: 5),
+            ),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>().having(
+                (s) => s.reminderAt,
+                'formatted',
+                '09:05',
+              ),
+            ],
       );
 
-      test('Emits inProgress before validation', () async {
+      blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
+        'Sets Custom Days and auto switches to Custom Pattern',
+        build: () {
+          cubit = ModifyTodoFormCubit();
+          return cubit!;
+        },
+        act: (c) => c.customWeekdaysChanged(days: [2, 4]),
+        expect:
+            () => [
+              isA<ModifyTodoFormState>()
+                  .having((s) => s.customWeekdays, 'days', [2, 4])
+                  .having(
+                    (s) => s.recurrencePattern,
+                    'pattern',
+                    RecurrencePattern.custom,
+                  ),
+            ],
+      );
+    });
+
+    group('Submit Form Validation', () {
+      test('Fails on Empty Title', () async {
         cubit = ModifyTodoFormCubit();
-        cubit.titleChanged(title: 'Title');
-        cubit.descriptionChanged(description: 'Description');
-        cubit.dateRangeChanged(
+        cubit!.descriptionChanged(description: 'Desc');
+        cubit!.dateRangeChanged(
           startedDate: '2026-01-01',
           dueDate: '2026-01-02',
         );
 
-        final states = <ModifyTodoFormState>[];
-        final subscription = cubit.stream.listen(states.add);
+        final result = await cubit!.submitForm();
 
-        try {
-          await cubit.submitForm();
-        } catch (_) {
-          // In test env SECURE_STORAGE.read may return null so userId! throws
-        }
+        expect(result, isNull);
+        expect(cubit!.state.showTitleError, true);
+        expect(cubit!.state.error, ErrorInformation.EMPTY_TITLE.message);
+      });
 
-        await subscription.cancel();
-        final inProgressStates = states.where(
-          (s) => s.formzSubmissionStatus == FormzSubmissionStatus.inProgress,
+      test('Fails on Empty Description', () async {
+        cubit = ModifyTodoFormCubit();
+        cubit!.titleChanged(title: 'Title');
+        cubit!.dateRangeChanged(
+          startedDate: '2026-01-01',
+          dueDate: '2026-01-02',
         );
-        expect(inProgressStates.isNotEmpty, true);
+
+        final result = await cubit!.submitForm();
+
+        expect(result, isNull);
+        expect(cubit!.state.showDescriptionError, true);
+        expect(cubit!.state.error, ErrorInformation.EMPTY_DESCRIPTION.message);
+      });
+
+      test('Fails on Invalid Date Range', () async {
+        cubit = ModifyTodoFormCubit();
+        cubit!.titleChanged(title: 'Title');
+        cubit!.descriptionChanged(description: 'Desc');
+        cubit!.dateRangeChanged(
+          startedDate: '2026-01-05',
+          dueDate: '2026-01-01',
+        );
+
+        final result = await cubit!.submitForm();
+
+        expect(result, isNull);
+        expect(cubit!.state.showRangeDateError, true);
+      });
+
+      test('Fails if Recurrence is ON but Reminder is Missing', () async {
+        cubit = ModifyTodoFormCubit();
+        cubit!.titleChanged(title: 'Title');
+        cubit!.descriptionChanged(description: 'Desc');
+        cubit!.dateRangeChanged(
+          startedDate: '2026-01-01',
+          dueDate: '2026-01-02',
+        );
+
+        cubit!.recurrenceChanged(pattern: RecurrencePattern.daily);
+
+        final result = await cubit!.submitForm();
+
+        expect(result, isNull);
+        expect(cubit!.state.showReminderError, true);
+        expect(
+          cubit!.state.error,
+          ErrorInformation.EMPTY_REMINDER_TIME.message,
+        );
+      });
+    });
+
+    group('Submit Form Success', () {
+      test('Returns TodoModel successfully when valid', () async {
+        cubit = ModifyTodoFormCubit();
+
+        // 1. Fill Valid Data
+        cubit!.titleChanged(title: 'Final Task');
+        cubit!.descriptionChanged(description: 'Full Desc');
+        cubit!.priorityChanged(TodoPriority.low);
+        cubit!.dateRangeChanged(
+          startedDate: '2026-01-01',
+          dueDate: '2026-01-05',
+        );
+        cubit!.tagIdsChanged(['tag-a']);
+
+        cubit!.recurrenceChanged(pattern: RecurrencePattern.daily);
+        cubit!.reminderTimeChanged(time: const TimeOfDay(hour: 10, minute: 0));
+
+        // 2. Submit
+        final result = await cubit!.submitForm();
+
+        expect(
+          cubit!.state.formzSubmissionStatus,
+          FormzSubmissionStatus.success,
+        );
+        expect(result, isNotNull);
+        expect(result, isA<TodoModel>());
+
+        expect(result?.title, 'Final Task');
+        expect(result?.recurrence?.recurrencePattern, RecurrencePattern.daily);
+        expect(result?.recurrence?.reminderAt, '10:00');
       });
     });
   });

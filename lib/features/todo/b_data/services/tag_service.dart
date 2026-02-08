@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/constants/keys.dart';
+import '../../../../core/constants/others.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/supabase_error_mapper.dart';
 import '../../a_domain/repositories/tag.dart';
@@ -14,10 +16,12 @@ class TagService implements ITagRepository {
     : _tagRemoteDataSource = tagRemoteDataSource;
 
   @override
-  Future<Either<Failure, List<TagModel>>> getTagsByUserId(String userId) async {
+  Future<Either<Failure, List<TagModel>>> getAllTags() async {
     try {
-      final list = await _tagRemoteDataSource.getTagsByUserId(userId);
-      return Right(list);
+      final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
+      final allTags = await _tagRemoteDataSource.getAllTags(userId!);
+
+      return Right(allTags);
     } on AuthException catch (e) {
       return Left(Failure(error: mapAuthException(e), details: e.message));
     } on PostgrestException catch (e) {
@@ -46,6 +50,7 @@ class TagService implements ITagRepository {
         name: name,
         color: color,
       );
+      
       return Right(updated);
     } on AuthException catch (e) {
       return Left(Failure(error: mapAuthException(e), details: e.message));
