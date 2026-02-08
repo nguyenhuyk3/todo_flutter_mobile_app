@@ -105,6 +105,7 @@ class _ModifyTodoEditLabelDialogState extends State<ModifyTodoEditLabelDialog> {
 
             // ignore: deprecated_member_use
             Divider(
+              // ignore: deprecated_member_use
               color: COLORS.UNFOCUSED_BORDER_IP.withOpacity(0.5),
               height: 0.8,
             ),
@@ -116,6 +117,7 @@ class _ModifyTodoEditLabelDialogState extends State<ModifyTodoEditLabelDialog> {
               decoration: BoxDecoration(
                 // ignore: deprecated_member_use
                 border: Border.all(
+                  // ignore: deprecated_member_use
                   color: COLORS.UNFOCUSED_BORDER_IP.withOpacity(0.5),
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -169,6 +171,7 @@ class _ModifyTodoEditLabelDialogState extends State<ModifyTodoEditLabelDialog> {
               runSpacing: 10,
               children:
                   _kLabelColorPresets.map((color) {
+                    // ignore: deprecated_member_use
                     final isSelected = _selectedColor.value == color.value;
 
                     return GestureDetector(
@@ -190,6 +193,7 @@ class _ModifyTodoEditLabelDialogState extends State<ModifyTodoEditLabelDialog> {
                           boxShadow: [
                             if (isSelected)
                               BoxShadow(
+                                // ignore: deprecated_member_use
                                 color: color.withOpacity(0.4),
                                 blurRadius: 8,
                                 spreadRadius: 1,

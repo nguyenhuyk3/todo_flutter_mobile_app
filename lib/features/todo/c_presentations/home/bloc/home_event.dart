@@ -1,6 +1,5 @@
 part of 'home_bloc.dart';
 
-
 sealed class HomeEvent extends Equatable {
   const HomeEvent();
 
@@ -51,10 +50,7 @@ class HomeItemStatusChanged extends HomeEvent {
   final String id;
   final FormzSubmissionStatus status;
 
-  const HomeItemStatusChanged({
-    required this.id,
-    required this.status,
-  });
+  const HomeItemStatusChanged({required this.id, required this.status});
 
   @override
   List<Object?> get props => [id, status];

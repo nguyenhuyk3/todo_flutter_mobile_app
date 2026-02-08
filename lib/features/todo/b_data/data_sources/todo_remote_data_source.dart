@@ -9,12 +9,11 @@ class TodoRemoteDataSource {
   final SupabaseClient _supabaseClient;
 
   TodoRemoteDataSource({required SupabaseClient supabaseClient})
-      : _supabaseClient = supabaseClient;
+    : _supabaseClient = supabaseClient;
 
   /// Thêm todo. Nếu [todo.tagIds] không rỗng thì gọi RPC add_todo_with_tags (transaction).
   Future<TodoEntity> addTodo({required TodoModel todo}) async {
-    final hasTagIds =
-        todo.tagIds != null && todo.tagIds!.isNotEmpty;
+    final hasTagIds = todo.tagIds != null && todo.tagIds!.isNotEmpty;
 
     if (hasTagIds) {
       return _addTodoWithTagsViaRpc(todo);
@@ -33,7 +32,9 @@ class TodoRemoteDataSource {
       'p_status': todo.status.toDB(),
       'p_started_date': _toDateStr(todo.startedDate),
       'p_due_date': _toDateStr(todo.dueDate),
-      'p_recurrence_pattern': todo.recurrence?.recurrencePattern.toDB() ?? RecurrencePattern.once.toDB(),
+      'p_recurrence_pattern':
+          todo.recurrence?.recurrencePattern.toDB() ??
+          RecurrencePattern.once.toDB(),
       'p_reminder_at': todo.recurrence?.reminderAt,
       'p_tag_ids': todo.tagIds,
     };
@@ -46,13 +47,13 @@ class TodoRemoteDataSource {
     if (response == null) {
       throw Exception('add_todo_with_tags returned null');
     }
-
     if (response is! Map) {
       throw Exception('add_todo_with_tags did not return a row');
     }
-    final Map<String, dynamic> row = Map<String, dynamic>.from(response);
 
+    final Map<String, dynamic> row = Map<String, dynamic>.from(response);
     final createdTodo = TodoModel.fromJson(row);
+
     return createdTodo.toEntity();
   }
 
@@ -62,22 +63,24 @@ class TodoRemoteDataSource {
 
   /// Luồng cũ: insert todo rồi insert recurrences (không có todo_tags).
   Future<TodoEntity> _addTodoWithRecurrenceOnly(TodoModel todo) async {
-    final todoResponse = await _supabaseClient
-        .from('todos')
-        .insert(todo.toJson())
-        .select()
-        .single();
+    final todoResponse =
+        await _supabaseClient
+            .from('todos')
+            .insert(todo.toJson())
+            .select()
+            .single();
     var createdTodo = TodoModel.fromJson(todoResponse);
 
     if (todo.recurrence != null) {
       final recurrenceData = todo.recurrence!.toJson();
       recurrenceData['todo_id'] = createdTodo.id;
 
-      final recurrenceResponse = await _supabaseClient
-          .from('recurrences')
-          .insert(recurrenceData)
-          .select()
-          .single();
+      final recurrenceResponse =
+          await _supabaseClient
+              .from('recurrences')
+              .insert(recurrenceData)
+              .select()
+              .single();
 
       createdTodo = TodoModel(
         id: createdTodo.id,

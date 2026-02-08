@@ -8,7 +8,6 @@ import '../../../a_domain/entities/enums.dart';
 import '../../models/priority_prop.dart';
 import '../cubit/todo/modify_todo_form_cubit.dart';
 
-
 class ModifyTodoPrioritySelector extends StatelessWidget {
   const ModifyTodoPrioritySelector({super.key});
 

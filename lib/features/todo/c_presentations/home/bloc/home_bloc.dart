@@ -41,6 +41,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeTodoAdded event,
     Emitter<HomeState> emit,
   ) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+
     final addHomeResult = await _addTodoUseCase.execute(todo: event.todo);
 
     addHomeResult.fold(
