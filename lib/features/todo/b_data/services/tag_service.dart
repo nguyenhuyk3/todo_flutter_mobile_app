@@ -50,7 +50,7 @@ class TagService implements ITagRepository {
         name: name,
         color: color,
       );
-      
+
       return Right(updated);
     } on AuthException catch (e) {
       return Left(Failure(error: mapAuthException(e), details: e.message));
