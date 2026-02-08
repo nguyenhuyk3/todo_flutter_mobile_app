@@ -120,14 +120,12 @@ class ModifyTodoFormState extends Equatable {
   ModifyTodoFormState copyWith({
     String? title,
     String? description,
-    String? Function()? projectId,
     TodoPriority? priority,
     TodoStatus? status,
     String? startedDate,
     String? dueDate,
     String? Function()? reminderAt,
     RecurrencePattern? recurrencePattern,
-    String? Function()? parentTodoId,
     int? position,
 
     List<int>? availableWeekdays,

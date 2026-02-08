@@ -71,6 +71,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
             builder: (context, homeState) {
               final isLoading =
                   homeState.status == FormzSubmissionStatus.inProgress;
+              
               return Stack(
                 children: [
                   Scaffold(

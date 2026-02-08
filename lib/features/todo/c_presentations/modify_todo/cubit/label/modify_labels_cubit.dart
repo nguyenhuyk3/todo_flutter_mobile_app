@@ -26,7 +26,6 @@ class ModifyLabelCubit extends Cubit<ModifyLabelState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
-
     final result = await _getTagsByUserIdUseCase.execute(userId: userId!);
 
     result.fold(

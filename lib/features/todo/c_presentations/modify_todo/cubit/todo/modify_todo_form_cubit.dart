@@ -95,46 +95,46 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     emit(state.copyWith(description: description, showDescriptionError: false));
   }
 
-  void projectChanged({String? projectId}) {
-    if (projectId == null) {
-      // TRƯỜNG HỢP: Chọn "Không" (Project = null)
-      // UI: Ẩn "Công việc cha", Hiện "Lặp lại"
-      // => Cần xóa dữ liệu: parentTodoId
-      emit(
-        state.copyWith(
-          projectId: () => null,
-          parentTodoId: () => null, // Reset parentTodo về null
-        ),
-      );
+  // void projectChanged({String? projectId}) {
+  //   if (projectId == null) {
+  //     // TRƯỜNG HỢP: Chọn "Không" (Project = null)
+  //     // UI: Ẩn "Công việc cha", Hiện "Lặp lại"
+  //     // => Cần xóa dữ liệu: parentTodoId
+  //     emit(
+  //       state.copyWith(
+  //         projectId: () => null,
+  //         parentTodoId: () => null, // Reset parentTodo về null
+  //       ),
+  //     );
 
-      // !! Hiện tại chưa biết là có cần 2 đoạn code phía dưới hay không
-      final availableWeekdays = _calculateAvailableWeekdays(
-        state.startedDate,
-        state.dueDate,
-      );
+  //     // !! Hiện tại chưa biết là có cần 2 đoạn code phía dưới hay không
+  //     final availableWeekdays = _calculateAvailableWeekdays(
+  //       state.startedDate,
+  //       state.dueDate,
+  //     );
 
-      emit(state.copyWith(availableWeekdays: availableWeekdays));
-    } else {
-      // TRƯỜNG HỢP: Có chọn Dự án
-      // UI: Hiện "Công việc cha", Ẩn "Lặp lại" & "Giờ"
-      // => Cần xóa dữ liệu: recurrencePattern, reminderAt
-      emit(
-        state.copyWith(
-          projectId: () => projectId,
-          recurrencePattern:
-              RecurrencePattern
-                  .once, // Reset lặp lại về none (mặc định sẽ là once)
-          reminderAt: () => null, // Reset giờ nhắc
-          availableWeekdays: [],
-          customWeekdays: [],
-        ),
-      );
-    }
-  }
+  //     emit(state.copyWith(availableWeekdays: availableWeekdays));
+  //   } else {
+  //     // TRƯỜNG HỢP: Có chọn Dự án
+  //     // UI: Hiện "Công việc cha", Ẩn "Lặp lại" & "Giờ"
+  //     // => Cần xóa dữ liệu: recurrencePattern, reminderAt
+  //     emit(
+  //       state.copyWith(
+  //         projectId: () => projectId,
+  //         recurrencePattern:
+  //             RecurrencePattern
+  //                 .once, // Reset lặp lại về none (mặc định sẽ là once)
+  //         reminderAt: () => null, // Reset giờ nhắc
+  //         availableWeekdays: [],
+  //         customWeekdays: [],
+  //       ),
+  //     );
+  //   }
+  // }
 
-  void parentTodoChanged(String? parentTodoId) {
-    emit(state.copyWith(parentTodoId: () => parentTodoId));
-  }
+  // void parentTodoChanged(String? parentTodoId) {
+  //   emit(state.copyWith(parentTodoId: () => parentTodoId));
+  // }
 
   void recurrenceChanged({required RecurrencePattern pattern}) {
     if (pattern == RecurrencePattern.once) {
