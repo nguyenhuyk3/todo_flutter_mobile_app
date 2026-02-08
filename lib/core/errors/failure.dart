@@ -11,6 +11,10 @@ enum ErrorInformation {
   INVALID_EMAIL(message: 'Email không hợp lệ'),
   EMAIL_NOT_EXISTS(message: 'Email không tồn tại trong hệ thống'),
   EMAIL_ALREADY_EXISTS(message: 'Email đã được sử dụng'),
+
+  TRY_AUTO_LOGIN_FAILED(
+    message: 'Tự động đăng nhập thất bại. Vui lòng đăng nhập lại',
+  ),
   // Password strength
   PASSWORD_CAN_NOT_BE_BLANK(message: 'Mật khẩu không được bỏ trống'),
   CONFIRMED_PASSWORD_MISMATCH(message: 'Mật khẩu xác nhận không khớp'),

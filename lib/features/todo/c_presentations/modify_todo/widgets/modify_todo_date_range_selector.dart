@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/widgets/error_displayer.dart';
-import '../cubit/modify_todo_form_cubit.dart';
+import '../cubit/todo/modify_todo_form_cubit.dart';
 
 class ModifyTodoDateRangeSelector extends StatelessWidget {
   const ModifyTodoDateRangeSelector({super.key});

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../../../core/utils/toats.dart';
 import '../../../../../core/widgets/authentication_form.dart';
-import '../../login/pages/login.dart';
+import '../../login/pages/login_page.dart';
 import '../bloc/bloc.dart';
 import '../widgets/step_two/registration_otp_info_section.dart';
 import '../widgets/step_two/registration_otp_pin_put.dart';

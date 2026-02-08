@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
 import '../../../../a_domain/entities/enums.dart';
-import '../../cubit/modify_todo_form_cubit.dart';
+import '../../cubit/todo/modify_todo_form_cubit.dart';
 
 import 'modify_todo_custom_weekdays_dialog.dart';
 import 'modify_todo_recurrence_info_dialog.dart';
@@ -61,11 +62,10 @@ class ModifyTodoRecurrenceSheet extends StatelessWidget {
 
     switch (pattern) {
       case RecurrencePattern.once:
+        return true;
       case RecurrencePattern.daily:
-        return true;
       case RecurrencePattern.custom:
-        // Todo: Cần kiểm tra lại là nếu chỉ có 1 ngày thì option này sẽ bị vô hiệu hóa
-        return true;
+        return availableWeekdays.length > 1;
       case RecurrencePattern.weekdays:
         // "Thứ 2 - Thứ 6" yêu cầu PHẢI CÓ ĐỦ [1, 2, 3, 4, 5]
         const requiredDays = [1, 2, 3, 4, 5];

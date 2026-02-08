@@ -61,7 +61,8 @@ class ModifyTodoLabelItemWidget extends StatelessWidget {
                       item.isSelected
                           ? COLORS.PRIMARY_TEXT
                           : COLORS.SECONDARY_TEXT,
-                  fontWeight: FontWeight.normal,
+                  fontWeight:
+                      item.isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),

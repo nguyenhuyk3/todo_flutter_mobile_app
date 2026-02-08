@@ -24,6 +24,9 @@ class TodoModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  /// Id các tag đã chọn (ghi vào bảng todo_tags trong transaction).
+  final List<String>? tagIds;
+
   const TodoModel({
     this.id,
 
@@ -44,6 +47,7 @@ class TodoModel {
 
     required this.createdAt,
     required this.updatedAt,
+    this.tagIds,
   });
 
   factory TodoModel.fromJson(Map<String, dynamic> json) {
@@ -68,6 +72,7 @@ class TodoModel {
 
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
+      tagIds: null,
     );
   }
 
@@ -95,6 +100,7 @@ class TodoModel {
 
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      tagIds: null,
     );
   }
 

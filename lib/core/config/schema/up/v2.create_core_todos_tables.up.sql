@@ -46,7 +46,7 @@ CREATE TABLE
         "user_id" UUID NOT NULL REFERENCES auth.users (id) ON DELETE CASCADE,
         "name" VARCHAR(64) NOT NULL DEFAULT '',
         "color" VARCHAR(7) NOT NULL DEFAULT '#000000',
-        "created_at" timestamptz NOT NULL DEFAULT now ()
+        "updated_at" timestamptz NOT NULL DEFAULT now ()
     );
 
 -- TABLE: TODO_TAGS 

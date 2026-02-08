@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/login/pages/login.dart';
+import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/tag.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/repositories/todo.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/usecases/todo_use_case.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/data_sources/tag_remote_data_source.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/data_sources/todo_remote_data_source.dart';
+import 'package:todo_flutter_mobile_app/features/todo/b_data/services/tag_service.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/services/todo_service.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/bloc/todo_bloc.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/modify_todo_form_cubit.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/home/bloc/home_bloc.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/todo/modify_todo_form_cubit.dart';
 
 import 'core/constants/keys.dart';
-import 'features/authentication/b_data/datasources/authentication_remote_data_source.dart';
-import 'features/authentication/b_data/services/authentication_service.dart';
 import 'features/authentication/a_domain/repositories/authentication.dart';
 import 'features/authentication/a_domain/usecases/authentication_use_case.dart';
+import 'features/authentication/b_data/datasources/authentication_remote_data_source.dart';
+import 'features/authentication/b_data/services/authentication_service.dart';
 import 'features/authentication/c_presentations/forgot_password/bloc/bloc.dart';
 import 'features/authentication/c_presentations/login/bloc/bloc.dart';
+import 'features/authentication/c_presentations/login/pages/splash_page.dart';
 import 'features/authentication/c_presentations/registration/bloc/bloc.dart';
 
 /* 
@@ -49,22 +50,28 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   late final IAuthenticationRepository _authenticationRepository;
   late final ITodoRepository _todoRepository;
+  late final ITagRepository _tagRepository;
 
   @override
   void initState() {
     super.initState();
 
+    final supabaseClient = Supabase.instance.client;
     final authenticationRemoteDataSource = AuthenticationRemoteDataSource(
-      supabaseClient: Supabase.instance.client,
+      supabaseClient: supabaseClient,
     );
     final todoRemoteDataSource = TodoRemoteDataSource(
-      supabaseClient: Supabase.instance.client,
+      supabaseClient: supabaseClient,
+    );
+    final tagRemoteDataSource = TagRemoteDataSource(
+      supabaseClient: supabaseClient,
     );
 
     _authenticationRepository = AuthenticationService(
       authenticationRemoteDataSource: authenticationRemoteDataSource,
     );
     _todoRepository = TodoService(todoRemoteDataSource: todoRemoteDataSource);
+    _tagRepository = TagService(tagRemoteDataSource: tagRemoteDataSource);
   }
 
   @override
@@ -75,7 +82,10 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider.value(value: _authenticationRepository)],
+      providers: [
+        RepositoryProvider.value(value: _authenticationRepository),
+        RepositoryProvider.value(value: _tagRepository),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -118,12 +128,15 @@ class _MainAppState extends State<MainApp> {
                   loginUseCase: LoginUseCase(
                     authenticationRepository: _authenticationRepository,
                   ),
+                  tryAutoLoginUseCase: TryAutoLoginUseCase(
+                    authenticationRepository: _authenticationRepository,
+                  ),
                 ),
           ),
           BlocProvider(create: (_) => ModifyTodoFormCubit()),
           BlocProvider(
             create:
-                (_) => TodoBloc(
+                (_) => HomeBloc(
                   addTodoUseCase: AddTodoUseCase(
                     todoRepository: _todoRepository,
                   ),
@@ -176,7 +189,7 @@ class _MainAppState extends State<MainApp> {
               scrolledUnderElevation: 0,
             ),
           ),
-          home: LoginPage(),
+          home: SplashPage(),
         ),
       ),
     );
