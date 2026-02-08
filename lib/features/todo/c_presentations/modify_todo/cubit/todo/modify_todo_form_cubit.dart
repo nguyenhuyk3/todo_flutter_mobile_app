@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../../../../core/constants/keys.dart';
-import '../../../../../core/constants/others.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../a_domain/entities/enums.dart';
-import '../../../a_domain/entities/todo_entity.dart';
-import '../../../b_data/models/recurrence_model.dart';
-import '../../../b_data/models/todo_model.dart';
+import '../../../../../../core/constants/keys.dart';
+import '../../../../../../core/constants/others.dart';
+import '../../../../../../core/errors/failure.dart';
+import '../../../../a_domain/entities/enums.dart';
+import '../../../../a_domain/entities/todo_entity.dart';
+import '../../../../b_data/models/recurrence_model.dart';
+import '../../../../b_data/models/todo_model.dart';
 
 part 'modify_todo_form_state.dart';
 
@@ -206,6 +206,10 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     );
   }
 
+  void tagIdsChanged(List<String> selectedTagIds) {
+    emit(state.copyWith(selectedTagIds: selectedTagIds));
+  }
+
   Future<TodoModel?> submitForm() async {
     // Reset trạng thái submit
     emit(
@@ -287,6 +291,7 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
       status: state.status,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      tagIds: state.selectedTagIds.isNotEmpty ? state.selectedTagIds : null,
     );
 
     return todo;

@@ -1,22 +1,22 @@
-part of 'todo_bloc.dart';
+part of 'home_bloc.dart';
 
-class TodoState extends Equatable {
+class HomeState extends Equatable {
   final FormzSubmissionStatus status;
   final TodoEntity? todo;
   final String? error;
 
-  const TodoState({
+  const HomeState({
     this.status = FormzSubmissionStatus.initial,
     this.todo,
     this.error,
   });
 
-  TodoState copyWith({
+  HomeState copyWith({
     FormzSubmissionStatus? status,
     TodoEntity? todo,
     String? error,
   }) {
-    return TodoState(
+    return HomeState(
       status: status ?? this.status,
       todo: todo ?? this.todo,
       error: error ?? this.error,

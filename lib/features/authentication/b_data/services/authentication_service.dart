@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -198,6 +197,8 @@ class AuthenticationService implements IAuthenticationRepository {
       );
 
       if (data != null) {
+        await SECURE_STORAGE.clearAll(); // Xóa dữ liệu rác
+
         _saveUserToSecureStorage(loginResult: data);
 
         return Right(data);

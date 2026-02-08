@@ -18,6 +18,9 @@ class TryAutoLoginUseCase extends AuthenticationUsecase {
     required String refreshToken,
     required String userId,
   }) {
-    return _authenticationRepository.tryAutoLogin(refreshToken: refreshToken, userId: userId);
+    return _authenticationRepository.tryAutoLogin(
+      refreshToken: refreshToken,
+      userId: userId,
+    );
   }
 }

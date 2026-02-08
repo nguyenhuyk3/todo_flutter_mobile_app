@@ -18,6 +18,9 @@ class ModifyTodoFormState extends Equatable {
   /// Danh sách các thứ người dùng đã chọn khi chọn Custom
   final List<int> customWeekdays;
 
+  /// Id các nhãn đã chọn (từ bảng tags).
+  final List<String> selectedTagIds;
+
   // ===================== Validation flags =====================
   final bool showTitleError;
   final bool showDescriptionError;
@@ -57,6 +60,7 @@ class ModifyTodoFormState extends Equatable {
 
     this.availableWeekdays = const [],
     this.customWeekdays = const [],
+    this.selectedTagIds = const [],
 
     // validation
     required this.showTitleError,
@@ -82,6 +86,7 @@ class ModifyTodoFormState extends Equatable {
 
       availableWeekdays: const [],
       customWeekdays: const [],
+      selectedTagIds: const [],
 
       showTitleError: false,
       showDescriptionError: false,
@@ -127,6 +132,7 @@ class ModifyTodoFormState extends Equatable {
 
     List<int>? availableWeekdays,
     List<int>? customWeekdays,
+    List<String>? selectedTagIds,
 
     bool? showTitleError,
     bool? showDescriptionError,
@@ -148,6 +154,7 @@ class ModifyTodoFormState extends Equatable {
 
       availableWeekdays: availableWeekdays ?? this.availableWeekdays,
       customWeekdays: customWeekdays ?? this.customWeekdays,
+      selectedTagIds: selectedTagIds ?? this.selectedTagIds,
 
       showTitleError: showTitleError ?? this.showTitleError,
       showDescriptionError: showDescriptionError ?? this.showDescriptionError,
@@ -173,6 +180,7 @@ class ModifyTodoFormState extends Equatable {
 
     availableWeekdays,
     customWeekdays,
+    selectedTagIds,
 
     showTitleError,
     showDescriptionError,
