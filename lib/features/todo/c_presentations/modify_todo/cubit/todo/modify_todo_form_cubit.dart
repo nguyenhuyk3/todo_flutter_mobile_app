@@ -272,7 +272,6 @@ class ModifyTodoFormCubit extends Cubit<ModifyTodoFormState> {
     }
     // 5. Thành công → build AppTodo
     emit(state.copyWith(formzSubmissionStatus: FormzSubmissionStatus.success));
-
     final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
     final todo = TodoModel(
       userId: userId!,
