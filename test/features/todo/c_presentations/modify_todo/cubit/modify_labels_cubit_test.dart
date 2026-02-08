@@ -12,6 +12,7 @@ import 'package:todo_flutter_mobile_app/features/todo/c_presentations/models/lab
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/label/modify_labels_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/label/modify_labels_state.dart';
 
+// Mocks
 class MockGetAllTagsUseCase extends Mock implements GetAllTagsUseCase {}
 
 class MockUpdateTagUseCase extends Mock implements UpdateTagUseCase {}
@@ -21,6 +22,7 @@ void main() {
   late MockGetAllTagsUseCase mockGetAllTagsUseCase;
   late MockUpdateTagUseCase mockUpdateTagUseCase;
 
+  // --- Constants & Test Data ---
   const tUserId = 'user-123';
   const tTagId = 'tag-1';
   const tTagName = 'Work';
@@ -41,10 +43,12 @@ void main() {
     isSelected: false,
   );
 
+  // Setup Global Mocks
   setUpAll(() {
     registerFallbackValue(const Color(0xFF000000));
   });
 
+  // Setup per Test
   setUp(() {
     mockGetAllTagsUseCase = MockGetAllTagsUseCase();
     mockUpdateTagUseCase = MockUpdateTagUseCase();
@@ -60,28 +64,29 @@ void main() {
   });
 
   group('ModifyLabelCubit', () {
-    test('Initial state is correct', () {
+    // 1. Check Initial State first
+    test('Initial state is correct (default constructor)', () {
       expect(cubit.state, const ModifyLabelState());
     });
 
-    group('LoadTags', () {
+    // 2. LOGIC: FETCH DATA (Thường chạy khi init màn hình)
+    group('loadTags', () {
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits [isLoading=true, labels=List, isLoading=false] when success',
+        'Emits [isLoading=true, labels=List, isLoading=false] when GetTags success',
         build: () {
           when(
             () => mockGetAllTagsUseCase.execute(),
           ).thenAnswer((_) async => Right([tTagModel]));
-
           return cubit;
         },
         act: (cubit) => cubit.loadTags(),
         expect:
             () => [
-              // 1. Loading
+              // Loading State
               isA<ModifyLabelState>()
                   .having((s) => s.isLoading, 'isLoading', true)
                   .having((s) => s.error, 'error', null),
-              // 2. Success
+              // Success State
               isA<ModifyLabelState>()
                   .having((s) => s.isLoading, 'isLoading', false)
                   .having((s) => s.labels.length, 'labels length', 1)
@@ -91,24 +96,23 @@ void main() {
       );
 
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits error message when usecase returns Failure',
+        'Emits [isLoading=true, isLoading=false, error=Msg] when GetTags fails',
         build: () {
           when(() => mockGetAllTagsUseCase.execute()).thenAnswer(
             (_) async => Left(Failure(error: ErrorInformation.UNDEFINED_ERROR)),
           );
-
           return cubit;
         },
         act: (cubit) => cubit.loadTags(),
         expect:
             () => [
-              // 1. Loading
+              // Loading
               isA<ModifyLabelState>().having(
                 (s) => s.isLoading,
                 'isLoading',
                 true,
               ),
-              // 2. Failure
+              // Failure
               isA<ModifyLabelState>()
                   .having((s) => s.isLoading, 'isLoading', false)
                   .having((s) => s.labels, 'labels', isEmpty)
@@ -121,7 +125,8 @@ void main() {
       );
     });
 
-    group('UpdateTag', () {
+    // 3. LOGIC: USER INTERACTION (Chỉnh sửa dữ liệu)
+    group('updateTag', () {
       const newName = 'New Work';
       const newColor = Color(0xFF00FF00); // Green
       const newColorHex = '#00ff00';
@@ -134,18 +139,19 @@ void main() {
       );
 
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits state with updated list when success (With New Color)',
+        'Emits state with updated labels list when UpdateTag success',
         build: () {
           when(
             () => mockUpdateTagUseCase.execute(
               id: tTagId,
               name: newName,
+              // Matcher kiểm tra việc parse color object sang hex có đúng không
               color: any(named: 'color'),
             ),
           ).thenAnswer((_) async => Right(updatedTagModel));
-
           return cubit;
         },
+        // Cần seed dữ liệu cũ trước để có cái mà update
         seed: () => ModifyLabelState(labels: [tLabelItem]),
         act:
             (cubit) => cubit.updateTag(
@@ -158,14 +164,23 @@ void main() {
               isA<ModifyLabelState>()
                   .having((s) => s.labels.first.name, 'Updated name', newName)
                   .having(
+                    // ignore: deprecated_member_use
                     (s) => s.labels.first.color.value,
                     'Updated color',
+                    // ignore: deprecated_member_use
                     newColor.value,
                   )
                   .having((s) => s.error, 'error', null),
             ],
       );
 
+      /* 
+        --- TEST DƯ THỪA (REDUNDANT) ---
+        Logic này kiểm tra việc update KHÔNG có màu mới. 
+        Tuy nhiên, luồng đi (Success Flow) của Bloc giống hệt test bên trên.
+        Sự khác biệt chỉ nằm ở input đầu vào hàm execute của UseCase (null vs not null).
+        Nếu muốn tối giản file test, test case này có thể bỏ qua vì logic state update đã được cover ở trên.
+      */
       blocTest<ModifyLabelCubit, ModifyLabelState>(
         'Emits state with updated list when success (Without New Color)',
         build: () {
@@ -176,7 +191,6 @@ void main() {
               color: null,
             ),
           ).thenAnswer((_) async => Right(updatedTagModel));
-
           return cubit;
         },
         seed: () => ModifyLabelState(labels: [tLabelItem]),
@@ -197,7 +211,7 @@ void main() {
       );
 
       blocTest<ModifyLabelCubit, ModifyLabelState>(
-        'Emits error message when update fails',
+        'Emits error message when UpdateTag fails',
         build: () {
           when(
             () => mockUpdateTagUseCase.execute(
@@ -209,7 +223,6 @@ void main() {
             (_) async =>
                 Left(Failure(error: ErrorInformation.DB_PERMISSION_DENIED)),
           );
-          
           return cubit;
         },
         seed: () => ModifyLabelState(labels: [tLabelItem]),

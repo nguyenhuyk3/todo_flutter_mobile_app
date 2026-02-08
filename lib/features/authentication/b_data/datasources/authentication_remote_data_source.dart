@@ -121,8 +121,6 @@ class AuthenticationRemoteDataSource {
     final response = await _supabaseClient.auth.setSession(refreshToken);
     // Nếu session null nghĩa là refresh token đã hết hạn hoặc bị thu hồi
     if (response.session == null || response.user == null) {
-      await SECURE_STORAGE.clearAll(); // Xóa dữ liệu rác
-
       return null;
     }
 
