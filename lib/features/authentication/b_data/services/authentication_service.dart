@@ -186,11 +186,17 @@ class AuthenticationService implements IAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResultParam>> tryAutoLogin({
-    required String refreshToken,
-    required String userId,
-  }) async {
+  Future<Either<Failure, LoginResultParam>> tryAutoLogin() async {
     try {
+      final refreshToken = await SECURE_STORAGE.read(
+        key: SecureStorageKeys.REFRESH_TOKEN,
+      );
+      final userId = await SECURE_STORAGE.read(key: SecureStorageKeys.USER_ID);
+
+      if (refreshToken == null || userId == null) {
+        return Left(Failure(error: ErrorInformation.TRY_AUTO_LOGIN_FAILED));
+      }
+
       final data = await _authenticationRemoteDataSource.tryAutoLogin(
         refreshToken: refreshToken,
         userId: userId,

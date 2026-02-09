@@ -9,12 +9,12 @@ import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/enums.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/registration_param.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/registration/bloc/bloc.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/email.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/otp.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/password.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/registration/bloc/bloc.dart';
 
-// 1. Tạo Mock cho các UseCases
+// 1. Mocks
 class MockRegisterUseCase extends Mock implements RegisterUseCase {}
 
 class MockResendOTPUseCase extends Mock implements ResendOTPUseCase {}
@@ -26,6 +26,7 @@ void main() {
   late MockRegisterUseCase mockRegisterUseCase;
   late MockResendOTPUseCase mockResendOTPUseCase;
   late MockVerifyOTPUseCase mockVerifyOTPUseCase;
+
   // Dữ liệu mẫu dùng chung
   const tEmail = 'test@example.com';
   const tPassword = 'Password123!';
@@ -33,7 +34,6 @@ void main() {
   const tBirthDate = BIRTH_DATE_DEFAUL_VALUE;
   const tSex = 'male';
   const tOtpValue = '123456';
-  final tStepTwoInitialState = RegistrationStepTwo(otp: const Otp.pure());
 
   setUp(() {
     mockRegisterUseCase = MockRegisterUseCase();
@@ -48,10 +48,6 @@ void main() {
   });
 
   setUpAll(() {
-    /*
-      👉 Mục đích duy nhất:
-        Đăng ký một “giá trị dự phòng” (fallback value) cho RegistrationParams để mocktail có thể dùng khi bạn gọi any()
-    */
     registerFallbackValue(
       RegistrationParams(
         email: 'email',
@@ -67,42 +63,45 @@ void main() {
   tearDown(() {
     registrationBloc.close();
   });
-  // =================== STEP 1 ===================
-  group('RegistrationBloc - Step 1 Logic', () {
-    // Kiểm tra trạng thái ban đầu
+
+  // =================================================================
+  // GROUP 0: INITIALIZATION
+  // =================================================================
+  group('Initialization', () {
     test('Initial state should be RegistrationStepOne.initial()', () {
       expect(registrationBloc.state, isA<RegistrationStepOne>());
-      expect((registrationBloc.state as RegistrationStepOne).email.value, '');
-      expect(
-        (registrationBloc.state as RegistrationStepOne).password.value,
-        '',
-      );
-      expect((registrationBloc.state as RegistrationStepOne).fullName, '');
-      expect(
-        (registrationBloc.state as RegistrationStepOne).birthDate,
-        BIRTH_DATE_DEFAUL_VALUE,
-      );
-      expect((registrationBloc.state as RegistrationStepOne).sex, 'male');
-      expect((registrationBloc.state as RegistrationStepOne).error, '');
-      expect((registrationBloc.state as RegistrationStepOne).isLoading, false);
+      final state = registrationBloc.state as RegistrationStepOne;
+      expect(state.email.value, '');
+      expect(state.password.value, '');
+      expect(state.fullName, '');
+      expect(state.birthDate, BIRTH_DATE_DEFAUL_VALUE);
+      expect(state.sex, 'male');
+      expect(state.isLoading, false);
+      expect(state.error, '');
     });
-    // 1. Kiểm tra ô input thay đổi (Email)
+  });
+
+  // =================================================================
+  // GROUP 1: STEP 1 - INPUT HANDLERS
+  // (Email, Password, Personal Info)
+  // =================================================================
+  group('Step 1: Input Handlers', () {
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting updated email when RegistrationEmailChanged is added',
-      build: () => registrationBloc, // Trả về instance Bloc cần test
+      'on RegistrationEmailChanged: emits state with updated email',
+      build: () => registrationBloc,
       act: (bloc) => bloc.add(const RegistrationEmailChanged(email: tEmail)),
       expect:
           () => [
             isA<RegistrationStepOne>().having(
               (s) => s.email.value,
-              'email value',
+              'email',
               tEmail,
             ),
           ],
     );
-    // 2. Kiểm tra ô input thay đổi (Password)
+
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting updated password and confirmedPassword when RegistrationPasswordChanged is added',
+      'on RegistrationPasswordChanged: emits state with updated password & confirm password',
       build: () => registrationBloc,
       act:
           (bloc) => bloc.add(
@@ -115,18 +114,13 @@ void main() {
           () => [
             isA<RegistrationStepOne>()
                 .having((s) => s.password.value, 'password', tPassword)
-                .having(
-                  (s) => s.confirmedPassword,
-                  'confirmed password',
-                  tPassword,
-                ),
+                .having((s) => s.confirmedPassword, 'confirmed', tPassword),
           ],
     );
-    // 3. Kiểm tra thông tin cá nhân thay đổi (Full Name, BirthDate, Sex)
+
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emmits updated info (Full Name, BirthDate, Sex) and preserves existing Email',
+      'on RegistrationInformationChanged: emits state with updated personal info (preserves email)',
       build: () => registrationBloc,
-      // SEED: Giả sử người dùng đã nhập Email và Password trước đó
       seed:
           () => RegistrationStepOne.initial().copyWith(
             email: const Email.dirty(tEmail),
@@ -134,7 +128,7 @@ void main() {
           ),
       act:
           (bloc) => bloc.add(
-            RegistrationInformationChanged(
+            const RegistrationInformationChanged(
               fullName: tFullName,
               birthDate: tBirthDate,
               sex: tSex,
@@ -146,63 +140,88 @@ void main() {
                 .having((s) => s.fullName, 'fullName', tFullName)
                 .having((s) => s.birthDate, 'birthDate', '2000-01-01')
                 .having((s) => s.sex, 'sex', tSex)
-                // QUAN TRỌNG: Kiểm tra xem email cũ có bị mất không (do dùng copyWith)
                 .having((s) => s.email.value, 'preserved email', tEmail),
           ],
     );
-    // 4. Kiểm tra Submit Thành Công (RegisterUseCase success)
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting [Loading, StepTwo] when param being valid and RegisterUseCase returns success',
-      build: () {
-        // Mock hành vi thành công của UseCase
-        when(
-          () => mockRegisterUseCase.execute(any<RegistrationParams>()),
-        ).thenAnswer((_) async => const Right(true));
+  });
 
-        return registrationBloc;
-      },
-      // Set sẵn state hợp lệ
+  // =================================================================
+  // GROUP 2: STEP 1 - SUBMIT HANDLER (_onStepOneSubmitted)
+  // (Validations -> Loading -> UseCase Execution)
+  // =================================================================
+  group('Step 1: Submit Handler', () {
+    // --- 2.1 Validation Failures ---
+    blocTest<RegistrationBloc, RegistrationState>(
+      'fails validation when Confirmed Password is empty',
+      build: () => registrationBloc,
+      seed:
+          () => RegistrationStepOne.initial().copyWith(
+            email: const Email.dirty(tEmail),
+            password: const Password.dirty(tPassword),
+            confirmedPassword: '', // Rỗng
+            fullName: tFullName,
+          ),
+      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
+      expect:
+          () => [
+            isA<RegistrationStepOne>().having(
+              (s) => s.error,
+              'error message',
+              ErrorInformation.EMPTY_CONFIRMED_PASSWORD.message,
+            ),
+          ],
+    );
+
+    blocTest<RegistrationBloc, RegistrationState>(
+      'fails validation when Passwords do not match',
+      build: () => registrationBloc,
+      seed:
+          () => RegistrationStepOne.initial().copyWith(
+            email: const Email.dirty(tEmail),
+            password: const Password.dirty(tPassword),
+            confirmedPassword: 'WrongPassword', // Không khớp
+            fullName: tFullName,
+          ),
+      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
+      expect:
+          () => [
+            isA<RegistrationStepOne>().having(
+              (s) => s.error,
+              'error message',
+              ErrorInformation.CONFIRMED_PASSWORD_MISSMATCH.message,
+            ),
+          ],
+    );
+
+    blocTest<RegistrationBloc, RegistrationState>(
+      'fails validation when Full Name is empty',
+      build: () => registrationBloc,
       seed:
           () => RegistrationStepOne.initial().copyWith(
             email: const Email.dirty(tEmail),
             password: const Password.dirty(tPassword),
             confirmedPassword: tPassword,
-            fullName: tFullName,
-            birthDate: tBirthDate,
-            sex: tSex,
+            fullName: '', // Rỗng
           ),
       act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
-      // Vì bloc có `Future.delayed(Duration(seconds: 2))`,
-      // `wait` giúp bloc_test chờ thời gian này để assert chính xác.
-      wait: const Duration(seconds: 2),
       expect:
           () => [
-            // 1. Loading state (isList = true copyWith trong bloc của bạn)
             isA<RegistrationStepOne>().having(
-              (s) => s.isLoading,
-              'is loading',
-              true,
+              (s) => s.error,
+              'error message',
+              ErrorInformation.EMPTY_FULL_NAME.message,
             ),
-            // 2. Chuyển sang Step Two
-            isA<RegistrationStepTwo>(),
           ],
-      verify: (_) {
-        verify(
-          () => mockRegisterUseCase.execute(any<RegistrationParams>()),
-        ).called(1);
-      },
     );
-    // 5. Kiểm tra Submit Thất Bại (RegisterUseCase thất bại)
+
+    // --- 2.2 UseCase Failure ---
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting [Loading, StepOneWithError] when RegisterUseCase return failure',
+      'emits [Loading, StepOneWithError] when RegisterUseCase returns Failure',
       build: () {
-        when(
-          () => mockRegisterUseCase.execute(any<RegistrationParams>()),
-        ).thenAnswer(
+        when(() => mockRegisterUseCase.execute(any())).thenAnswer(
           (_) async =>
               const Left(Failure(error: ErrorInformation.UNDEFINED_ERROR)),
         );
-
         return registrationBloc;
       },
       seed:
@@ -211,8 +230,6 @@ void main() {
             password: const Password.dirty(tPassword),
             confirmedPassword: tPassword,
             fullName: tFullName,
-            birthDate: tBirthDate,
-            sex: tSex,
           ),
       act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
       wait: const Duration(seconds: 2),
@@ -220,24 +237,61 @@ void main() {
           () => [
             isA<RegistrationStepOne>().having(
               (s) => s.isLoading,
-              'is loading',
+              'loading',
               true,
             ),
             isA<RegistrationStepOne>().having(
               (s) => s.error,
-              'error message',
+              'error',
               ErrorInformation.UNDEFINED_ERROR.message,
             ),
           ],
     );
-  });
-  // =================== STEP 2 ===================
-  group('RegistrationBloc - Step 2 (OTP) Logic', () {
-    // 1. Kiểm tra nhập OTP
+
+    // --- 2.3 UseCase Success ---
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting updated otp when RegistrationOtpChanged is added',
+      'emits [Loading, StepTwo] when RegisterUseCase returns Success',
+      build: () {
+        when(
+          () => mockRegisterUseCase.execute(any()),
+        ).thenAnswer((_) async => const Right(true));
+        return registrationBloc;
+      },
+      seed:
+          () => RegistrationStepOne.initial().copyWith(
+            email: const Email.dirty(tEmail),
+            password: const Password.dirty(tPassword),
+            confirmedPassword: tPassword,
+            fullName: tFullName,
+            birthDate: tBirthDate,
+            sex: tSex,
+          ),
+      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
+      wait: const Duration(seconds: 2),
+      expect:
+          () => [
+            isA<RegistrationStepOne>().having(
+              (s) => s.isLoading,
+              'loading',
+              true,
+            ),
+            isA<RegistrationStepTwo>(), // Chuyển sang Step 2
+          ],
+      verify: (_) {
+        verify(() => mockRegisterUseCase.execute(any())).called(1);
+      },
+    );
+  });
+
+  // =================================================================
+  // GROUP 3: STEP 2 - INPUT & RESEND HANDLERS
+  // (OTP Input, Resend OTP)
+  // =================================================================
+  group('Step 2: Input & Resend Handlers', () {
+    blocTest<RegistrationBloc, RegistrationState>(
+      'on RegistrationOtpChanged: emits state with updated OTP',
       build: () => registrationBloc,
-      // seed: () => tStepTwoInitialState,
+      seed: () => const RegistrationStepTwo(otp: Otp.pure()),
       act: (bloc) => bloc.add(const RegistrationOtpChanged(otp: tOtpValue)),
       expect:
           () => [
@@ -248,43 +302,15 @@ void main() {
             ),
           ],
     );
-    // 2. Test Yêu cầu gửi lại OTP (Resend) - Thành công
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Calls ResendOTPUseCase and verifies execution (No state change expected)',
-      build: () {
-        // Mock UseCase trả về thành công
-        // Dùng any(named: 'email') vì biến _email đang là rỗng do seed state trực tiếp
-        when(
-          () => mockResendOTPUseCase.execute(
-            email: any<String>(named: 'email'),
-            type: any<OtpType>(named: 'type'),
-          ),
-        ).thenAnswer((_) async => const Right(true));
 
-        return registrationBloc;
-      },
-      seed:
-          () => tStepTwoInitialState.copyWith(otp: const Otp.dirty(tOtpValue)),
-      act: (bloc) => bloc.add(RegistrationResendOTPRequested()),
-      expect: () => [],
-      verify: (_) {
-        // ?? Có thể chưa đúng vì khi đăng kí có thể gửi nhiều lần
-        verify(
-          () => mockResendOTPUseCase.execute(
-            email: any<String>(named: 'email'),
-            type: any<OtpType>(named: 'type'),
-          ),
-        ).called(1);
-      },
-    );
-    // 3. Test Yêu cầu gửi lại OTP (Resend) - Thất bại
+    // --- Resend OTP Logic ---
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting error when ResendOTPUseCase returns failure',
+      'on RegistrationResendOTPRequested: emits Error if ResendUseCase fails',
       build: () {
         when(
           () => mockResendOTPUseCase.execute(
-            email: any<String>(named: 'email'),
-            type: any<OtpType>(named: 'type'),
+            email: any(named: 'email'),
+            type: any(named: 'type'),
           ),
         ).thenAnswer(
           (_) async =>
@@ -293,190 +319,157 @@ void main() {
 
         return registrationBloc;
       },
-      seed: () => tStepTwoInitialState,
+      seed: () => const RegistrationStepTwo(otp: Otp.dirty(tOtpValue)),
       act: (bloc) => bloc.add(RegistrationResendOTPRequested()),
       expect:
           () => [
             isA<RegistrationStepTwo>().having(
               (s) => s.error,
-              'error message',
+              'error',
               ErrorInformation.UNDEFINED_ERROR.message,
             ),
           ],
     );
-    // 4. Kiểm tra Submit OTP - Validate lỗi (OTP quá ngắn/rỗng)
+
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting error when OTP is invalid on Submit',
-      build: () => registrationBloc,
-      seed: () => tStepTwoInitialState.copyWith(otp: const Otp.dirty('12')),
-      act: (bloc) => bloc.add(RegistrationOtpSubmitted()),
-      expect:
-          () => [
-            isA<RegistrationStepTwo>().having(
-              (s) => s.error,
-              'error message',
-              "Mã Otp phải có đúng $LENGTH_OF_OTP kí tự",
-            ),
-          ],
-    );
-    // 5. Kiểm tra Submit OTP - Thành công (Verify OK) -> Chuyển sang RegistrationSuccess
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting [Loading, RegistrationSuccess] when VerifyOTPUseCase succeeds',
+      'on RegistrationResendOTPRequested: successful resend does NOT change state (duplicate state) but verifies UseCase execution',
       build: () {
         when(
-          () => mockVerifyOTPUseCase.execute(
-            email: any<String>(named: 'email'),
-            otp: any<String>(named: 'otp'),
-            type: any<OtpType>(named: 'type'),
+          () => mockResendOTPUseCase.execute(
+            email: any(named: 'email'),
+            type: any(named: 'type'),
           ),
         ).thenAnswer((_) async => const Right(true));
 
         return registrationBloc;
       },
-      seed:
-          () => tStepTwoInitialState.copyWith(otp: const Otp.dirty(tOtpValue)),
+      // Seed trạng thái đang có OTP nhập sẵn
+      seed: () => const RegistrationStepTwo(otp: Otp.dirty(tOtpValue)),
+      act: (bloc) => bloc.add(RegistrationResendOTPRequested()),
+
+      expect: () => [],
+
+      // QUAN TRỌNG: Kiểm tra hàm execute vẫn được gọi 1 lần
+      verify: (_) {
+        verify(
+          () => mockResendOTPUseCase.execute(
+            email: any(
+              named: 'email',
+            ), // Lưu ý: trong bloc dùng biến _email local, cần đảm bảo biến này đã set (hoặc mock nhận bất kì String nào)
+            type: OtpType.signup,
+          ),
+        ).called(1);
+      },
+    );
+  });
+
+  // =================================================================
+  // GROUP 4: STEP 2 - SUBMIT HANDLER (_onOtpSubmitted)
+  // (Validations -> Loading -> UseCase Execution -> Success)
+  // =================================================================
+  group('Step 2: Submit Handler', () {
+    // --- 4.1 Validation Failure ---
+    blocTest<RegistrationBloc, RegistrationState>(
+      'fails validation if OTP length is invalid',
+      build: () => registrationBloc,
+      seed: () => const RegistrationStepTwo(otp: Otp.dirty('12')), // Quá ngắn
+      act: (bloc) => bloc.add(RegistrationOtpSubmitted()),
+      expect:
+          () => [
+            isA<RegistrationStepTwo>().having(
+              (s) => s.error,
+              'otp error',
+              "Mã Otp phải có đúng $LENGTH_OF_OTP kí tự",
+            ),
+          ],
+    );
+
+    // --- 4.2 UseCase Failure ---
+    blocTest<RegistrationBloc, RegistrationState>(
+      'emits [Loading, StepTwoWithError] if VerifyOTPUseCase fails',
+      build: () {
+        when(
+          () => mockVerifyOTPUseCase.execute(
+            email: any(named: 'email'),
+            otp: any(named: 'otp'),
+            type: any(named: 'type'),
+          ),
+        ).thenAnswer(
+          (_) async =>
+              const Left(Failure(error: ErrorInformation.UNDEFINED_ERROR)),
+        );
+
+        return registrationBloc;
+      },
+      seed: () => const RegistrationStepTwo(otp: Otp.dirty(tOtpValue)),
       act: (bloc) => bloc.add(RegistrationOtpSubmitted()),
       wait: const Duration(seconds: 2),
       expect:
           () => [
-            // 1. Loading State
             isA<RegistrationStepTwo>().having(
               (s) => s.isLoading,
-              'is loading',
+              'loading',
               true,
             ),
-            // 2. Success State
-            isA<RegistrationSuccess>(),
+            isA<RegistrationStepTwo>().having(
+              (s) => s.error,
+              'error',
+              ErrorInformation.UNDEFINED_ERROR.message,
+            ),
+          ],
+    );
+
+    // --- 4.3 UseCase Success ---
+    blocTest<RegistrationBloc, RegistrationState>(
+      'emits [Loading, RegistrationSuccess] if VerifyOTPUseCase succeeds',
+      build: () {
+        when(
+          () => mockVerifyOTPUseCase.execute(
+            email: any(named: 'email'),
+            otp: any(named: 'otp'),
+            type: any(named: 'type'),
+          ),
+        ).thenAnswer((_) async => const Right(true));
+
+        return registrationBloc;
+      },
+      seed: () => const RegistrationStepTwo(otp: Otp.dirty(tOtpValue)),
+      act: (bloc) => bloc.add(RegistrationOtpSubmitted()),
+      wait: const Duration(seconds: 2),
+      expect:
+          () => [
+            isA<RegistrationStepTwo>().having(
+              (s) => s.isLoading,
+              'loading',
+              true,
+            ),
+            isA<RegistrationSuccess>(), // Hoàn tất quy trình
           ],
       verify: (_) {
         verify(
           () => mockVerifyOTPUseCase.execute(
-            email: any<String>(named: 'email'),
+            email: any(named: 'email'),
             otp: tOtpValue,
             type: OtpType.email,
           ),
         ).called(1);
       },
     );
-    // 6. Test Submit OTP - Thất bại (Verify Error - VD: sai OTP)
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emits [Loading, StepTwoWithError] when VerifyOTPUseCase fails',
-      build: () {
-        when(
-          () => mockVerifyOTPUseCase.execute(
-            email: any<String>(named: 'email'),
-            otp: any<String>(named: 'otp'),
-            type: any<OtpType>(named: 'type'),
-          ),
-        ).thenAnswer(
-          (_) async =>
-              const Left(Failure(error: ErrorInformation.UNDEFINED_ERROR)),
-        );
-
-        return registrationBloc;
-      },
-      seed:
-          () => tStepTwoInitialState.copyWith(otp: const Otp.dirty(tOtpValue)),
-      act: (bloc) => bloc.add(RegistrationOtpSubmitted()),
-      wait: const Duration(seconds: 2),
-      expect:
-          () => [
-            isA<RegistrationStepTwo>().having(
-              (s) => s.isLoading,
-              'is loading',
-              true,
-            ),
-            isA<RegistrationStepTwo>().having(
-              (s) => s.error,
-              'error message',
-              ErrorInformation.UNDEFINED_ERROR.message,
-            ),
-          ],
-    );
   });
-  // =================== ADDITIONAL TESTS ===================
-  group('RegistrationBloc - Additional Tests', () {
-    // Kiểm tra mật khẩu không khớp
-    // Lưu ý: Logic _validateStepOne được gọi khi submit.
+
+  // =================================================================
+  // GROUP 5: GLOBAL ACTIONS (Reset)
+  // =================================================================
+  group('Global Actions', () {
     blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting error when confirmed password missmatches on Submit',
-      build: () => registrationBloc,
-      // Cần setup trước các state hợp lệ, rồi mới set password sai để test logic
-      seed:
-          () => RegistrationStepOne.initial().copyWith(
-            email: const Email.dirty(tEmail),
-            fullName: tFullName,
-            password: const Password.dirty(tPassword),
-            confirmedPassword: 'WrongPassword',
-            birthDate: tBirthDate,
-            sex: tSex,
-          ),
-      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
-      expect:
-          () => [
-            isA<RegistrationStepOne>().having(
-              (s) => s.error,
-              'error message',
-              equals(ErrorInformation.CONFIRMED_PASSWORD_MISSMATCH.message),
-            ),
-          ],
-    );
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting error when confirmed password is empty on Submit',
+      'on RegistrationReset: returns to Initial state',
       build: () => registrationBloc,
       seed:
-          () => RegistrationStepOne.initial().copyWith(
-            email: const Email.dirty(tEmail),
-            fullName: tFullName,
-            password: const Password.dirty(tPassword),
-            confirmedPassword: '',
-            birthDate: tBirthDate,
-            sex: tSex,
-          ),
-      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
-      expect:
-          () => [
-            isA<RegistrationStepOne>().having(
-              (s) => s.error,
-              'error message',
-              equals(ErrorInformation.EMPTY_CONFIRMED_PASSWORD.message),
-            ),
-          ],
-    );
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emitting error when full name is empty on Submit',
-      build: () => registrationBloc,
-      seed:
-          () => RegistrationStepOne.initial().copyWith(
-            email: const Email.dirty(tEmail),
-            fullName: '',
-            password: const Password.dirty(tPassword),
-            confirmedPassword: tPassword,
-            birthDate: tBirthDate,
-            sex: tSex,
-          ),
-      act: (bloc) => bloc.add(RegistrationStepOneSubmitted()),
-      expect:
-          () => [
-            isA<RegistrationStepOne>().having(
-              (s) => s.error,
-              'error message',
-              equals(ErrorInformation.EMPTY_FULL_NAME.message),
-            ),
-          ],
-    );
-    // Kiểm ta RegistrationReset (Ví dụ: khi rời khỏi màn hình hoặc bấm nút Hủy)
-    blocTest<RegistrationBloc, RegistrationState>(
-      'Emits RegistrationInitial when RegistrationReset is added',
-      build: () => registrationBloc,
-      // SEED: Giả sử đang ở Step 2
-      seed: () => const RegistrationStepTwo(otp: Otp.pure()),
+          () => const RegistrationStepTwo(
+            otp: Otp.pure(),
+          ), // Giả sử đang ở bước 2
       act: (bloc) => bloc.add(RegistrationReset()),
-      expect:
-          () => [
-            // Kiểm tra state trở về Initial (hoặc state ban đầu tùy định nghĩa state của bạn)
-            isA<RegistrationInitial>(),
-          ],
+      expect: () => [isA<RegistrationInitial>()],
     );
   });
 }

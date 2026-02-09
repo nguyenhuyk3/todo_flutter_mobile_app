@@ -14,13 +14,7 @@ class LoginUseCase extends AuthenticationUsecase {
 class TryAutoLoginUseCase extends AuthenticationUsecase {
   TryAutoLoginUseCase({required super.authenticationRepository});
 
-  Future<Either<Failure, LoginResultParam>> execute({
-    required String refreshToken,
-    required String userId,
-  }) {
-    return _authenticationRepository.tryAutoLogin(
-      refreshToken: refreshToken,
-      userId: userId,
-    );
+  Future<Either<Failure, LoginResultParam>> execute() {
+    return _authenticationRepository.tryAutoLogin();
   }
 }

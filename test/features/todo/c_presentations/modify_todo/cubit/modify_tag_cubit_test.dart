@@ -8,41 +8,58 @@ import 'package:mocktail/mocktail.dart';
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/usecases/tag_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/models/tag_model.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/shared/models/label_item.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/tag/modify_tag_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/tag/modify_tag_state.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/shared/models/label_item.dart';
+
+// =============================================================================
+// MOCKS
+// =============================================================================
 
 class MockGetAllTagsUseCase extends Mock implements GetAllTagsUseCase {}
 
 class MockUpdateTagUseCase extends Mock implements UpdateTagUseCase {}
 
+// =============================================================================
+// MAIN TEST
+// =============================================================================
+
 void main() {
   late ModifyTagCubit cubit;
   late MockGetAllTagsUseCase mockGetAllTagsUseCase;
   late MockUpdateTagUseCase mockUpdateTagUseCase;
-  // --- Constants & Test Data ---
+
+  // ---------------------------------------------------------------------------
+  // TEST DATA & CONSTANTS
+  // ---------------------------------------------------------------------------
   const tUserId = 'user-123';
   const tTagId = 'tag-1';
   const tTagName = 'Work';
   const tTagColorHex = '#FF0000'; // Red
   const tTagColorObj = Color(0xFFFF0000);
+
   final tTagModel = TagModel(
     id: tTagId,
     userId: tUserId,
     name: tTagName,
     color: tTagColorHex,
   );
+
   final tLabelItem = LabelItem(
     id: tTagId,
     name: tTagName,
     color: tTagColorObj,
     isSelected: false,
   );
-  // Setup Global Mocks
+
+  // ---------------------------------------------------------------------------
+  // SETUP
+  // ---------------------------------------------------------------------------
+
   setUpAll(() {
     registerFallbackValue(const Color(0xFF000000));
   });
-  // Setup per Test
+
   setUp(() {
     mockGetAllTagsUseCase = MockGetAllTagsUseCase();
     mockUpdateTagUseCase = MockUpdateTagUseCase();
@@ -52,16 +69,24 @@ void main() {
       updateTagUseCase: mockUpdateTagUseCase,
     );
   });
+
   tearDown(() {
     cubit.close();
   });
 
+  // ---------------------------------------------------------------------------
+  // TEST GROUPS
+  // ---------------------------------------------------------------------------
+
   group('ModifyTagCubit', () {
-    // 1. Check Initial State first
+    // --- Initial Check ---
     test('Initial state is correct (default constructor)', () {
       expect(cubit.state, const ModifyTagState());
     });
-    // 2. LOGIC: FETCH DATA (Thường chạy khi init màn hình)
+
+    // =========================================================================
+    // GROUP 1: FETCH DATA (loadTags)
+    // =========================================================================
     group('loadTags', () {
       blocTest<ModifyTagCubit, ModifyTagState>(
         'Emits [isLoading=true, labels=List, isLoading=false] when GetTags success',
@@ -75,11 +100,11 @@ void main() {
         act: (cubit) => cubit.loadTags(),
         expect:
             () => [
-              // Loading State
+              // State 1: Loading
               isA<ModifyTagState>()
                   .having((s) => s.isLoading, 'isLoading', true)
                   .having((s) => s.error, 'error', null),
-              // Success State
+              // State 2: Success
               isA<ModifyTagState>()
                   .having((s) => s.isLoading, 'isLoading', false)
                   .having((s) => s.labels.length, 'labels length', 1)
@@ -87,6 +112,7 @@ void main() {
                   .having((s) => s.error, 'error', null),
             ],
       );
+
       blocTest<ModifyTagCubit, ModifyTagState>(
         'Emits [isLoading=true, isLoading=false, error=Msg] when GetTags fails',
         build: () {
@@ -99,13 +125,13 @@ void main() {
         act: (cubit) => cubit.loadTags(),
         expect:
             () => [
-              // Loading
+              // State 1: Loading
               isA<ModifyTagState>().having(
                 (s) => s.isLoading,
                 'isLoading',
                 true,
               ),
-              // Failure
+              // State 2: Failure
               isA<ModifyTagState>()
                   .having((s) => s.isLoading, 'isLoading', false)
                   .having((s) => s.labels, 'labels', isEmpty)
@@ -117,11 +143,15 @@ void main() {
             ],
       );
     });
-    // 3. LOGIC: USER INTERACTION (Chỉnh sửa dữ liệu)
+
+    // =========================================================================
+    // GROUP 2: UPDATE TAG (updateTag)
+    // =========================================================================
     group('updateTag', () {
       const newName = 'New Work';
       const newColor = Color(0xFF00FF00); // Green
       const newColorHex = '#00ff00';
+
       final updatedTagModel = TagModel(
         id: tTagId,
         userId: tUserId,
@@ -136,14 +166,12 @@ void main() {
             () => mockUpdateTagUseCase.execute(
               id: tTagId,
               name: newName,
-              // Matcher kiểm tra việc parse color object sang hex có đúng không
-              color: any(named: 'color'),
+              color: any(named: 'color'), // Verify Color Object
             ),
           ).thenAnswer((_) async => Right(updatedTagModel));
 
           return cubit;
         },
-        // Cần seed dữ liệu cũ trước để có cái mà update
         seed: () => ModifyTagState(labels: [tLabelItem]),
         act:
             (cubit) => cubit.updateTag(
@@ -165,6 +193,7 @@ void main() {
                   .having((s) => s.error, 'error', null),
             ],
       );
+
       blocTest<ModifyTagCubit, ModifyTagState>(
         'Emits state with updated list when success (Without New Color)',
         build: () {
@@ -194,6 +223,7 @@ void main() {
               ),
             ],
       );
+
       blocTest<ModifyTagCubit, ModifyTagState>(
         'Emits error message when UpdateTag fails',
         build: () {

@@ -40,7 +40,9 @@ void main() {
 
   group('ModifyTodoFormCubit', () {
     ModifyTodoFormCubit? cubit;
+
     const tUserId = 'user-123';
+
     final tTodoEntity = TodoEntity(
       id: 'todo-1',
       userId: tUserId,
@@ -61,12 +63,15 @@ void main() {
     setUpAll(() {
       mockSecureStorage(tUserId);
     });
+
     tearDownAll(() {
       clearMockSecureStorage();
     });
+
     tearDown(() {
       cubit?.close();
     });
+
     // =======================================================
     // 1. STATE LOGIC TESTS
     // (Kiểm tra các getter/factory trong State class trước)
@@ -102,6 +107,7 @@ void main() {
         );
         expect(state.isRangeDateValid, true);
       });
+
       test('copyWith handles nullable reminderAt correctly', () {
         var state = ModifyTodoFormState.initial();
         // 1. Set Value
@@ -116,6 +122,7 @@ void main() {
         expect(state.reminderAt, null);
       });
     });
+
     // =======================================================
     // 2. INITIALIZATION TESTS
     // (Kiểm tra việc khởi tạo Cubit - bước đầu tiên của flow)
@@ -130,6 +137,7 @@ void main() {
           expect(cubit!.state.status, TodoStatus.pending);
         },
       );
+
       test(
         'Initializes with mapped values when initialTodo is provided (Edit Mode)',
         () {
@@ -159,6 +167,7 @@ void main() {
                   .having((s) => s.showTitleError, 'error hidden', false),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'descriptionChanged: updates Description and resets error flag',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -172,6 +181,7 @@ void main() {
               ),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'priorityChanged: updates Priority',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -185,6 +195,7 @@ void main() {
               ),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'tagIdsChanged: updates Tag IDs',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -222,6 +233,7 @@ void main() {
                   .having((s) => s.showRangeDateError, 'error hidden', false),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'dateRangeChanged: Calculate Weekdays correctly (< 7 days)',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -238,6 +250,7 @@ void main() {
                   .having((s) => s.availableWeekdays, 'weekdays', [4, 5, 6]),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'dateRangeChanged: Allow all days when range >= 7 days',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -255,6 +268,7 @@ void main() {
               ),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'dateRangeChanged: Remove invalid Custom Weekdays when range shrinks',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -274,6 +288,7 @@ void main() {
             ],
       );
     });
+
     // =======================================================
     // 5. COMPLEX LOGIC: RECURRENCE & REMINDER
     // (Kiểm tra logic chuyển đổi lặp lại và nhắc nhở)
@@ -295,6 +310,7 @@ void main() {
               ),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'recurrenceChanged (to ONCE): Clears Reminder and Custom Days',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -316,6 +332,7 @@ void main() {
                   .having((s) => s.customWeekdays, 'custom empty', isEmpty),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'recurrenceChanged (to DAILY): Clears Custom Days but KEEPS Reminder',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -337,6 +354,7 @@ void main() {
                   .having((s) => s.reminderAt, 'reminder preserved', '10:00'),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'recurrenceChanged (to CUSTOM): Preserves existing Custom Days',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -357,6 +375,7 @@ void main() {
                   .having((s) => s.customWeekdays, 'DATA PRESERVED', [1, 2]),
             ],
       );
+
       blocTest<ModifyTodoFormCubit, ModifyTodoFormState>(
         'customWeekdaysChanged: Sets Custom Days and Auto-switches Pattern to CUSTOM',
         build: () => cubit = ModifyTodoFormCubit(),
@@ -373,6 +392,7 @@ void main() {
             ],
       );
     });
+
     // =======================================================
     // 6. SUBMIT VALIDATION TESTS
     // (Kiểm tra các trường hợp submit thất bại)
@@ -393,6 +413,7 @@ void main() {
         expect(cubit!.state.showTitleError, true);
         expect(cubit!.state.error, ErrorInformation.EMPTY_TITLE.message);
       });
+
       test('Fails on Empty Description', () async {
         cubit = ModifyTodoFormCubit();
 
@@ -407,6 +428,7 @@ void main() {
         expect(result, isNull);
         expect(cubit!.state.showDescriptionError, true);
       });
+
       test('Fails on Invalid Date Range', () async {
         cubit = ModifyTodoFormCubit();
 
@@ -422,6 +444,7 @@ void main() {
         expect(result, isNull);
         expect(cubit!.state.showRangeDateError, true);
       });
+
       test('Fails if Recurrence is ON but Reminder is Missing', () async {
         cubit = ModifyTodoFormCubit();
 
@@ -444,6 +467,7 @@ void main() {
         );
       });
     });
+
     // =======================================================
     // 7. SUBMIT SUCCESS TESTS
     // (Kiểm tra trường hợp submit thành công cuối cùng)

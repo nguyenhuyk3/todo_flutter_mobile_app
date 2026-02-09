@@ -13,7 +13,7 @@ enum ErrorInformation {
   EMAIL_ALREADY_EXISTS(message: 'Email đã được sử dụng'),
 
   TRY_AUTO_LOGIN_FAILED(
-    message: 'Tự động đăng nhập thất bại. Vui lòng đăng nhập lại',
+    message: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại',
   ),
   // Password strength
   PASSWORD_CAN_NOT_BE_BLANK(message: 'Mật khẩu không được bỏ trống'),

@@ -49,8 +49,5 @@ abstract class IAuthenticationRepository {
     required String email,
     required String password,
   });
-  Future<Either<Failure, LoginResultParam>> tryAutoLogin({
-    required String refreshToken,
-    required String userId,
-  });
+  Future<Either<Failure, LoginResultParam>> tryAutoLogin();
 }
