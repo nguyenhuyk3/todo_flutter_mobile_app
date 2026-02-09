@@ -7,19 +7,19 @@ import '../../../../a_domain/usecases/tag_use_case.dart';
 import '../../../../b_data/models/tag_model.dart';
 import '../../../models/label_item.dart';
 
-import 'modify_labels_state.dart';
+import 'modify_tag_state.dart';
 
-class ModifyLabelCubit extends Cubit<ModifyLabelState> {
+class ModifyTagCubit extends Cubit<ModifyTagState> {
   final GetAllTagsUseCase _getAllTagsUseCase;
   final UpdateTagUseCase _updateTagUseCase;
 
-  ModifyLabelCubit({
+  ModifyTagCubit({
     required GetAllTagsUseCase getAllTagsUseCase,
     required UpdateTagUseCase updateTagUseCase,
   }) : _getAllTagsUseCase = getAllTagsUseCase,
        _updateTagUseCase = updateTagUseCase,
 
-       super(const ModifyLabelState());
+       super(const ModifyTagState());
 
   Future<void> loadTags() async {
     emit(state.copyWith(isLoading: true, error: null));

@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../models/label_item.dart';
-import '../cubit/label/modify_labels_cubit.dart';
-import '../cubit/label/modify_labels_state.dart';
+import '../cubit/tag/modify_tag_cubit.dart';
+import '../cubit/tag/modify_tag_state.dart';
 import '../cubit/todo/modify_todo_form_cubit.dart';
 
 import 'dialog/modify_todo_edit_label_dialog.dart';
@@ -17,7 +17,7 @@ class ModifyTodoLabelsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ModifyLabelCubit, ModifyLabelState>(
+    return BlocBuilder<ModifyTagCubit, ModifyTagState>(
       builder: (context, labelState) {
         // Các attributes trong state
         final labels = labelState.labels;
@@ -175,13 +175,11 @@ class ModifyTodoLabelsGrid extends StatelessWidget {
                                   (ctx) => ModifyTodoEditLabelDialog(
                                     label: item,
                                     onSave: (newName, newColor) {
-                                      context
-                                          .read<ModifyLabelCubit>()
-                                          .updateTag(
-                                            tagId: item.id!,
-                                            newName: newName,
-                                            newColor: newColor,
-                                          );
+                                      context.read<ModifyTagCubit>().updateTag(
+                                        tagId: item.id!,
+                                        newName: newName,
+                                        newColor: newColor,
+                                      );
                                     },
                                   ),
                             );

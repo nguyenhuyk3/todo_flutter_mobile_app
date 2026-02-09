@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -10,7 +11,7 @@ import '../../../a_domain/entities/enums.dart';
 import '../../../a_domain/repositories/tag.dart';
 import '../../../a_domain/usecases/tag_use_case.dart';
 import '../../home/bloc/home_bloc.dart';
-import '../cubit/label/modify_labels_cubit.dart';
+import '../cubit/tag/modify_tag_cubit.dart';
 import '../cubit/todo/modify_todo_form_cubit.dart';
 import '../widgets/modify_todo_bottom_actions.dart';
 import '../widgets/modify_todo_date_range_selector.dart';
@@ -35,7 +36,7 @@ class _ModifyTodoPageState extends State<ModifyTodoPage> {
       create: (context) {
         final repo = context.read<ITagRepository>();
 
-        return ModifyLabelCubit(
+        return ModifyTagCubit(
           getAllTagsUseCase: GetAllTagsUseCase(tagRepository: repo),
           updateTagUseCase: UpdateTagUseCase(tagRepository: repo),
         )..loadTags();
