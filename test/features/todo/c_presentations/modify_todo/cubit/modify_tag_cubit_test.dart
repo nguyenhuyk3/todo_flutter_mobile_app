@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/todo/a_domain/usecases/tag_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/todo/b_data/models/tag_model.dart';
-import 'package:todo_flutter_mobile_app/features/todo/c_presentations/models/label_item.dart';
+import 'package:todo_flutter_mobile_app/features/todo/c_presentations/shared/models/label_item.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/tag/modify_tag_cubit.dart';
 import 'package:todo_flutter_mobile_app/features/todo/c_presentations/modify_todo/cubit/tag/modify_tag_state.dart';
 

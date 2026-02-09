@@ -9,8 +9,8 @@ import '../../../../../core/constants/others.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/utils/validator/validation_error_message.dart';
 import '../../../a_domain/usecases/authentication_use_case.dart';
-import '../../inputs/email.dart';
-import '../../inputs/password.dart';
+import '../../shared/inputs/email.dart';
+import '../../shared/inputs/password.dart';
 
 part 'event.dart';
 part 'state.dart';

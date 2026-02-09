@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/color.dart';
 import '../../../../a_domain/usecases/tag_use_case.dart';
 import '../../../../b_data/models/tag_model.dart';
-import '../../../models/label_item.dart';
+import '../../../shared/models/label_item.dart';
 
 import 'modify_tag_state.dart';
 

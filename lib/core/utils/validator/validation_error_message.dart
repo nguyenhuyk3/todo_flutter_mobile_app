@@ -1,6 +1,6 @@
-import '../../../features/authentication/c_presentations/inputs/email.dart';
-import '../../../features/authentication/c_presentations/inputs/otp.dart';
-import '../../../features/authentication/c_presentations/inputs/password.dart';
+import '../../../features/authentication/c_presentations/shared/inputs/email.dart';
+import '../../../features/authentication/c_presentations/shared/inputs/otp.dart';
+import '../../../features/authentication/c_presentations/shared/inputs/password.dart';
 import '../../constants/others.dart';
 import '../../errors/failure.dart';
 

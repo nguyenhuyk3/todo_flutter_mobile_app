@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
-import '../../models/label_item.dart';
+import '../../shared/models/label_item.dart';
 import '../cubit/tag/modify_tag_cubit.dart';
 import '../cubit/tag/modify_tag_state.dart';
 import '../cubit/todo/modify_todo_form_cubit.dart';

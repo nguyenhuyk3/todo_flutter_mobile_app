@@ -10,8 +10,8 @@ import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entitie
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/login_result_param.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/b_data/models/user_model.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/email.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/password.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/email.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/password.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/login/bloc/bloc.dart';
 
 // 1. Tạo class Mock cho UseCase

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
 import '../../../../../../core/utils/ticker.dart';
-import '../../../timer/bloc/bloc.dart';
+import '../../../shared/timer/bloc/bloc.dart';
 import '../../bloc/bloc.dart';
 
 class RegistrationOtpTimerResend extends StatelessWidget {

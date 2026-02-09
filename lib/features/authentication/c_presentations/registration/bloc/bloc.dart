@@ -11,9 +11,9 @@ import '../../../../../core/utils/validator/validation_error_message.dart';
 import '../../../a_domain/entities/enums.dart';
 import '../../../a_domain/usecases/params/registration_param.dart';
 import '../../../a_domain/usecases/authentication_use_case.dart';
-import '../../inputs/email.dart';
-import '../../inputs/otp.dart';
-import '../../inputs/password.dart';
+import '../../shared/inputs/email.dart';
+import '../../shared/inputs/otp.dart';
+import '../../shared/inputs/password.dart';
 
 part 'event.dart';
 part 'state.dart';

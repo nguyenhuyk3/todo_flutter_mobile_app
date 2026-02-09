@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
 import '../../../a_domain/entities/enums.dart';
-import '../../models/priority_prop.dart';
+import '../../shared/models/priority_prop.dart';
 import '../cubit/todo/modify_todo_form_cubit.dart';
 
 class ModifyTodoPrioritySelector extends StatelessWidget {

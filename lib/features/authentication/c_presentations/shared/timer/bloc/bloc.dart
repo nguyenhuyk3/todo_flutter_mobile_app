@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/constants/others.dart';
-import '../../../../../core/utils/ticker.dart';
+import '../../../../../../core/constants/others.dart';
+import '../../../../../../core/utils/ticker.dart';
 
 part 'event.dart';
 part 'state.dart';

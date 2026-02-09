@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../models/label_item.dart';
+import '../../../shared/models/label_item.dart';
 
 class ModifyTagState extends Equatable {
   final List<LabelItem> labels;

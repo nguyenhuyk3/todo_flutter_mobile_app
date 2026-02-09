@@ -7,7 +7,7 @@ import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/widgets/error_displayer.dart';
-import '../../password/bloc/bloc.dart';
+import '../../shared/password/bloc/bloc.dart';
 import '../bloc/bloc.dart';
 
 class LoginPasswordInput extends StatefulWidget {

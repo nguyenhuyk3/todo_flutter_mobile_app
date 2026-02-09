@@ -9,9 +9,9 @@ import 'package:todo_flutter_mobile_app/core/errors/failure.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/entities/enums.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/authentication_use_case.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/a_domain/usecases/params/registration_param.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/email.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/otp.dart';
-import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/inputs/password.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/email.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/otp.dart';
+import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/shared/inputs/password.dart';
 import 'package:todo_flutter_mobile_app/features/authentication/c_presentations/registration/bloc/bloc.dart';
 
 // 1. Tạo Mock cho các UseCases

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/constants/others.dart';
 import '../../../../../../core/constants/sizes.dart';
-import '../../../models/label_item.dart';
+import '../../../shared/models/label_item.dart';
 
 /// Màu mặc định cho bộ chọn màu nhãn (hex từ seed tags trong DB).
 const List<Color> _kLabelColorPresets = [

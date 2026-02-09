@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/others.dart';
 import '../../../../../core/constants/sizes.dart';
-import '../../models/label_item.dart';
+import '../../shared/models/label_item.dart';
 
 class ModifyTodoLabelItemWidget extends StatelessWidget {
   final LabelItem item;
